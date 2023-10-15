@@ -1,0 +1,52 @@
+﻿@model BudgetBuddy.ViewModels.LoginViewModel
+
+@{
+    ViewData["Title"] = "Login";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<div class="row">
+    <div class="col-md-4">
+        <div class="widget p-5" style="background-color:#e9ecef">
+            <form asp-controller="Account" asp-action="Login" method="post">
+                <div class="mb-3">
+                    <label asp-for="Username" class="form-label"></label>
+                    <input asp-for="Username" class="form-control" />
+                    <span asp-validation-for="Username" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Password" class="form-label"></label>
+                    <input asp-for="Password" type="password" class="form-control" />
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+
+                @if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
+                {
+                    <div class="text-danger">@ViewBag.ErrorMessage</div>
+                }
+
+                <button type="submit" class="btn btn-primary">Login</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <div class="widget p-5 mt-3" style="background-color:#e9ecef">
+            <p>Don't have an account? <a href="@Url.Action("Register","Account")">Register here</a>.</p>
+        </div>
+    </div>
+</div>
+
+
+@section scripts {
+    <script>
+        // This script redirects to the Budget creation page upon successful login
+        // Replace 'budget/create' with the actual URL of your Budget creation page
+        function redirectToBudgetCreation() {
+            window.location.href = "/Budget/Create";
+        }
+    </script>
+}

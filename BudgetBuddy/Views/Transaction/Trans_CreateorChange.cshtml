@@ -1,0 +1,90 @@
+﻿@model BudgetBuddy.Models.Transaction
+@inject IHttpContextAccessor HttpContextAccessor
+@using BudgetBuddy.Models
+
+@{
+    ViewData["Title"] = "Create a new transaction";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<div class="row">
+    <div class="col-md-7">
+        <div class="widget p-5" style="background-color:#e9ecef">
+            <form asp-action="CreateorChange" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input asp-for="TransactionId" type="hidden" />
+                <!-- Add this hidden field to include UserId -->
+                <input type="hidden" name="UserId" value="@UserUtility.GetUserId(HttpContextAccessor.HttpContext.Session)" />
+
+                <input type="hidden" id="BudgetId" name="BudgetId" value="@ViewBag.BudgetId" />
+
+                <div class="mb-3">
+                    <label asp-for="Date" class="form-label">Transaction Date</label>
+                    <input type="date" id="date" asp-for="Date" class="form-control" />
+                    <span asp-validation-for="Date" class="text-danger"></span>
+                </div>
+
+                <!-- Category Dropdown -->
+                <div class="mb-3">
+                    <select id="ddlCategory" name="CategoryId" class="form-control">
+                        <option value="">Category</option>
+                        @foreach (var category in ViewBag.Categories)
+                        {
+                            <option value="@category.CategoryId">@category.TitleWithIcon</option>
+                        }
+                    </select>
+                    <span asp-validation-for="CategoryId" class="text-danger fs-6"></span>
+                </div>
+
+                <!-- Hidden input to hold CategoriesCategoryId -->
+                <input type="hidden" id="CategoriesCategoryId" name="CategoriesCategoryId" value="@Model.CategoryId" />
+
+                <input type="hidden" id="Categories" name="Categories" value="@Model.CategoryId" />
+
+                @section scripts {
+                    <script>
+                        // Update hidden input when a category is selected
+                        document.getElementById('ddlCategory').addEventListener('change', function () {
+                            var selectedCategoryId = this.value;
+                            document.getElementById('CategoriesCategoryId').value = selectedCategoryId;
+                        });
+                    </script>
+                }
+
+                <div class="mb-3">
+                    <label asp-for="Amount" class="form-label">Amount</label>
+                    <input asp-for="Amount" class="form-control" type="number" min="0" />
+                    <span asp-validation-for="Amount" class="text-danger fs-6"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Description" class="form-label">Description</label>
+                    <textarea id="description" asp-for="Description" class="form-control" rows="3"></textarea>
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+                <button id="submit" type="submit" class="btn btn-success">Submit</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="col-md-5">
+        <div class="widget h-100 d-flex justify-content-center align-items-center">
+            <i class="fa-solid fa-money-bill-transfer fa-2xl"></i>
+        </div>
+    </div>
+</div>
+
+
+<style>
+    .small-btn {
+        font-size: 9px;
+        padding: 6px 6px;
+    }
+</style>
+
+
+
+
+
+
+

@@ -1,0 +1,27 @@
+﻿@model BudgetBuddy.ViewModels.WelcomeUserViewModel
+@inject IHttpContextAccessor HttpContextAccessor
+
+@{
+    ViewData["Title"] = "Welcome Page";
+    
+}
+
+<h1>Welcome @Model.UserInfo.First_Name !!</h1>
+
+<h5>Hi, @Model.UserInfo.First_Name you are using a Budget Tracking Application, I am your Budget Buddy :) </h5>
+
+<h5>I can help you with with all your Budget Tracking needs.</h5>
+
+<h5>You can create multiple Budgets, Add Transactions, Add Categories, etc.</h5>
+
+
+
+<div>
+    <!-- Button for Individual Mode -->
+    <a href="@Url.Action("Budget_Index", "Budget")" class="btn btn-primary btn-lg">Individual Mode</a>
+
+    <!-- Button for Enterprise Mode -->
+    <a href="@Url.Action("Enterprise", "Account")" class="btn btn-primary btn-lg">Enterprise Mode</a>
+</div>
+
+

@@ -1,0 +1,89 @@
+is_global = true
+build_property.TargetFramework = net6.0
+build_property.TargetPlatformMinVersion = 
+build_property.UsingMicrosoftNETSdkWeb = true
+build_property.ProjectTypeGuids = 
+build_property.InvariantGlobalization = 
+build_property.PlatformNeutralAssembly = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property.RootNamespace = BudgetBuddy
+build_property.RootNamespace = BudgetBuddy
+build_property.ProjectDir = D:\PADHAI\UMCP\PADHAI - FALL2023\2. Secure Coding\Project\BudgetBuddy\BudgetBuddy\
+build_property.RazorLangVersion = 6.0
+build_property.SupportLocalizedComponentNames = 
+build_property.GenerateRazorMetadataSourceChecksumAttributes = 
+build_property.MSBuildProjectDirectory = D:\PADHAI\UMCP\PADHAI - FALL2023\2. Secure Coding\Project\BudgetBuddy\BudgetBuddy
+build_property._RazorSourceGeneratorDebug = 
+
+[D:/PADHAI/UMCP/PADHAI - FALL2023/2. Secure Coding/Project/BudgetBuddy/BudgetBuddy/Views/Account/Enterprise.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxFbnRlcnByaXNlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/PADHAI/UMCP/PADHAI - FALL2023/2. Secure Coding/Project/BudgetBuddy/BudgetBuddy/Views/Account/Error.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxFcnJvci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/PADHAI/UMCP/PADHAI - FALL2023/2. Secure Coding/Project/BudgetBuddy/BudgetBuddy/Views/Account/Login.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxMb2dpbi5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/PADHAI/UMCP/PADHAI - FALL2023/2. Secure Coding/Project/BudgetBuddy/BudgetBuddy/Views/Account/Register.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxSZWdpc3Rlci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/PADHAI/UMCP/PADHAI - FALL2023/2. Secure Coding/Project/BudgetBuddy/BudgetBuddy/Views/Account/WelcomeUser.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxXZWxjb21lVXNlci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/PADHAI/UMCP/PADHAI - FALL2023/2. Secure Coding/Project/BudgetBuddy/BudgetBuddy/Views/Budget/Budget_Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQnVkZ2V0XEJ1ZGdldF9JbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/PADHAI/UMCP/PADHAI - FALL2023/2. Secure Coding/Project/BudgetBuddy/BudgetBuddy/Views/Budget/Bud_CreateorChange.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQnVkZ2V0XEJ1ZF9DcmVhdGVvckNoYW5nZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/PADHAI/UMCP/PADHAI - FALL2023/2. Secure Coding/Project/BudgetBuddy/BudgetBuddy/Views/Budget/Error.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQnVkZ2V0XEVycm9yLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/PADHAI/UMCP/PADHAI - FALL2023/2. Secure Coding/Project/BudgetBuddy/BudgetBuddy/Views/Category/Cat_CreateorChange.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2F0ZWdvcnlcQ2F0X0NyZWF0ZW9yQ2hhbmdlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/PADHAI/UMCP/PADHAI - FALL2023/2. Secure Coding/Project/BudgetBuddy/BudgetBuddy/Views/Category/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2F0ZWdvcnlcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/PADHAI/UMCP/PADHAI - FALL2023/2. Secure Coding/Project/BudgetBuddy/BudgetBuddy/Views/Home/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/PADHAI/UMCP/PADHAI - FALL2023/2. Secure Coding/Project/BudgetBuddy/BudgetBuddy/Views/Report/Report_Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUmVwb3J0XFJlcG9ydF9JbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/PADHAI/UMCP/PADHAI - FALL2023/2. Secure Coding/Project/BudgetBuddy/BudgetBuddy/Views/Shared/_ValidationScriptsPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/PADHAI/UMCP/PADHAI - FALL2023/2. Secure Coding/Project/BudgetBuddy/BudgetBuddy/Views/Transaction/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVHJhbnNhY3Rpb25cSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/PADHAI/UMCP/PADHAI - FALL2023/2. Secure Coding/Project/BudgetBuddy/BudgetBuddy/Views/Transaction/Trans_CreateorChange.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVHJhbnNhY3Rpb25cVHJhbnNfQ3JlYXRlb3JDaGFuZ2UuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/PADHAI/UMCP/PADHAI - FALL2023/2. Secure Coding/Project/BudgetBuddy/BudgetBuddy/Views/_ViewImports.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/PADHAI/UMCP/PADHAI - FALL2023/2. Secure Coding/Project/BudgetBuddy/BudgetBuddy/Views/_ViewStart.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/PADHAI/UMCP/PADHAI - FALL2023/2. Secure Coding/Project/BudgetBuddy/BudgetBuddy/Views/Shared/_Layout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = b-u3dk9begcr

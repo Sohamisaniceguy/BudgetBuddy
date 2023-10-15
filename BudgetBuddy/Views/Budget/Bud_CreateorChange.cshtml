@@ -1,0 +1,47 @@
+﻿@model BudgetBuddy.Models.Budget
+@inject IHttpContextAccessor HttpContextAccessor
+
+@{
+    ViewData["Title"] = "Create a Budget";
+}
+
+<h3>Create a New Budget</h3>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="widget p-5" style="background-color:#e9ecef">
+            <form asp-action="CreateBudget">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input asp-for="BudgetId" type="hidden" />
+                
+
+                <div class="mb-3">
+                    <label asp-for="BudgetName" class="form-label">Budget Name</label>
+                    <input asp-for="BudgetName" class="form-control" />
+                    <span asp-validation-for="BudgetName" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Icon" class="form-label">Icon</label>
+                    <input asp-for="Icon" class="form-control" />
+                </div>
+                <div class="mb-3">
+                    <label asp-for="BudgetLimit" class="form-label">Budget Limit</label>
+                    <input asp-for="BudgetLimit" class="form-control" type="number" min="0" />
+                    <span asp-validation-for="BudgetLimit" class="text-danger fs-6"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="StartDate" class="form-label">Start Date</label>
+                    <input asp-for="StartDate" class="form-control" type="date" />
+                    <span asp-validation-for="StartDate" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="EndDate" class="form-label">Last Date</label>
+                    <input asp-for="EndDate" class="form-control" type="date" />
+                    <span asp-validation-for="EndDate" class="text-danger"></span>
+                </div>
+                <button type="submit" class="btn btn-success">Create Budget</button>
+            </form>
+        </div>
+    </div>
+</div>
+
