@@ -36,12 +36,21 @@ namespace Expense_Tracker.Controllers
         {
             int userId = _userService.GetLoggedInUserId();
             ViewBag.BudgetId = budgetId;
+            
 
             // Retrieve transactions for the specified budget and user
             var transactions = _context.Transactions
                 .Where(t => t.BudgetId == budgetId && t.Budget.UserId == userId)
                 .Include(t => t.Categories)
                 .ToList();
+
+            // Retrieve the Enterprise value for the specified budgetId
+            var enterprise = _context.Budgets
+                .Where(b => b.BudgetId == budgetId)
+                .Select(b => b.Enterprise)
+                .FirstOrDefault();
+
+            ViewBag.Enterprise = enterprise;
 
             return View(transactions);
         }

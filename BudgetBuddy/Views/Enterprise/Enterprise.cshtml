@@ -1,0 +1,22 @@
+﻿@{
+    ViewData["Title"] = "Enterprise Mode";
+    ViewData["PageActionText"] = "+ New User";
+    ViewData["PageActionUrl"] = "/Enterprise/Enterprise";
+}
+
+<h2>@ViewData["Title"]</h2>
+<h2>Hi there! Are you the Admin?</h2>
+
+<!-- New Report Button -->
+
+<div class="text-end mt-4">
+    <a class="btn btn-primary" href="@ViewData["PageActionUrl"]">@ViewData["PageActionText"]</a>
+</div>
+
+<!-- New Budget Button-->
+<div>
+    <div class="text-end mt-4">
+        <a class="btn btn-primary" href="/Budget/Bud_CreateorChange">Create Budget</a>
+    </div>
+</div>
+

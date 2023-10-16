@@ -10,9 +10,25 @@
 
 <!-- New Budget Button-->
 <div>
-    <div class="text-end mt-4">
-        <a class="btn btn-primary" href="@ViewData["PageActionUrl"]">@ViewData["PageActionText"]</a>
-    </div>
+
+    <!-- Display "Add Users & Add Budget" button when Enterprise = 1 -->
+    @if (Model.Any(b => b.Enterprise == 1))
+    {
+        
+
+        <div class="text-end mt-4">
+            <a class="btn btn-primary" href="@Url.Action("Bud_CreateorChange_ent", "Budget")">Add Budget</a>
+        </div>
+    }
+
+    @if (Model.Any(b => b.Enterprise == 0))
+    {
+        <!-- New Budget Button -->
+        <div class="text-end mt-4">
+            <a class="btn btn-primary" href="@ViewData["PageActionUrl"]">@ViewData["PageActionText"]</a>
+        </div>
+    }
+    
 </div>
 
 

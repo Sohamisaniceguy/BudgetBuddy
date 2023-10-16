@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace BudgetBuddy.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class InititialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -54,7 +54,8 @@ namespace BudgetBuddy.Migrations
                     BudgetName = table.Column<string>(type: "nvarchar(20)", nullable: false),
                     BudgetLimit = table.Column<decimal>(type: "TEXT", nullable: false),
                     StartDate = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    EndDate = table.Column<DateTime>(type: "TEXT", nullable: false)
+                    EndDate = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    Enterprise = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {

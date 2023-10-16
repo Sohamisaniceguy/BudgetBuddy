@@ -89,10 +89,46 @@ namespace BudgetBuddy.Controllers
         }
 
 
-        //Get: Enterprise
-        public ActionResult Enterprise()
+        public IActionResult AddUser()
         {
-            return View("Enterprise");
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult AddUser(UserRegistrationViewModel model, int budgetId)
+        {
+            if (ModelState.IsValid)
+            {
+                // Create a new user
+                var user = new User
+                {
+                    First_Name = model.FirstName,
+                    Last_Name = model.LastName,
+                    Email = model.Email,
+                    
+                };
+
+                // Save the user to the database
+               // _dbcontext.EmailList.Add(user);
+               // _dbcontext.SaveChanges();
+
+                // Retrieve the budget
+                var budget = _dbcontext.Budgets.FirstOrDefault(b => b.BudgetId == budgetId);
+
+                if (budget != null)
+                {
+                    // Assign the user to the budget
+                    budget.BudgetUsers.Add(new BudgetUser_Enterprise { Budget = budget, User = user });
+                    _dbcontext.SaveChanges();
+
+                    return View("Index", "Transaction");
+                }
+
+                return RedirectToAction("Budget_Index_Enterprise", "Budget");
+            }
+
+            // Handle validation errors
+            return View(model);
         }
 
 
@@ -130,6 +166,8 @@ namespace BudgetBuddy.Controllers
 
                 ViewBag.SuccessMessage = "Registration successful!";
                 return View("Register"); // Replace with the appropriate action and controller
+
+                
             }
 
             // If the model is not valid, return to the create view with validation errors

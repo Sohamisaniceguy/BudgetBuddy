@@ -9,5 +9,7 @@ namespace BudgetBuddy.ViewModels
 
 
         public int WelcomeUser { get; set; }
+
+
     }
 }

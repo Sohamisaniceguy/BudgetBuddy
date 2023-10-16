@@ -35,7 +35,14 @@
                         }
                     </select>
                     <span asp-validation-for="CategoryId" class="text-danger fs-6"></span>
+                 </div>
+
+                <!-- Button to Create a New Category -->
+                <div class="mb-3">
+                    <a href="@Url.Action("Cat_CreateorChange", "Category")" class="btn btn-primary">Create New Category</a>
                 </div>
+
+
 
                 <!-- Hidden input to hold CategoriesCategoryId -->
                 <input type="hidden" id="CategoriesCategoryId" name="CategoriesCategoryId" value="@Model.CategoryId" />

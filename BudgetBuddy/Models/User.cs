@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BudgetBuddy.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -26,6 +27,9 @@ namespace BudgetBuddy.Models
 
         [Column(TypeName = "nvchar(15)")]
         public string Last_Name { get; set;}
+
+        // Navigation property for the many-to-many relationship
+        public ICollection<BudgetUser_Enterprise> BudgetUsers { get; set; }
     }
 
 }

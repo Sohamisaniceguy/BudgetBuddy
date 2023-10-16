@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BudgetBuddy.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -31,6 +32,12 @@ namespace BudgetBuddy.Models
         public DateTime StartDate { get; set; } = DateTime.Now;
         public DateTime EndDate { get; set; } = DateTime.Now;
 
+
+        // New property for Enterprise (0 or 1)
+        public int Enterprise { get; set; }
+
+        // Navigation property for the many-to-many relationship
+        public ICollection<BudgetUser_Enterprise> BudgetUsers { get; set; }
 
 
         [NotMapped]

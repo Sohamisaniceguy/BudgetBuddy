@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BudgetBuddy.Migrations
 {
     [DbContext(typeof(BudgetDbContext))]
-    [Migration("20231014064717_Initial Create")]
-    partial class InitialCreate
+    [Migration("20231016014123_AddEmailList")]
+    partial class AddEmailList
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -35,6 +35,9 @@ namespace BudgetBuddy.Migrations
 
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("Enterprise")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Icon")
                         .IsRequired()
@@ -145,6 +148,27 @@ namespace BudgetBuddy.Migrations
                     b.ToTable("User");
                 });
 
+            modelBuilder.Entity("BudgetBuddy.ViewModels.BudgetUser_Enterprise", b =>
+                {
+                    b.Property<int>("BudgetUser_EnterpriseId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("BudgetId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("BudgetUser_EnterpriseId");
+
+                    b.HasIndex("BudgetId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("BudgetUser_Enterprise");
+                });
+
             modelBuilder.Entity("BudgetBuddy.Models.Budget", b =>
                 {
                     b.HasOne("BudgetBuddy.Models.User", "User")
@@ -181,6 +205,35 @@ namespace BudgetBuddy.Migrations
                     b.Navigation("Categories");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("BudgetBuddy.ViewModels.BudgetUser_Enterprise", b =>
+                {
+                    b.HasOne("BudgetBuddy.Models.Budget", "Budget")
+                        .WithMany("BudgetUsers")
+                        .HasForeignKey("BudgetId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("BudgetBuddy.Models.User", "User")
+                        .WithMany("BudgetUsers")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Budget");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("BudgetBuddy.Models.Budget", b =>
+                {
+                    b.Navigation("BudgetUsers");
+                });
+
+            modelBuilder.Entity("BudgetBuddy.Models.User", b =>
+                {
+                    b.Navigation("BudgetUsers");
                 });
 #pragma warning restore 612, 618
         }
