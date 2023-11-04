@@ -1,0 +1,40 @@
+﻿@model BudgetBuddy.ViewModels.UserBudgetAssignmentViewModel
+
+<h2>Add Users to Budget</h2>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+}
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+}
+
+<form asp-action="AddUser" method="post">
+    <div class="col-md-7">
+        <div class="widget p-5" style="background-color:#e9ecef">
+            <label for="firstName">First Name:</label>
+            <input asp-for="FirstName" class="form-control">
+            <span asp-validation-for="FirstName" class="text-danger"></span>
+
+            <label for="lastName">Last Name:</label>
+            <input asp-for="LastName" class="form-control">
+            <span asp-validation-for="LastName" class="text-danger"></span>
+
+            <label for="email">Email:</label>
+            <input asp-for="Email" class="form-control">
+            <span asp-validation-for="Email" class="text-danger"></span>
+
+            <input type="hidden" asp-for="BudgetId">
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary mt-3">Add User</button>
+</form>
+
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
+}

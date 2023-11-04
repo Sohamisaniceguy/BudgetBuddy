@@ -16,10 +16,6 @@ build_property.GenerateRazorMetadataSourceChecksumAttributes =
 build_property.MSBuildProjectDirectory = D:\PADHAI\UMCP\PADHAI - FALL2023\2. Secure Coding\Project\BudgetBuddy\BudgetBuddy
 build_property._RazorSourceGeneratorDebug = 
 
-[D:/PADHAI/UMCP/PADHAI - FALL2023/2. Secure Coding/Project/BudgetBuddy/BudgetBuddy/Views/Account/AddUser.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxBZGRVc2VyLmNzaHRtbA==
-build_metadata.AdditionalFiles.CssScope = 
-
 [D:/PADHAI/UMCP/PADHAI - FALL2023/2. Secure Coding/Project/BudgetBuddy/BudgetBuddy/Views/Account/Error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxFcnJvci5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
@@ -34,6 +30,10 @@ build_metadata.AdditionalFiles.CssScope =
 
 [D:/PADHAI/UMCP/PADHAI - FALL2023/2. Secure Coding/Project/BudgetBuddy/BudgetBuddy/Views/Account/WelcomeUser.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxXZWxjb21lVXNlci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/PADHAI/UMCP/PADHAI - FALL2023/2. Secure Coding/Project/BudgetBuddy/BudgetBuddy/Views/Budget/AddUser.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQnVkZ2V0XEFkZFVzZXIuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/PADHAI/UMCP/PADHAI - FALL2023/2. Secure Coding/Project/BudgetBuddy/BudgetBuddy/Views/Budget/Budget_Index.cshtml]
@@ -60,8 +60,8 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2F0ZWdvcnlcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/PADHAI/UMCP/PADHAI - FALL2023/2. Secure Coding/Project/BudgetBuddy/BudgetBuddy/Views/Enterprise/Enterprise.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRW50ZXJwcmlzZVxFbnRlcnByaXNlLmNzaHRtbA==
+[D:/PADHAI/UMCP/PADHAI - FALL2023/2. Secure Coding/Project/BudgetBuddy/BudgetBuddy/Views/Enterprise/Enterprise_Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRW50ZXJwcmlzZVxFbnRlcnByaXNlX0luZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/PADHAI/UMCP/PADHAI - FALL2023/2. Secure Coding/Project/BudgetBuddy/BudgetBuddy/Views/Home/Index.cshtml]

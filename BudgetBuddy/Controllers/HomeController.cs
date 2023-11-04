@@ -24,14 +24,16 @@ namespace BudgetBuddy.Controllers
         public IActionResult GoToLogin()
         {
             // Redirect to the Login action in the Account controller
-            return View("Login", "Account");
+            return RedirectToAction("Login", "Account");
         }
+
 
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+
         }
     }
 }

@@ -43,12 +43,7 @@ namespace BudgetBuddy.Migrations
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("INTEGER");
-
                     b.HasKey("BudgetId");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Budgets");
                 });
@@ -88,9 +83,6 @@ namespace BudgetBuddy.Migrations
                     b.Property<int>("BudgetId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("CategoriesCategoryId")
-                        .HasColumnType("INTEGER");
-
                     b.Property<int>("CategoryId")
                         .HasColumnType("INTEGER");
 
@@ -107,7 +99,7 @@ namespace BudgetBuddy.Migrations
 
                     b.HasIndex("BudgetId");
 
-                    b.HasIndex("CategoriesCategoryId");
+                    b.HasIndex("CategoryId");
 
                     b.HasIndex("UserId");
 
@@ -145,36 +137,19 @@ namespace BudgetBuddy.Migrations
                     b.ToTable("User");
                 });
 
-            modelBuilder.Entity("BudgetBuddy.ViewModels.BudgetUser_Enterprise", b =>
+            modelBuilder.Entity("BudgetUser", b =>
                 {
-                    b.Property<int>("BudgetUser_EnterpriseId")
-                        .ValueGeneratedOnAdd()
+                    b.Property<int>("BudgetsBudgetId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("BudgetId")
+                    b.Property<int>("UsersUserId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("INTEGER");
+                    b.HasKey("BudgetsBudgetId", "UsersUserId");
 
-                    b.HasKey("BudgetUser_EnterpriseId");
+                    b.HasIndex("UsersUserId");
 
-                    b.HasIndex("BudgetId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("BudgetUser_Enterprise");
-                });
-
-            modelBuilder.Entity("BudgetBuddy.Models.Budget", b =>
-                {
-                    b.HasOne("BudgetBuddy.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
+                    b.ToTable("UserBudgets", (string)null);
                 });
 
             modelBuilder.Entity("BudgetBuddy.Models.Transaction", b =>
@@ -187,7 +162,7 @@ namespace BudgetBuddy.Migrations
 
                     b.HasOne("BudgetBuddy.Models.Categories", "Categories")
                         .WithMany()
-                        .HasForeignKey("CategoriesCategoryId")
+                        .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -204,33 +179,19 @@ namespace BudgetBuddy.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("BudgetBuddy.ViewModels.BudgetUser_Enterprise", b =>
+            modelBuilder.Entity("BudgetUser", b =>
                 {
-                    b.HasOne("BudgetBuddy.Models.Budget", "Budget")
-                        .WithMany("BudgetUsers")
-                        .HasForeignKey("BudgetId")
+                    b.HasOne("BudgetBuddy.Models.Budget", null)
+                        .WithMany()
+                        .HasForeignKey("BudgetsBudgetId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("BudgetBuddy.Models.User", "User")
-                        .WithMany("BudgetUsers")
-                        .HasForeignKey("UserId")
+                    b.HasOne("BudgetBuddy.Models.User", null)
+                        .WithMany()
+                        .HasForeignKey("UsersUserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Budget");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("BudgetBuddy.Models.Budget", b =>
-                {
-                    b.Navigation("BudgetUsers");
-                });
-
-            modelBuilder.Entity("BudgetBuddy.Models.User", b =>
-                {
-                    b.Navigation("BudgetUsers");
                 });
 #pragma warning restore 612, 618
         }

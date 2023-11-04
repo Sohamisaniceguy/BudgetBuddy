@@ -6,30 +6,38 @@
     ViewData["PageActionUrl"] = "/Budget/Bud_CreateorChange";
 }
 
+@if (Context.Session.GetString("Mode") == "Individual")
+{
+    <div class="mode-indicator">Individual Mode</div>
+}
+
+@if (Context.Session.GetString("Mode") == "Enterprise")
+{
+    <div class="mode-indicator">Enterprise Mode</div>
+}
+
+
+
 <h2>@ViewData["Title"]</h2>
 
-<!-- New Budget Button-->
+<!-- New Budget Button -->
 <div>
-
-    <!-- Display "Add Users & Add Budget" button when Enterprise = 1 -->
-    @if (Model.Any(b => b.Enterprise == 1))
+    @if (Context.Session.GetString("Mode") == "Enterprise")
     {
-        
-
+        <!-- Display "Add Budget" button for Enterprise mode -->
         <div class="text-end mt-4">
-            <a class="btn btn-primary" href="@Url.Action("Bud_CreateorChange_ent", "Budget")">Add Budget</a>
+            <a class="btn btn-primary" href="@Url.Action("Bud_CreateorChange_ent", "Budget")">Add Budget - Enterprise</a>
         </div>
     }
-
-    @if (Model.Any(b => b.Enterprise == 0))
+    else if (Context.Session.GetString("Mode") == "Individual")
     {
-        <!-- New Budget Button -->
+        <!-- Display "Add Budget" button for Individual mode -->
         <div class="text-end mt-4">
             <a class="btn btn-primary" href="@ViewData["PageActionUrl"]">@ViewData["PageActionText"]</a>
         </div>
     }
-    
 </div>
+
 
 
 <table class="table">
@@ -123,3 +131,4 @@
         });
     </script>
 }
+

@@ -24,7 +24,15 @@ namespace BudgetBuddy.Data
             public DbSet<Categories> Categories { get; set; }
 
 
-        
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<User>()
+                .HasMany(u => u.Budgets)
+                .WithMany(b => b.Users)
+                .UsingEntity(j => j.ToTable("UserBudgets"));
+        }
 
 
 

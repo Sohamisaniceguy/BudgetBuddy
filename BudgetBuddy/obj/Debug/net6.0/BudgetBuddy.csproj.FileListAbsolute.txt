@@ -115,3 +115,16 @@ D:\PADHAI\UMCP\PADHAI - FALL2023\2. Secure Coding\Project\BudgetBuddy\BudgetBudd
 D:\PADHAI\UMCP\PADHAI - FALL2023\2. Secure Coding\Project\BudgetBuddy\BudgetBuddy\bin\Debug\net6.0\runtimes\win\lib\net6.0\System.Windows.Extensions.dll
 D:\PADHAI\UMCP\PADHAI - FALL2023\2. Secure Coding\Project\BudgetBuddy\BudgetBuddy\bin\Debug\net6.0\FluentAssertions.dll
 D:\PADHAI\UMCP\PADHAI - FALL2023\2. Secure Coding\Project\BudgetBuddy\BudgetBuddy\bin\Debug\net6.0\Microsoft.IdentityModel.Clients.ActiveDirectory.dll
+D:\PADHAI\UMCP\PADHAI - FALL2023\2. Secure Coding\Project\BudgetBuddy\BudgetBuddy\bin\Debug\net6.0\Microsoft.Extensions.Configuration.Binder.dll
+D:\PADHAI\UMCP\PADHAI - FALL2023\2. Secure Coding\Project\BudgetBuddy\BudgetBuddy\bin\Debug\net6.0\Microsoft.Extensions.FileProviders.Abstractions.dll
+D:\PADHAI\UMCP\PADHAI - FALL2023\2. Secure Coding\Project\BudgetBuddy\BudgetBuddy\bin\Debug\net6.0\Microsoft.Extensions.Hosting.Abstractions.dll
+D:\PADHAI\UMCP\PADHAI - FALL2023\2. Secure Coding\Project\BudgetBuddy\BudgetBuddy\bin\Debug\net6.0\Microsoft.Extensions.Logging.Debug.dll
+D:\PADHAI\UMCP\PADHAI - FALL2023\2. Secure Coding\Project\BudgetBuddy\BudgetBuddy\bin\Debug\net6.0\Serilog.dll
+D:\PADHAI\UMCP\PADHAI - FALL2023\2. Secure Coding\Project\BudgetBuddy\BudgetBuddy\bin\Debug\net6.0\Serilog.AspNetCore.dll
+D:\PADHAI\UMCP\PADHAI - FALL2023\2. Secure Coding\Project\BudgetBuddy\BudgetBuddy\bin\Debug\net6.0\Serilog.Extensions.Hosting.dll
+D:\PADHAI\UMCP\PADHAI - FALL2023\2. Secure Coding\Project\BudgetBuddy\BudgetBuddy\bin\Debug\net6.0\Serilog.Extensions.Logging.dll
+D:\PADHAI\UMCP\PADHAI - FALL2023\2. Secure Coding\Project\BudgetBuddy\BudgetBuddy\bin\Debug\net6.0\Serilog.Formatting.Compact.dll
+D:\PADHAI\UMCP\PADHAI - FALL2023\2. Secure Coding\Project\BudgetBuddy\BudgetBuddy\bin\Debug\net6.0\Serilog.Settings.Configuration.dll
+D:\PADHAI\UMCP\PADHAI - FALL2023\2. Secure Coding\Project\BudgetBuddy\BudgetBuddy\bin\Debug\net6.0\Serilog.Sinks.Console.dll
+D:\PADHAI\UMCP\PADHAI - FALL2023\2. Secure Coding\Project\BudgetBuddy\BudgetBuddy\bin\Debug\net6.0\Serilog.Sinks.Debug.dll
+D:\PADHAI\UMCP\PADHAI - FALL2023\2. Secure Coding\Project\BudgetBuddy\BudgetBuddy\bin\Debug\net6.0\Serilog.Sinks.File.dll

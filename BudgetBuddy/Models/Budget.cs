@@ -18,8 +18,8 @@ namespace BudgetBuddy.Models
         public string Icon { get; set; } = "";
 
         // Foreign Key
-        public int UserId { get; set; }
-        public User? User { get; set; }
+        //public int UserId { get; set; }
+        //public User? User { get; set; }
 
 
 
@@ -36,8 +36,6 @@ namespace BudgetBuddy.Models
         // New property for Enterprise (0 or 1)
         public int Enterprise { get; set; }
 
-        // Navigation property for the many-to-many relationship
-        public ICollection<BudgetUser_Enterprise> BudgetUsers { get; set; }
 
 
         [NotMapped]
@@ -48,6 +46,11 @@ namespace BudgetBuddy.Models
                 return this.Icon + " " + this.BudgetName;
             }
         }
+
+        
+        public ICollection<User> Users { get; set; } = new List<User>();
+
+
 
     }
 }

@@ -19,7 +19,11 @@ namespace BudgetBuddy.Controllers
         //GET: Report_Index
         public ActionResult Index()
         {
-            return View("Report_Index");
+            // Fetch the transaction data (this is just a placeholder, you'll need to replace with actual data fetching logic)
+            var transactions = _dbcontext.Transactions.ToList();
+
+            // Pass the data to the view
+            return View("Report_Index", transactions);
         }
 
 

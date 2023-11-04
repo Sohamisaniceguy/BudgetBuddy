@@ -28,8 +28,9 @@ namespace BudgetBuddy.Models
         [Column(TypeName = "nvchar(15)")]
         public string Last_Name { get; set;}
 
-        // Navigation property for the many-to-many relationship
-        public ICollection<BudgetUser_Enterprise> BudgetUsers { get; set; }
+        public ICollection<Budget> Budgets { get; set; } = new List<Budget>();
+
+
     }
 
 }

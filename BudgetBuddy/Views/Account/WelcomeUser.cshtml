@@ -2,26 +2,19 @@
 @inject IHttpContextAccessor HttpContextAccessor
 
 @{
-    ViewData["Title"] = "Welcome Page";
-    
+    ViewData["Title"] = "Welcome to Budget Buddy!";
 }
 
-<h1>Welcome @Model.UserInfo.First_Name !!</h1>
+<div class="text-center">
+    <h1>Welcome, @Model.UserInfo.First_Name!</h1>
+    <h4>It's great to have you here, @Model.UserInfo.First_Name. Let's dive into your financial journey together.</h4>
+    <h5>Your Budget Buddy is here to assist you with all your budget tracking needs. Whether you're looking to create multiple budgets, add transactions, or categorize your expenses, I've got you covered!</h5>
 
-<h5>Hi, @Model.UserInfo.First_Name you are using a Budget Tracking Application, I am your Budget Buddy :) </h5>
+    <div class="mt-4">
+        <!-- Button for Individual Mode -->
+        <a href="@Url.Action("Budget_Index", "Budget")" class="btn btn-primary btn-lg mr-6">Individual Mode</a>
 
-<h5>I can help you with with all your Budget Tracking needs.</h5>
-
-<h5>You can create multiple Budgets, Add Transactions, Add Categories, etc.</h5>
-
-
-
-<div>
-    <!-- Button for Individual Mode -->
-    <a href="@Url.Action("Budget_Index", "Budget")" class="btn btn-primary btn-lg">Individual Mode</a>
-
-    <!-- Button for Enterprise Mode -->
-    <a href="@Url.Action("Budget_Index_Enterprise", "Budget")" class="btn btn-primary btn-lg">Enterprise Mode</a>
+        <!-- Button for Enterprise Mode -->
+        <a href="@Url.Action("Budget_Index_Enterprise", "Budget")" class="btn btn-primary btn-lg">Enterprise Mode</a>
+    </div>
 </div>
-
-

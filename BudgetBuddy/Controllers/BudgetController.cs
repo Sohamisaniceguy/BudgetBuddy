@@ -4,40 +4,50 @@ using BudgetBuddy.Service;
 using BudgetBuddy.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace BudgetBuddy.Controllers
 {
-    public class BudgetController:Controller
+    public class BudgetController : Controller
     {
         // DB Connection
         private readonly BudgetDbContext _dbContext;
         private readonly IUserService _userService;
-        
+        private readonly ILogger<BudgetController> _logger; // Injected logger
 
-        public BudgetController(IUserService userService, BudgetDbContext dbContext)
+        public BudgetController(IUserService userService, BudgetDbContext dbContext, ILogger<BudgetController> logger)
         {
             _dbContext = dbContext;
             _userService = userService;
+            _logger = logger; // Initializing logger
         }
 
         public IActionResult Budget_Index()
         {
+            HttpContext.Session.SetString("Mode", "Individual");
             int userId = _userService.GetLoggedInUserId(); //Using User Service to retrive logged in user information.
 
+            
+
             List<Budget> budgets = _dbContext.Budgets
-                .Where(b => b.UserId == userId && b.Enterprise == 0)  //Only Displaying for Loggedin user and Enterprise mode off
+                .Where(b => b.Users.Any(u => u.UserId == userId) && b.Enterprise == 0)  //Only Displaying for Loggedin user and Enterprise mode off
                 .ToList();
             // Add any logic needed for Budget_Index action
+
+            // Set the ViewData for Individual mode button
+            ViewData["PageActionUrl"] = Url.Action("YourActionForIndividual", "Budget");
+            ViewData["PageActionText"] = "Add Budget - Individual";
 
             return View(budgets); // Return the appropriate view (Budget_Index.cshtml)
         }
 
         public IActionResult Budget_Index_Enterprise()
         {
+            HttpContext.Session.SetString("Mode", "Enterprise");
             int userId = _userService.GetLoggedInUserId(); //Using User Service to retrive logged in user information.
 
             List<Budget> Enterprisebudgets = _dbContext.Budgets
-                .Where(b => b.UserId == userId && b.Enterprise == 1)  //Only Displaying for Loggedin user and Enterprise mode off
+                .Where(b => b.Users.Any(u => u.UserId == userId) && b.Enterprise == 1)  //Only Displaying for Loggedin user and Enterprise mode off
                 .ToList();
             // Add any logic needed for Budget_Index action
 
@@ -68,15 +78,14 @@ namespace BudgetBuddy.Controllers
 
 
         //Get: Create
+        [HttpGet]
         public IActionResult Bud_CreateorChange()
         {
-            
-                return View(new Budget());
+            _logger.LogWarning("Got Budget Createpage.");
+
+            return View(new Budget());
             
         }
-
-
-       
 
 
         [HttpPost]
@@ -84,35 +93,56 @@ namespace BudgetBuddy.Controllers
         {
             if (ModelState.IsValid)
             {
-                // Retrieve the UserId from the session
+                _logger.LogInformation("Model state is valid for CreateBudget.");
                 int? userId = UserUtility.GetUserId(HttpContext.Session);
 
-                // Check if UserId is available in the session
                 if (userId.HasValue)
                 {
-                    // Assign the UserId to the Budget
-                    budget.UserId = userId.Value;
-
-                    budget.Enterprise = 0;
-
-                    
-                    _dbContext.Budgets.Add(budget);
-                    _dbContext.SaveChanges();
-
-                    return RedirectToAction("Budget_Index", "Budget"); // Redirect to desired page after successful creation
+                    var user = _dbContext.User.Find(userId.Value);
+                    if (user != null)
+                    {
+                        _logger.LogInformation("User found in database for CreateBudget.");
+                        budget.Users.Add(user);
+                        budget.Enterprise = 0;
+                        _dbContext.Budgets.Add(budget);
+                        _dbContext.SaveChanges();
+                        return RedirectToAction("Budget_Index", "Budget");
+                    }
+                    else
+                    {
+                        _logger.LogError("User object not found in DB for CreateBudget.");
+                        return RedirectToAction("Error");
+                    }
                 }
                 else
                 {
-                    
-                    return RedirectToAction("Error"); 
+                    _logger.LogError("UserId not found in session for CreateBudget.");
+                    return RedirectToAction("Error");
                 }
             }
-            return View("Bud_CreateorChange", budget); 
 
+            // DEBUG
+            foreach (var entry in ModelState)
+            {
+                if (entry.Value.Errors.Any())
+                {
+                    foreach (var error in entry.Value.Errors)
+                    {
+                        _logger.LogWarning($"Property: {entry.Key}, Error: {error.ErrorMessage}");
+                    }
+                }
+            }
+            // END DEBUG
+
+            _logger.LogWarning("Model state is invalid for CreateBudget.");
+            return View("Bud_CreateorChange", budget);
         }
+
+
 
         // ENTERPRISE MODE:
         //Get: Create_ent
+        [HttpGet]
         public IActionResult Bud_CreateorChange_Ent()
         {
 
@@ -125,38 +155,102 @@ namespace BudgetBuddy.Controllers
         {
             if (ModelState.IsValid)
             {
-                // Retrieve the UserId from the session
+                _logger.LogInformation("Model state is valid for CreateBudget_Ent.");
                 int? userId = UserUtility.GetUserId(HttpContext.Session);
 
-                // Check if UserId is available in the session
                 if (userId.HasValue)
                 {
-                    // Assign the UserId to the Budget
-                    budget.UserId = userId.Value;
-
-                    budget.Enterprise = 1;
-
-
-                    _dbContext.Budgets.Add(budget);
-                    _dbContext.SaveChanges();
-
-                    return RedirectToAction("Budget_Index_Enterprise", "Budget"); // Redirect to desired page after successful creation
+                    var user = _dbContext.User.Find(userId.Value);
+                    if (user != null)
+                    {
+                        _logger.LogInformation("User found in database for CreateBudget_Ent.");
+                        budget.Users.Add(user);
+                        budget.Enterprise = 1;
+                        _dbContext.Budgets.Add(budget);
+                        _dbContext.SaveChanges();
+                        return RedirectToAction("Budget_Index_Enterprise", "Budget");
+                    }
+                    else
+                    {
+                        _logger.LogError("User object not found in DB for CreateBudget_Ent.");
+                        return RedirectToAction("Error");
+                    }
                 }
                 else
                 {
-
+                    _logger.LogError("UserId not found in session for CreateBudget_Ent.");
                     return RedirectToAction("Error");
                 }
             }
-            return View("Bud_CreateorChange", budget);
 
+            // If model state is invalid or any other error occurs, return the creation view with the budget data
+            _logger.LogWarning("Model state is invalid or error occurred in CreateBudget_Ent.");
+            return View("Bud_CreateorChange", budget);
+        }
+
+
+
+        [HttpGet]
+        public IActionResult AddUser()
+        {
+            return View(new UserBudgetAssignmentViewModel());
+        }
+
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult AddUser(UserBudgetAssignmentViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var existingUser = _dbContext.User.FirstOrDefault(u => u.Email == model.Email && u.First_Name == model.FirstName && u.Last_Name == model.LastName);
+
+                if (existingUser != null)
+                {
+                    int? sessionBudgetId = HttpContext.Session.GetInt32("BudgetId");
+
+                    if (sessionBudgetId.HasValue)
+                    {
+                        var budget = _dbContext.Budgets.Include(b => b.Users).FirstOrDefault(b => b.BudgetId == sessionBudgetId.Value);
+
+                        if (budget != null)
+                        {
+                            budget.Users.Add(existingUser);
+                            _dbContext.SaveChanges();
+                            TempData["SuccessMessage"] = "User added to the budget successfully!";
+                            return RedirectToAction("Index", "Transaction");
+                        }
+                        else
+                        {
+                            TempData["ErrorMessage"] = "Budget not found!";
+                        }
+                    }
+                    else
+                    {
+                        TempData["ErrorMessage"] = "No budget selected!";
+                    }
+                }
+                else
+                {
+                    TempData["ErrorMessage"] = "User not found!";
+                }
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "Form data is not valid!";
+            }
+
+            return View(model);
         }
 
 
 
 
-        // New action to handle redirect to Transactions_Index --> Budget to Transaction(Detail button)
-        public IActionResult RedirectToTransactions(int budgetId)
+
+
+            // New action to handle redirect to Transactions_Index --> Budget to Transaction(Detail button)
+            public IActionResult RedirectToTransactions(int budgetId)
         {
             // You may perform any necessary processing before redirecting
             return RedirectToAction("Index", "Transaction", new { budgetId });

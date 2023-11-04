@@ -20,10 +20,11 @@ namespace BudgetBuddy.Models
         // Foreign Key
         [Range(1, int.MaxValue, ErrorMessage = "Please select a category.")]
         public int CategoryId { get; set; }
-        public Categories Categories { get; set; }
+        [ForeignKey("CategoryId")]
+        public Categories? Categories { get; set; }
 
         // Foreign Key
-        [Range(1, int.MaxValue, ErrorMessage = "Please select a category.")]
+        //[Range(1, int.MaxValue, ErrorMessage = "Please select a userid")]
         public int UserId { get; set; }
         public User? User { get; set; }
 
