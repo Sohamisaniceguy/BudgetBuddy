@@ -16,9 +16,9 @@ namespace Expense_Tracker.Controllers
     {
         private readonly BudgetDbContext _context;
         private readonly IUserService _userService;
-        private readonly ILogger<BudgetController> _logger; // Injected loggerd
+        private readonly ILogger<TransactionController> _logger; // Injected loggerd
 
-        public TransactionController(IUserService userService,BudgetDbContext context, ILogger<BudgetController> logger)
+        public TransactionController(IUserService userService,BudgetDbContext context, ILogger<TransactionController> logger)
         {
             _context = context;
             _userService = userService;
@@ -41,7 +41,19 @@ namespace Expense_Tracker.Controllers
         {
             int userId = _userService.GetLoggedInUserId();
 
+            // Check if the budget belongs to the user
+            var budget_check = _context.Budgets
+                .Include(b => b.Users)
+                .FirstOrDefault(b => b.BudgetId == budgetId);
 
+            if (budget_check == null || !budget_check.Users.Any(u => u.UserId == userId))
+            {
+                // If the budget doesn't exist or the user doesn't have access to it, return a Forbidden result
+                // Instead of returning Forbid(), redirect to the Error view with a message
+                ViewBag.ErrorCode = "403";
+                ViewBag.ErrorMessage = "You do not have access to this budget.";
+                return View("Error");
+            }
 
             // If a budgetId is provided as a parameter, use it and store it in the session
             if (budgetId.HasValue)

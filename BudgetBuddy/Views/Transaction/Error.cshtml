@@ -1,0 +1,15 @@
+﻿@{
+    ViewData["Title"] = "Error";
+}
+
+<h1 class="text-danger">Oops! Something went wrong.</h1>
+<p>We're sorry, but something went wrong. Please try again later.</p>
+@if (ViewBag.ErrorCode != null)
+{
+    <p>Error Code: @ViewBag.ErrorCode</p>
+}
+@if (ViewBag.ErrorMessage != null)
+{
+    <p>Error Message: @ViewBag.ErrorMessage</p>
+}
+<a href="@Url.Action("Index", "Home")" class="btn btn-primary">Go to Home Page</a>
