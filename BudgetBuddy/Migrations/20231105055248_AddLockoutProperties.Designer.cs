@@ -3,6 +3,7 @@ using System;
 using BudgetBuddy.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BudgetBuddy.Migrations
 {
     [DbContext(typeof(BudgetDbContext))]
-    partial class BudgetDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231105055248_AddLockoutProperties")]
+    partial class AddLockoutProperties
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.12");
@@ -116,18 +119,12 @@ namespace BudgetBuddy.Migrations
                         .IsRequired()
                         .HasColumnType("nvchar(20)");
 
-                    b.Property<bool>("EmailConfirmed")
-                        .HasColumnType("INTEGER");
-
                     b.Property<int>("FailedLoginAttempts")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("First_Name")
                         .IsRequired()
                         .HasColumnType("nvchar(15)");
-
-                    b.Property<bool>("IsLockedOut")
-                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Last_Name")
                         .IsRequired()
@@ -140,29 +137,9 @@ namespace BudgetBuddy.Migrations
                         .IsRequired()
                         .HasColumnType("nvchar(20)");
 
-                    b.Property<string>("ResetPasswordToken")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime?>("ResetPasswordTokenExpiration")
-                        .HasColumnType("TEXT");
-
-                    b.Property<bool>("ResetPasswordTokenUsed")
-                        .HasColumnType("INTEGER");
-
                     b.Property<string>("UserName")
                         .IsRequired()
                         .HasColumnType("nvchar(20)");
-
-                    b.Property<DateTime?>("VerifyTokenExpiration")
-                        .HasColumnType("TEXT");
-
-                    b.Property<bool>("VerifyTokenUsed")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("VerifyUserToken")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
 
                     b.HasKey("UserId");
 

@@ -24,10 +24,11 @@ namespace BudgetBuddy.Controllers
 
         public IActionResult Budget_Index()
         {
-            HttpContext.Session.SetString("Mode", "Individual");
-            int userId = _userService.GetLoggedInUserId(); //Using User Service to retrive logged in user information.
 
-            
+            HttpContext.Session.SetString("Mode", "Individual");
+            var userId = HttpContext.Session.GetInt32("UserID"); //Using User Service to retrive logged in user information.
+
+
 
             List<Budget> budgets = _dbContext.Budgets
                 .Where(b => b.Users.Any(u => u.UserId == userId) && b.Enterprise == 0)  //Only Displaying for Loggedin user and Enterprise mode off
@@ -44,7 +45,7 @@ namespace BudgetBuddy.Controllers
         public IActionResult Budget_Index_Enterprise()
         {
             HttpContext.Session.SetString("Mode", "Enterprise");
-            int userId = _userService.GetLoggedInUserId(); //Using User Service to retrive logged in user information.
+            var userId = HttpContext.Session.GetInt32("UserID"); //Using User Service to retrive logged in user information.
 
             List<Budget> Enterprisebudgets = _dbContext.Budgets
                 .Where(b => b.Users.Any(u => u.UserId == userId) && b.Enterprise == 1)  //Only Displaying for Loggedin user and Enterprise mode off
@@ -81,6 +82,7 @@ namespace BudgetBuddy.Controllers
         [HttpGet]
         public IActionResult Bud_CreateorChange()
         {
+
             _logger.LogWarning("Got Budget Createpage.");
 
             return View(new Budget());
@@ -94,7 +96,7 @@ namespace BudgetBuddy.Controllers
             if (ModelState.IsValid)
             {
                 _logger.LogInformation("Model state is valid for CreateBudget.");
-                int? userId = UserUtility.GetUserId(HttpContext.Session);
+                var userId = HttpContext.Session.GetInt32("UserID");
 
                 if (userId.HasValue)
                 {
@@ -145,7 +147,17 @@ namespace BudgetBuddy.Controllers
         [HttpGet]
         public IActionResult Bud_CreateorChange_Ent()
         {
+            // Retrieve the mode from session
+            string mode = HttpContext.Session.GetString("Mode");
 
+            // Check if the mode is set to "Individual"
+            if (mode == "Individual")
+            {
+                // If it is, redirect the user to the Bud_CreateorChange action
+                return RedirectToAction("Bud_CreateorChange");
+            }
+
+            // Otherwise, continue with the enterprise budget creation
             return View(new Budget());
 
         }
@@ -156,7 +168,7 @@ namespace BudgetBuddy.Controllers
             if (ModelState.IsValid)
             {
                 _logger.LogInformation("Model state is valid for CreateBudget_Ent.");
-                int? userId = UserUtility.GetUserId(HttpContext.Session);
+                var userId = HttpContext.Session.GetInt32("UserID");
 
                 if (userId.HasValue)
                 {

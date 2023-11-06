@@ -6,33 +6,52 @@
 
 <h2>@ViewData["Title"]</h2>
 
+@if (TempData["CustomError"] != null)
+{
+    <div class="alert alert-danger">
+        @Html.Raw(TempData["CustomError"].ToString())
+    </div>
+}
+
+
+
+
+
 <div class="row">
     <div class="col-md-4">
-        <div class="widget p-5" style="background-color:#e9ecef">
+        <section class="widget p-5" style="background-color:#e9ecef">
             <form asp-controller="Account" asp-action="Register" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
                 <div class="mb-3">
-                    <label for="First_Name" class="form-label">First Name:</label>
-                    <input type="text" id="First_Name" name="First_Name" class="form-control" required />
+                    @Html.LabelFor(m => m.First_Name)
+                    @Html.TextBoxFor(m => m.First_Name, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.First_Name, "", new { @class = "text-danger" })
                 </div>
                 <div class="mb-3">
-                    <label for="Last_Name" class="form-label">Last Name:</label>
-                    <input type="text" id="Last_Name" name="Last_Name" class="form-control" required />
+                    @Html.LabelFor(m => m.Last_Name)
+                    @Html.TextBoxFor(m => m.Last_Name, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.Last_Name, "", new { @class = "text-danger" })
                 </div>
                 <div class="mb-3">
-                    <label for="UserName" class="form-label">Username:</label>
-                    <input type="text" id="UserName" name="UserName" class="form-control" required />
+                    @Html.LabelFor(m => m.UserName)
+                    @Html.TextBoxFor(m => m.UserName, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.UserName, "", new { @class = "text-danger" })
                 </div>
                 <div class="mb-3">
-                    <label for="Email" class="form-label">E-mail:</label>
-                    <input type="email" id="Email" name="Email" class="form-control" required />
+                    @Html.LabelFor(m => m.Email)
+                    @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
                 </div>
                 <div class="mb-3">
-                    <label for="Password" class="form-label">Password:</label>
-                    <input type="password" id="Password" name="Password" class="form-control" required />
+                    @Html.LabelFor(m => m.Password)
+                    @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
                 </div>
                 <div class="mb-3">
-                    <label for="ConfirmedPassword" class="form-label">Confirm Password:</label>
-                    <input type="password" id="ConfirmedPassword" name="ConfirmedPassword" class="form-control" required />
+                    @Html.LabelFor(m => m.ConfirmedPassword)
+                    @Html.PasswordFor(m => m.ConfirmedPassword, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.ConfirmedPassword, "", new { @class = "text-danger" })
                 </div>
 
                 @if (!string.IsNullOrEmpty(ViewBag.SuccessMessage))
@@ -42,14 +61,14 @@
 
                 <button type="submit" class="btn btn-primary">Register</button>
             </form>
-        </div>
+        </section>
     </div>
 </div>
 
 <div class="row">
     <div class="col-md-4">
-        <div class="widget p-5 mt-3" style="background-color:#e9ecef">
-            <p>Already have an account? <a href="@Url.Action("Login", "Account")">Login here</a>.</p>
-        </div>
+        <section class="widget p-5 mt-3" style="background-color:#e9ecef">
+            <p>Already have an account? <a asp-action="Login" asp-controller="Account">Login here</a>.</p>
+        </section>
     </div>
 </div>

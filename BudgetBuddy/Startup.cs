@@ -1,7 +1,11 @@
 ﻿using BudgetBuddy.Data;
+using BudgetBuddy.Models;
 using BudgetBuddy.Service;
+using BudgetBuddy.Utils;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -29,41 +33,58 @@ public class Startup
     public void ConfigureServices(IServiceCollection services)
     {
 
-        services.AddSession(options =>
-        {
-            // Set a short timeout for easy testing.
-            options.IdleTimeout = TimeSpan.FromHours(100);
-            options.Cookie.HttpOnly = true;
-            // Make the session cookie essential
-            options.Cookie.IsEssential = true;
-        });
-
-        // Add services to the container.
+        
+        // Add framework services
         services.AddControllersWithViews();
 
-        // Add DbContext and configure session
-        services.AddDbContext<BudgetDbContext>(options =>
-            options.UseSqlite(Configuration.GetConnectionString("BudgetDbConnection")));
+        // Configure cookie authentication
+        services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(options =>
+                {
+                    options.LoginPath = "/Account/Login";
+                    options.LogoutPath = "/Account/Logout";
+                    options.AccessDeniedPath = "/Account/AccessDenied";
+                    options.Cookie.HttpOnly = true;
+                    options.Cookie.SecurePolicy = Microsoft.AspNetCore.Http.CookieSecurePolicy.SameAsRequest;
+                    options.ExpireTimeSpan = System.TimeSpan.FromMinutes(30);
+                    options.SlidingExpiration = true;
+                });
 
+        services.AddLogging();
+
+
+        // Configure DbContext
+        services.AddDbContext<BudgetDbContext>(options =>
+            options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
+        // Add Identity registers the services
+        services.AddIdentity<IdentityUser, IdentityRole>()
+        .AddEntityFrameworkStores<BudgetDbContext>()
+        .AddDefaultTokenProviders();
+
+
+        // Configure sessions
         services.AddSession(options =>
         {
-            options.Cookie.Name = "YourAppSessionCookie";
-            options.IdleTimeout = TimeSpan.FromMinutes(30); // Set your desired session timeout
+            options.IdleTimeout = System.TimeSpan.FromMinutes(30);
+            options.Cookie.HttpOnly = true;
             options.Cookie.IsEssential = true;
         });
 
-        //Client side validation:
-        services.AddControllersWithViews().AddViewOptions(options =>
-        {
-            options.HtmlHelperOptions.ClientValidationEnabled = true;
-        });
 
 
-        // Register IUserService and HttpContextAccessor
-        services.AddScoped<IUserService, UserService>();
+
+
+
+        // Register application services.
+        services.AddScoped<IUserService, UserService>(); // Ensure this matches your actual implementation
         services.AddHttpContextAccessor();
 
-       
+        
+
+
+
+
 
 
 
@@ -84,18 +105,17 @@ public class Startup
             app.UseHsts();
         }
 
-        app.UseSession(); 
-
-        // Use Serilog request logging middleware
-        app.UseSerilogRequestLogging();
-
+        app.UseSerilogRequestLogging(); // Log requests
+          
         app.UseHttpsRedirection();
         app.UseStaticFiles();
 
+       
         app.UseRouting();
+        app.UseSession();
+        app.UseAuthentication();
         app.UseAuthorization();
-
-        app.UseSession(); //  enable sessions
+        
 
         app.UseEndpoints(endpoints =>
         {

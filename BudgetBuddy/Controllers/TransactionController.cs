@@ -39,7 +39,8 @@ namespace Expense_Tracker.Controllers
         [HttpGet]
         public async Task<IActionResult> Index(int? budgetId) // Make budgetId nullable to handle cases where it's not provided
         {
-            int userId = _userService.GetLoggedInUserId();
+            var userId = HttpContext.Session.GetInt32("UserID");
+            var userMode = HttpContext.Session.GetString("UserMode");
 
             // Check if the budget belongs to the user
             var budget_check = _context.Budgets
@@ -152,7 +153,7 @@ namespace Expense_Tracker.Controllers
             _logger.LogInformation($"BudgetId found : {sessionBudgetId.Value}");
 
             // Retrieve userId from the session or your user utility
-            int? userId = UserUtility.GetUserId(HttpContext.Session);
+            var userId = HttpContext.Session.GetInt32("UserID");
             if (!userId.HasValue || userId.Value <= 0)
             {
                 _logger.LogError("UserId not found in session or user utility.");

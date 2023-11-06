@@ -5,6 +5,18 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
 using BudgetBuddy.Service;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
+using System.Security.Claims;
+using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Http;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.DataProtection;
+using Microsoft.AspNetCore.Authorization;
+using BudgetBuddy.Utils;
+using Utils;
 
 namespace BudgetBuddy.Controllers
 {
@@ -12,11 +24,19 @@ namespace BudgetBuddy.Controllers
     {
         private readonly BudgetDbContext _dbcontext;
         private readonly IUserService _userService;
+        private readonly ILogger<AccountController> _logger;
+        private readonly IDataProtectionProvider _dataProtectionProvider;
+        private readonly IDataProtector _protector;
+        
 
-        public AccountController(BudgetDbContext dbcontext, IUserService userService)      //Constructor 
+        public AccountController(BudgetDbContext dbcontext, IUserService userService, ILogger<AccountController> logger, IDataProtectionProvider dataProtectionProvider)      //Constructor 
         {
             _dbcontext = dbcontext;
             _userService = userService;
+            _logger = logger;
+            _dataProtectionProvider = dataProtectionProvider;
+            _protector = _dataProtectionProvider.CreateProtector("Microsoft.AspNetCore.Authentication.Cookies.CookieAuthenticationMiddleware", CookieAuthenticationDefaults.AuthenticationScheme, "v2");
+            
         }
 
 
@@ -33,65 +53,148 @@ namespace BudgetBuddy.Controllers
         }
 
 
+        [HttpPost]
+        [ValidateAntiForgeryToken] // Protect against CSRF
+        public async Task<IActionResult> Login(LoginViewModel model)
+        {
+            // Check if the form data is valid
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            // Attempt to find the user by the username provided in the model
+            var user = _dbcontext.User.SingleOrDefault(u => u.UserName == model.Username);
+
+            // Define the maximum number of attempts allowed
+            int maxLoginAttempts = 5;
+
+            if (user != null && user.EmailConfirmed != true)
+            {
+                ViewBag.EmailConfirmationError = "Verify your email first.";
+                return View(model);
+            }
+
+
+            // If the user doesn't exist or the password verification fails
+            if (user == null || !_userService.VerifyPassword(user, model.Password, user.PasswordHash))
+            {
+                // If the user exists, increment the failed login attempt
+                if (user != null)
+                {
+                    int attemptsLeft = _userService.IncrementFailedLoginAttempt(user);
+                    if (_userService.IsLockedOut(user))
+                    {
+                        ModelState.AddModelError("", "Account locked. Please try again later.");
+                        // Pass the lockout status to the view
+                        TempData["Lockout"] = true;
+                    }
+                    else
+                    {
+                        // Pass the number of attempts left to the view
+                        TempData["AttemptsLeft"] = attemptsLeft;
+                        ModelState.AddModelError("", $"Invalid login attempt. You have {attemptsLeft} more attempt(s) before your account is locked.");
+                    }
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Invalid login attempt.");
+                }
+
+                return View(model);
+            }
+
+
+            // If the user is locked out, handle the lockout
+            if (_userService.IsLockedOut(user))
+            {
+                ModelState.AddModelError("", "Account locked. Please try again later.");
+                return View(model);
+            }
+
+            // If the login is successful, reset the failed login attempt
+            _userService.ResetFailedLoginAttempt(user);
+
+            // Create the claims for the user
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
+                new Claim(ClaimTypes.Name, user.UserName)
+                
+            };
+
+            var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+            var authProperties = new AuthenticationProperties
+            {
+                IsPersistent = model.RememberMe,
+                ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(30)
+            };
+
+            var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
+            var ticket = new AuthenticationTicket(claimsPrincipal, authProperties, CookieAuthenticationDefaults.AuthenticationScheme);
+
+            var ticketDataFormat = new TicketDataFormat(_protector);
+            var cookieValue = ticketDataFormat.Protect(ticket);
+
+            var cookieOptions = new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = Request.IsHttps,
+                Expires = authProperties.ExpiresUtc?.UtcDateTime
+            };
+
+            Response.Cookies.Append(".AspNetCore.Cookies", cookieValue, cookieOptions);
+
+            // Also set the user's ID in the session for session management
+            HttpContext.Session.SetInt32("UserID", user.UserId);
+
+            return RedirectToAction("WelcomeUser", "Account");
+        }
 
         [HttpPost]
-        public IActionResult Login(string username, string password)
+        public async Task<IActionResult> Logout()
         {
-            if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
-            {
-                ViewBag.ErrorMessage = "Please provide valid credentials.";
-                return View("Login");
-            }
-
-            var user = _dbcontext.User.SingleOrDefault(u => u.UserName == username && u.Password == password);
-
-            if (user != null)
-            {
-                // Store user ID in session using UserUtility
-                UserUtility.SetUserId(user.UserId, HttpContext.Session);
-
-                // Redirect to WelcomeUser action
-                return RedirectToAction("WelcomeUser", "Account");
-            }
-            else
-            {
-                ViewBag.ErrorMessage = "Invalid credentials. Please try again.";
-                return View("Login");
-            }
+            // Sign out the current user
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            HttpContext.Session.Clear(); // Clear the session upon logout
+            return RedirectToAction("Login", "Account");
         }
+
+
+
+
+
+
 
 
         public IActionResult WelcomeUser()
         {
-            // Retrieve the user ID from the session
-            var userId = UserUtility.GetUserId(HttpContext.Session);
+            var userId = HttpContext.Session.GetInt32("UserID");
 
             if (userId.HasValue)
             {
-                // Retrieve the user info based on the user ID
-                var user_info = _dbcontext.User.FirstOrDefault(u => u.UserId == userId.Value);
-
-                if (user_info != null)
+                var user = _dbcontext.User.Find(userId.Value);
+                if (user != null)
                 {
                     // Create the ViewModel and pass it to the view
                     var viewModel = new WelcomeUserViewModel
                     {
-                        UserInfo = user_info
+                        UserInfo = user
                     };
-
                     return View(viewModel);
                 }
             }
 
-            // If user is not logged in or user info is not found, show an error
+            // If user is not logged in or user information not found, show an error
             ViewBag.ErrorMessage = "User not logged in or user information not found.";
-            return View("Error"); // Create an Error view for this
+            return View("Error"); // Ensure there is an Error view to handle this case
         }
 
 
 
 
-       
+
+
 
 
 
@@ -104,13 +207,21 @@ namespace BudgetBuddy.Controllers
         }
 
 
-
-
         [HttpPost]
-        public IActionResult Register(RegisterViewModel model)
+        public async Task<IActionResult> Register(RegisterViewModel model)
         {
             if (ModelState.IsValid)
             {
+                // Validate the password
+                var validationResult = PasswordValidator.Validate(model.UserName, model.Password); // Assuming model.Email is the user identifier
+                if (!validationResult.Item1)
+                {
+                    // Add the specific error message to TempData
+                    TempData["CustomError"] = validationResult.Item2;
+                    // Return the view with the current model
+                    return View(model);
+                }
+
                 // Save the model to the database
                 var user = new User
                 {
@@ -118,21 +229,211 @@ namespace BudgetBuddy.Controllers
                     Last_Name = model.Last_Name,
                     UserName = model.UserName,
                     Email = model.Email,
-                    Password = model.Password
-                    // Assuming you have a 'User' model with appropriate properties
+                    ResetPasswordToken = " ",
+                    VerifyUserToken = " ",
+                    // ... other properties as necessary
                 };
 
+                // Hash the password and set the PasswordHash property
+                user.PasswordHash = _userService.HashPassword(user, model.Password);
+
+                // Add the user to the DbContext
                 _dbcontext.User.Add(user);
-                _dbcontext.SaveChanges();
+                await _dbcontext.SaveChangesAsync();
 
-                ViewBag.SuccessMessage = "Registration successful!";
-                return View("Register"); // Replace with the appropriate action and controller
+                // Generate email confirmation token
+                var emailConfirmationToken = await _userService.GenerateEmailConfirmationTokenAsync(user);
 
-                
+                // Create a confirmation link
+                var confirmationLink = Url.Action("ConfirmEmail", "Account",
+                    new { userId = user.UserId, token = emailConfirmationToken }, Request.Scheme);
+
+                var emailBody = $"To access your Budget Buddy account, please verify your email address: <a href='{confirmationLink}'>here</a>.";
+
+                // Send the email using the EmailSender's static method
+                bool emailSentSuccessfully = EmailSender.Send(user.Email, "Confirm Email", emailBody);
+
+                if (emailSentSuccessfully)
+                {
+                    ViewBag.SuccessMessage = "Registration successful! Please check your email to confirm your account.";
+                    return View("VerifyEmail"); // Or redirect to a confirmation page
+                }
+                else
+                {
+                    // Handle the case when the email couldn't be sent
+                    ModelState.AddModelError(string.Empty, "An error occurred while sending confirmation email.");
+                }
             }
 
             // If the model is not valid, return to the create view with validation errors
             return View("Register", model);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> ConfirmEmail(int userId, string token)
+        {
+            if (userId == 0 || string.IsNullOrEmpty(token))
+            {
+                ViewBag.ErrorMessage = "Invalid email confirmation token.";
+                return View("Error"); // Make sure to create an Error view to handle this.
+            }
+
+            var user = await _dbcontext.User.FindAsync(userId);
+            if (user != null && await _userService.ConfirmEmailAsync(user, token))
+            {
+                ViewBag.SuccessMessage = "Your email has been confirmed. You can now login.";
+
+                var emailBody = $" Your email has been successfully verified. You can now log in to your Budget Buddy account using your new password.";
+
+                // Send the email using the EmailSender's static method
+                bool emailSentSuccessfully = EmailSender.Send(user.Email, "Email Confirmation", emailBody);
+                return View("VerifyEmailConfirmation"); // Or redirect to a confirmation success page.
+            }
+
+            ViewBag.ErrorMessage = "Error while confirming your email.";
+            return View("Error"); // Make sure to create an Error view to handle this.
+        }
+
+
+
+
+
+
+
+
+        // GET: Account/ForgotPassword
+        public IActionResult ForgotPassword()
+        {
+            return View();
+        }
+
+        // POST: Account/ForgotPassword
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel model)
+        {
+            _logger.LogInformation("ForgotPassword POST action called with email: {Email}", model.Email);
+
+            if (ModelState.IsValid)
+            {
+                _logger.LogDebug("Model state is valid for ForgotPassword.");
+
+                var user = await _dbcontext.User
+                    .FirstOrDefaultAsync(u => u.Email == model.Email);
+
+                if (user == null || !_userService.IsUserActive(user))
+                {
+                    _logger.LogWarning("User is null or not active for email: {Email}", model.Email);
+                    // Don't reveal that the user does not exist or is not active
+                    ViewBag.UserEmail = model.Email;
+                    return View("ForgotPasswordConfirmation");
+                }
+
+                _logger.LogDebug("User found and active: {Email}", user.Email);
+
+                // Generate a reset password token
+                var token = await _userService.GeneratePasswordResetTokenAsync(user);
+                _logger.LogDebug("Password reset token generated for user: {UserId}", user.UserId);
+
+                // Create reset link
+                var passwordResetLink = Url.Action("ResetPassword", "Account", new { email = user.Email, token = token }, Request.Scheme);
+                _logger.LogDebug("Password reset link generated: {PasswordResetLink}", passwordResetLink);
+
+                var emailBody = $"Please confirm your email by clicking <a href='{passwordResetLink}'>here</a>.";
+
+                // Send the email using the EmailSender's static method
+                bool emailSentSuccessfully = EmailSender.Send(user.Email, "Password Reset", emailBody);
+                if (emailSentSuccessfully)
+                {
+                    _logger.LogInformation("Password reset email sent successfully to: {Email}", user.Email);
+                }
+                else
+                {
+                    _logger.LogError("Failed to send password reset email to: {Email}", user.Email);
+                }
+
+                // Redirect to confirmation page
+                return View("ForgotPasswordConfirmation");
+            }
+
+            _logger.LogWarning("Model state is invalid for ForgotPassword.");
+            // If we got this far, something failed, redisplay form
+            return View(model);
+        }
+
+
+
+
+        // GET: Account/ResetPassword
+        public IActionResult ResetPassword(string token, string email)
+        {
+            if (token == null || email == null)
+            {
+                ModelState.AddModelError("", "Invalid password reset token.");
+            }
+            return View();
+        }
+
+        // POST: Account/ResetPassword
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ResetPassword(ResetPasswordViewModel model)
+        {
+            _logger.LogInformation("ResetPassword POST action called with email: {Email}", model.Email);
+
+            if (!ModelState.IsValid)
+            {
+                _logger.LogWarning("Model state is invalid for ResetPassword.");
+                return View(model);
+            }
+
+            // Validate the password
+            var validationResult = PasswordValidator.Validate(model.Email, model.Password); // Assuming model.Email is the user identifier
+            if (!validationResult.Item1)
+            {
+                // Use TempData to pass the specific error message to the view
+                TempData["CustomError"] = validationResult.Item2;
+                return View(model);
+            }
+
+            var user = await _dbcontext.User
+                .FirstOrDefaultAsync(u => u.Email == model.Email);
+
+            if (user == null)
+            {
+                // Log the fact that the user was not found
+                _logger.LogWarning("User not found with email: {Email}", model.Email);
+            }
+            else
+            {
+                _logger.LogInformation("User found with email: {Email}, attempting to reset password.", model.Email);
+                var result = await _userService.ResetPasswordAsync(user, model.Token, model.Password);
+                if (result)
+                {
+                    _logger.LogInformation("Password reset was successful for user with email: {Email}", model.Email);
+                    var emailBody = $" Your password has been successfully reset. You can now log in to your Budget Buddy account using your new password." +
+                                    $" If this is not you click <a href=' '>here</a> to REPORT. ";
+
+                    // Send the email using the EmailSender's static method
+                    bool emailSentSuccessfully = EmailSender.Send(user.Email, "Password Reset", emailBody);
+                    return View("ResetPasswordConfirmation");
+                }
+                else
+                {
+                    // Log the failure of the password reset attempt
+                    _logger.LogWarning("Password reset attempt failed for user with email: {Email}", model.Email);
+                }
+            }
+
+            // If we got this far, something failed, redisplay form
+            ModelState.AddModelError("", "Failed to reset password.");
+            _logger.LogWarning("Redisplaying ResetPassword form due to failure to reset password for email: {Email}", model.Email);
+            return View(model);
+        }
+
+
+
+
+
     }
 }
