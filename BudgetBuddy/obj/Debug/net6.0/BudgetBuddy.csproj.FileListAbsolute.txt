@@ -130,3 +130,5 @@ D:\PADHAI\UMCP\PADHAI - FALL2023\2. Secure Coding\Project\BudgetBuddy\BudgetBudd
 D:\PADHAI\UMCP\PADHAI - FALL2023\2. Secure Coding\Project\BudgetBuddy\BudgetBuddy\obj\Debug\net6.0\BudgetBuddy.pdb
 D:\PADHAI\UMCP\PADHAI - FALL2023\2. Secure Coding\Project\BudgetBuddy\BudgetBuddy\obj\Debug\net6.0\BudgetBuddy.genruntimeconfig.cache
 D:\PADHAI\UMCP\PADHAI - FALL2023\2. Secure Coding\Project\BudgetBuddy\BudgetBuddy\obj\Debug\net6.0\ref\BudgetBuddy.dll
+D:\PADHAI\UMCP\PADHAI - FALL2023\2. Secure Coding\Project\BudgetBuddy\BudgetBuddy\bin\Debug\net6.0\Konscious.Security.Cryptography.Argon2.dll
+D:\PADHAI\UMCP\PADHAI - FALL2023\2. Secure Coding\Project\BudgetBuddy\BudgetBuddy\bin\Debug\net6.0\Konscious.Security.Cryptography.Blake2.dll

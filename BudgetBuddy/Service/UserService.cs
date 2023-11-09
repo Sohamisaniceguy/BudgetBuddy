@@ -5,6 +5,8 @@ using Microsoft.EntityFrameworkCore;
 using System.Security.Cryptography;
 using Microsoft.Extensions.Logging;
 using System.Net;
+using System.Text;
+using WebGoatCore.Utils;
 
 namespace BudgetBuddy.Service
 {
@@ -13,7 +15,7 @@ namespace BudgetBuddy.Service
     {
         public bool VerifyPassword(User user, string providedPassword, string storedHash);
         public string HashPassword(User user, string password);
-        int GetLoggedInUserId();
+        //int GetLoggedInUserId();
 
         int IncrementFailedLoginAttempt(User user);
         bool IsLockedOut(User user);
@@ -29,6 +31,8 @@ namespace BudgetBuddy.Service
 
         Task<bool> ConfirmEmailAsync(User user, string token);
 
+        Task<Tuple<bool, string>> ValidateUserUniqueness(string username, string email);
+
 
 
 
@@ -37,8 +41,6 @@ namespace BudgetBuddy.Service
     public class UserService : IUserService
     {
         private readonly BudgetDbContext _dbcontext;
-
-        private readonly PasswordHasher<User> _passwordHasher;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly ILogger<UserService> _logger;
 
@@ -52,37 +54,49 @@ namespace BudgetBuddy.Service
         public UserService(IHttpContextAccessor httpContextAccessor, BudgetDbContext dbcontext, ILogger<UserService> logger)
         {
             _httpContextAccessor = httpContextAccessor;
-            _passwordHasher = new PasswordHasher<User>();
             _dbcontext = dbcontext;
             _logger = logger;
         }
 
-        public int GetLoggedInUserId()
+
+        public async Task<Tuple<bool, string>> ValidateUserUniqueness(string username, string email)
         {
-            if (_httpContextAccessor.HttpContext?.Session.GetInt32("UserId") != null)
+            StringBuilder errors = new StringBuilder();
+            bool isValid = true;
+
+            // Normalize the input for comparison
+            string normalizedUsername = username.Trim().ToLower();
+            string normalizedEmail = email.Trim().ToLower();
+
+            // Check for unique username
+            if (await _dbcontext.User.AnyAsync(u => u.UserName == normalizedUsername))
             {
-                return (int)_httpContextAccessor.HttpContext.Session.GetInt32("UserId");
+                errors.AppendLine("The username is already taken.<br>");
+                isValid = false;
             }
 
-            return -1;
-        }
+            // Check for unique email
+            if (await _dbcontext.User.AnyAsync(u => u.Email == normalizedEmail))
+            {
+                errors.AppendLine("The email is already in use.<br>");
+                isValid = false;
+            }
+
+            return new Tuple<bool, string>(isValid, errors.ToString());
+        }  // Username & email is unique
 
         public string HashPassword(User user, string password)
         {
-            return _passwordHasher.HashPassword(user, password);
+            var hasher = new Argon2Hasher<User>();
+            return hasher.HashPassword(user, password);
         }
 
         public bool VerifyPassword(User user, string providedPassword, string storedHash)
         {
-            var result = _passwordHasher.VerifyHashedPassword(user, storedHash, providedPassword);
+            var hasher = new Argon2Hasher<User>();
+            var result = hasher.VerifyHashedPassword(user, storedHash, providedPassword);
             return result == PasswordVerificationResult.Success;
         }
-
-
-
-
-
-
 
         public int IncrementFailedLoginAttempt(User user)
         {
@@ -116,7 +130,6 @@ namespace BudgetBuddy.Service
             return remainingAttempts;
         }
 
-
         public bool IsLockedOut(User user)
         {
             return user.LockoutEnd.HasValue && user.LockoutEnd > DateTime.UtcNow;
@@ -142,13 +155,11 @@ namespace BudgetBuddy.Service
             _dbcontext.SaveChanges();
         }
 
-
         public bool IsUserActive(User user)
         {
             // Your logic to determine if the user is active
             return user.EmailConfirmed; // Assuming 'IsActive' is a boolean property of the User class
         }
-
 
         public async Task<bool> ResetPasswordAsync(User user, string token, string newPassword)
         {
@@ -161,7 +172,8 @@ namespace BudgetBuddy.Service
             }
 
             // Verify the provided token with the stored hashed token
-            var verificationResult = _passwordHasher.VerifyHashedPassword(user, user.ResetPasswordToken, token);
+            var hasher = new Argon2Hasher<User>();
+            var verificationResult = hasher.VerifyHashedPassword(user, user.ResetPasswordToken, token);
             if (verificationResult != PasswordVerificationResult.Success)
             {
                 _logger.LogWarning("Reset password failed: Token mismatch for user: {UserId}", user.UserId);
@@ -169,7 +181,7 @@ namespace BudgetBuddy.Service
             }
 
 
-            user.PasswordHash = _passwordHasher.HashPassword(user, newPassword);
+            user.PasswordHash = hasher.HashPassword(user, newPassword);
             user.ResetPasswordTokenUsed = true;
             user.ResetPasswordToken = "";
             user.ResetPasswordTokenExpiration = null;
@@ -198,8 +210,6 @@ namespace BudgetBuddy.Service
             }
         }
 
-
-
         public async Task<string> GeneratePasswordResetTokenAsync(User user)
         {
             _logger.LogInformation("Starting token generation for password reset.");
@@ -211,7 +221,8 @@ namespace BudgetBuddy.Service
             string token = Convert.ToBase64String(tokenBytes);
             _logger.LogInformation("Token generated successfully.");
 
-            string hashedToken = _passwordHasher.HashPassword(user, token);
+            var hasher = new Argon2Hasher<User>();
+            string hashedToken = hasher.HashPassword(user, token);
             _logger.LogInformation("Token hashed and ready to be stored.");
 
             user.ResetPasswordToken = hashedToken;
@@ -234,9 +245,6 @@ namespace BudgetBuddy.Service
             return token;
         }
 
-
-
-
         public async Task<bool> ConfirmEmailAsync(User user, string token)
         {
             _logger.LogInformation("Attempting to confirm email for user: {UserId}", user.UserId);
@@ -248,7 +256,8 @@ namespace BudgetBuddy.Service
             }
 
             // Verify the provided token with the stored hashed token
-            var verificationResult = _passwordHasher.VerifyHashedPassword(user, user.VerifyUserToken, token);
+            var hasher = new Argon2Hasher<User>();
+            var verificationResult = hasher.VerifyHashedPassword(user, user.VerifyUserToken, token);
             if (verificationResult != PasswordVerificationResult.Success)
             {
                 _logger.LogWarning("Reset password failed: Token mismatch for user: {UserId}", user.UserId);
@@ -286,13 +295,6 @@ namespace BudgetBuddy.Service
 
         }
 
-
-
-
-
-
-
-
         public async Task<string> GenerateEmailConfirmationTokenAsync(User user)
         {
             _logger.LogInformation("Starting token generation for email confirmation.");
@@ -304,7 +306,8 @@ namespace BudgetBuddy.Service
             string token = Convert.ToBase64String(tokenBytes);
             _logger.LogInformation("Token generated successfully.");
 
-            string hashedToken = _passwordHasher.HashPassword(user, token);
+            var hasher = new Argon2Hasher<User>();
+            string hashedToken = hasher.HashPassword(user, token);
             _logger.LogInformation("Token hashed and ready to be stored.");
 
             user.VerifyUserToken = hashedToken;

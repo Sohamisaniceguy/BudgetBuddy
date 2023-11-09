@@ -1,37 +1,59 @@
-﻿@{
+﻿@model IEnumerable<BudgetBuddy.ViewModels.ReportViewModel>
+
+
+@{
     ViewData["Title"] = "Reports";
 }
 
 <h2>@ViewData["Title"]</h2>
 <h2>Hi there! Looking for reports?</h2>
 
-<div>
-    <canvas id="myChart"></canvas>
-</div>
+@if (!Model.Any())
+{
+    <p>No data available for the report.</p>
+}
+else
+{
+    <div>
+        <canvas id="myChart"></canvas>
+    </div>
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="@Url.Content("~/js/Chart.js")"></script>
 
-<script>
-    const ctx = document.getElementById('myChart');
 
-    new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: @Json.Serialize(((IEnumerable<Transaction>)Model).Select(t => t.Date).ToList()),
+    
+}
 
-            datasets: [{
-                label: '# of Votes',
-                data: @Json.Serialize(((IEnumerable<Transaction>)Model).Select(t => t.Amount).ToList()),
+@section Scripts {
+    <script src="~/js/Chart.min.js"></script>
+    <script>
+        <script>
+                const ctx = document.getElementById('myChart');
 
-                borderWidth: 1
-            }]
-        },
-        options: {
-            scales: {
-                y: {
-                    beginAtZero: true
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: @Html.Raw(Json.Serialize(Model.Select(x => x.Date))),
+                datasets: [{
+                    label: 'Total Amount',
+                    data: @Html.Raw(Json.Serialize(Model.Select(x => x.TotalAmount))),
+                    backgroundColor: 'rgba(0, 123, 255, 0.5)',
+                    borderColor: 'rgba(0, 123, 255, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
                 }
             }
-        }
-    });
-</script>
+        });
+    </script>
+        console.log('Transaction Dates:', @Html.Raw(Json.Serialize(Model.Select(x => x.Date))));
+        console.log('Transaction Amounts:', @Html.Raw(Json.Serialize(Model.Select(x => x.TotalAmount))));
+    </script>
+
+    }
+

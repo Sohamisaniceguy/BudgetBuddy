@@ -1,5 +1,7 @@
 ﻿using BudgetBuddy.Data;
+using BudgetBuddy.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,21 +12,52 @@ namespace BudgetBuddy.Controllers
     public class ReportController:Controller
     {
         private readonly BudgetDbContext _dbcontext;
+        private readonly ILogger<ReportController> _logger;
 
-        public ReportController(BudgetDbContext dbcontext)      //Constructor 
+        public ReportController(ILogger<ReportController> logger, BudgetDbContext dbcontext)      //Constructor 
         {
             _dbcontext = dbcontext;
+            _logger = logger;
         }
 
         //GET: Report_Index
         public ActionResult Index()
         {
-            // Fetch the transaction data (this is just a placeholder, you'll need to replace with actual data fetching logic)
-            var transactions = _dbcontext.Transactions.ToList();
+            try
+            {
+                _logger.LogInformation("Fetching transactions from the database.");
+                var transactions = _dbcontext.Transactions.ToList();
 
-            // Pass the data to the view
-            return View("Report_Index", transactions);
+                _logger.LogInformation($"Fetched {transactions.Count} transactions. Processing data for the report.");
+                var reportData = transactions
+                    .GroupBy(t => t.Date.Date)
+                    .Select(group => new ReportViewModel
+                    {
+                        Date = group.Key.ToString("yyyy-MM-dd"),
+                        TotalAmount = group.Sum(t => t.Amount)
+                    })
+                    .OrderBy(result => result.Date)
+                    .ToList();
+
+                _logger.LogInformation($"Report data processed. Number of grouped entries: {reportData.Count}");
+
+                if (!reportData.Any())
+                {
+                    _logger.LogWarning("No data available to display in the report.");
+                }
+
+                return View("Report_Index", reportData);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while generating the report.");
+                return View("Error"); // Assuming you have an Error view to display errors
+            }
         }
+
+
+
+
 
 
 

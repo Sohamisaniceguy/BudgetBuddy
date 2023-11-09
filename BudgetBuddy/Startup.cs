@@ -11,7 +11,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Serilog;
-
+using WebGoatCore.Utils;
 
 public class Startup
 {
@@ -79,8 +79,9 @@ public class Startup
         // Register application services.
         services.AddScoped<IUserService, UserService>(); // Ensure this matches your actual implementation
         services.AddHttpContextAccessor();
+        services.AddScoped<IPasswordHasher<IdentityUser>, Argon2Hasher<IdentityUser>>();
 
-        
+
 
 
 

@@ -212,13 +212,32 @@ namespace BudgetBuddy.Controllers
         {
             if (ModelState.IsValid)
             {
+
+                // Initialize an empty string to hold all error messages
+                string errorMessages = "";
+
+                // Normalize input
+                var normalizedUsername = model.UserName.Trim().ToLower();
+                var normalizedEmail = model.Email.Trim().ToLower();
+
+                // Check for unique username and email
+                var uniquenessResult = await _userService.ValidateUserUniqueness(normalizedUsername, normalizedEmail);
+                if (!uniquenessResult.Item1)
+                {
+                    errorMessages += uniquenessResult.Item2;
+                }
+
                 // Validate the password
                 var validationResult = PasswordValidator.Validate(model.UserName, model.Password); // Assuming model.Email is the user identifier
                 if (!validationResult.Item1)
                 {
-                    // Add the specific error message to TempData
-                    TempData["CustomError"] = validationResult.Item2;
-                    // Return the view with the current model
+                    errorMessages += validationResult.Item2;
+                }
+
+                // If there are any error messages, add them to TempData and return the view
+                if (!string.IsNullOrEmpty(errorMessages))
+                {
+                    TempData["CustomError"] = errorMessages;
                     return View(model);
                 }
 
@@ -227,8 +246,8 @@ namespace BudgetBuddy.Controllers
                 {
                     First_Name = model.First_Name,
                     Last_Name = model.Last_Name,
-                    UserName = model.UserName,
-                    Email = model.Email,
+                    UserName = normalizedUsername,
+                    Email = normalizedEmail,
                     ResetPasswordToken = " ",
                     VerifyUserToken = " ",
                     // ... other properties as necessary
@@ -268,6 +287,8 @@ namespace BudgetBuddy.Controllers
             // If the model is not valid, return to the create view with validation errors
             return View("Register", model);
         }
+
+
 
         [HttpGet]
         public async Task<IActionResult> ConfirmEmail(int userId, string token)
