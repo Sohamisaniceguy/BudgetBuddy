@@ -9,12 +9,12 @@
 <div class="row">
     <div class="col-md-6">
         <div class="widget p-5" style="background-color:#e9ecef">
-            <form asp-action="CreateCategory">
+            <form asp-action="CreateCategory" method="post">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <input type="hidden" name="CategoryId" value="@Model.CategoryId" />
                 <div class="mb-3">
-                    <label for="Title" class="form-label">Title</label>
-                    <input type="text" id="Title" name="Title" class="form-control" value="@Model.Title" />
+                    <label asp-for="Title" class="form-label">Title</label>
+                    <input asp-for="Title" type="text" id="Title" name="Title" class="form-control" value="@Model.Title" />
                     <span asp-validation-for="Title" class="text-danger"></span>
                 </div>
                 <div class="mb-3">

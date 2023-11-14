@@ -16,7 +16,7 @@
 @if (TempData["AttemptsLeft"] != null)
 {
     <div class="alert alert-warning">
-        Invalid login attempt. You have @TempData["AttemptsLeft"] more attempt(s) before your account is locked.
+        Invalid login attempt.<br>Your UserID or Password is invalid.<br>You have @TempData["AttemptsLeft"] more attempt(s) before your account is locked.
     </div>
 }
 

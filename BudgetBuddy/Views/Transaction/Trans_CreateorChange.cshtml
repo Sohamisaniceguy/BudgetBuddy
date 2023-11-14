@@ -94,28 +94,7 @@
 
 
 
-<!-- Display the UserId -->
-<div class="mb-3">
-    <label class="form-label">User ID:</label>
-    <p>@UserUtility.GetUserId(HttpContextAccessor.HttpContext.Session)</p>
-    <p>Transaction ID: @Model.TransactionId</p>
-    <p>BudgetId: @ViewBag.BudgetId</p>
-    <p>Date: @Model.Date.ToString("yyyy-MM-dd")</p>
-    <p>Selected Category: @Model.CategoryId</p>
-    <p>Amount: @Model.Amount</p>
-    <p>Description: @Model.Description</p>
-</div>
 
-
-@if (ViewBag.Categories != null)
-{
-    <ul>
-        @foreach (var category in ViewBag.Categories)
-        {
-            <li>@category.CategoryId</li> <!-- Adjust "NameOfYourProperty" to the actual property name you wish to display from the category object -->
-        }
-    </ul>
-}
 
 
 

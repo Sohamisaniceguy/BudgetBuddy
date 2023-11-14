@@ -91,6 +91,7 @@ namespace BudgetBuddy.Controllers
 
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult CreateBudget(Budget budget)
         {
             if (ModelState.IsValid)
@@ -113,12 +114,14 @@ namespace BudgetBuddy.Controllers
                     else
                     {
                         _logger.LogError("User object not found in DB for CreateBudget.");
+                        TempData["ErrorMessage"] = "User object not found in the database.";
                         return RedirectToAction("Error");
                     }
                 }
                 else
                 {
                     _logger.LogError("UserId not found in session for CreateBudget.");
+                    TempData["ErrorMessage"] = "User ID not found in session.";
                     return RedirectToAction("Error");
                 }
             }
@@ -137,6 +140,12 @@ namespace BudgetBuddy.Controllers
             // END DEBUG
 
             _logger.LogWarning("Model state is invalid for CreateBudget.");
+
+            // Store model state errors in TempData
+            TempData["ModelStateErrors"] = ModelState.Values
+                .SelectMany(v => v.Errors.Select(e => e.ErrorMessage))
+                .ToList();
+
             return View("Bud_CreateorChange", budget);
         }
 
@@ -163,6 +172,7 @@ namespace BudgetBuddy.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult CreateBudget_Ent(Budget budget)
         {
             if (ModelState.IsValid)
@@ -185,18 +195,24 @@ namespace BudgetBuddy.Controllers
                     else
                     {
                         _logger.LogError("User object not found in DB for CreateBudget_Ent.");
+                        TempData["ErrorMessage"] = "User object not found in the database.";
                         return RedirectToAction("Error");
                     }
                 }
                 else
                 {
                     _logger.LogError("UserId not found in session for CreateBudget_Ent.");
+                    TempData["ErrorMessage"] = "User ID not found in session.";
                     return RedirectToAction("Error");
                 }
             }
 
             // If model state is invalid or any other error occurs, return the creation view with the budget data
             _logger.LogWarning("Model state is invalid or error occurred in CreateBudget_Ent.");
+            // Store model state errors in TempData
+            TempData["ModelStateErrors"] = ModelState.Values
+                .SelectMany(v => v.Errors.Select(e => e.ErrorMessage))
+                .ToList();
             return View("Bud_CreateorChange", budget);
         }
 
@@ -216,6 +232,7 @@ namespace BudgetBuddy.Controllers
         {
             if (ModelState.IsValid)
             {
+                _logger.LogInformation("Processing user addition with provided model.");
                 var existingUser = _dbContext.User.FirstOrDefault(u => u.Email == model.Email && u.First_Name == model.FirstName && u.Last_Name == model.LastName);
 
                 if (existingUser != null)
@@ -230,26 +247,31 @@ namespace BudgetBuddy.Controllers
                         {
                             budget.Users.Add(existingUser);
                             _dbContext.SaveChanges();
+                            _logger.LogInformation($"User {existingUser.Email} added to budget {budget.BudgetId} successfully.");
                             TempData["SuccessMessage"] = "User added to the budget successfully!";
                             return RedirectToAction("Index", "Transaction");
                         }
                         else
                         {
+                            _logger.LogWarning($"Budget with ID {sessionBudgetId.Value} not found.");
                             TempData["ErrorMessage"] = "Budget not found!";
                         }
                     }
                     else
                     {
+                        _logger.LogWarning("Attempt to add a user without a selected budget.");
                         TempData["ErrorMessage"] = "No budget selected!";
                     }
                 }
                 else
                 {
+                    _logger.LogWarning($"User not found with email {model.Email}.");
                     TempData["ErrorMessage"] = "User not found!";
                 }
             }
             else
             {
+                _logger.LogWarning("Attempt to add a user with invalid form data.");
                 TempData["ErrorMessage"] = "Form data is not valid!";
             }
 
@@ -264,7 +286,7 @@ namespace BudgetBuddy.Controllers
             // New action to handle redirect to Transactions_Index --> Budget to Transaction(Detail button)
             public IActionResult RedirectToTransactions(int budgetId)
         {
-            // You may perform any necessary processing before redirecting
+            
             return RedirectToAction("Index", "Transaction", new { budgetId });
         }
 

@@ -1,0 +1,36 @@
+﻿@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+
+@{
+    var userId = HttpContextAccessor.HttpContext.Session.GetInt32("UserID");
+}
+
+@if (userId != null)
+{
+    <!-- Display when user is logged in -->
+    <li class="navbar-nav ml-auto">
+        <a class="nav-link text-dark" asp-controller="Account" asp-action="WelcomeUser">Home</a>
+        <a class="nav-link text-dark" asp-controller="Category" asp-action="Index">Category</a>
+    </li>
+
+    <!-- Logout Form -->
+    <form asp-controller="Account" asp-action="Logout" method="post" class="inline">
+        <button type="submit" class="nav-link btn btn-link text-dark" style="background:none; border:none; padding:0; margin:0;">
+            Logout 
+        </button>
+    </form>
+    
+}
+else
+{
+    <!-- Display when user is not logged in -->
+    <ul class="navbar-nav justify-content: flex-end ml-auto">
+    <li class="navbar-nav ml-auto float: right">
+            <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Login">Login</a>
+        </li>
+    <li class="navbar-nav ml-auto float: right">
+            <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Register">Register</a>
+        </li>
+    </ul>
+
+}

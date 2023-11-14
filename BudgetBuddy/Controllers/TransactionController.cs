@@ -257,13 +257,16 @@ namespace Expense_Tracker.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
+            _logger.LogInformation($"Attempting to delete transaction with ID: {id}"); // Log initiation of deletion
             var transaction = await _context.Transactions.FindAsync(id);
             if (transaction == null)
             {
+                _logger.LogWarning($"Transaction with ID: {id} not found. Deletion could not be performed.");
                 return NotFound();
             }
             _context.Transactions.Remove(transaction);
             await _context.SaveChangesAsync();
+            _logger.LogInformation($"Transaction with ID: {id} deleted successfully.");
 
             return RedirectToAction(nameof(Index));
         }

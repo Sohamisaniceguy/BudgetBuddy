@@ -87,10 +87,30 @@
             </tr>
 
             <!-- Delete Modal -->
-            <div class="modal fade" id="deleteModal-@transaction.TransactionId" tabindex="-1" role="dialog"
-                 aria-labelledby="deleteModalLabel-@transaction.TransactionId" aria-hidden="true">
-                <!-- modal content omitted for brevity -->
+            <div class="modal fade" id="deleteModal-@transaction.TransactionId" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel-@transaction.TransactionId" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="deleteModalLabel-@transaction.TransactionId">Confirm Delete</h5>
+                            <button type="button" class="close" onclick="closeModal(@transaction.TransactionId)" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            Are you sure to delete this record?
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" onclick="closeModal(@transaction.TransactionId)">Cancel</button>
+                            <form action="/Category/Delete/@transaction.TransactionId" method="post">
+                                @Html.AntiForgeryToken()
+                                <button type="submit" class="btn btn-danger">Delete</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
             </div>
+
+            
         }
     </tbody>
 </table>
@@ -99,45 +119,15 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script>
         $(document).ready(function () {
-            // Handler for sorting
-            $('.sort').click(function (e) {
-                e.preventDefault();
-                var sortBy = $(this).data('sort-by');
-                sortTable(sortBy);
+            // Handler for the delete button click
+            $('.delete-transaction').click(function () {
+                var transactionId = $(this).data('transaction-id');
+                $('#deleteModal-' + transactionId).modal('show');
             });
-
-            function sortTable(sortBy) {
-                var table, rows, switching, i, x, y, shouldSwitch;
-                table = document.getElementById("transactionTable");
-                switching = true;
-
-                while (switching) {
-                    switching = false;
-                    rows = table.rows;
-
-                    for (i = 1; i < (rows.length - 1); i++) {
-                        shouldSwitch = false;
-                        x = rows[i].getElementsByTagName("td")[sortBy];
-                        y = rows[i + 1].getElementsByTagName("td")[sortBy];
-
-                        if (sortBy === 2) { // Amount column (index 2)
-                            x = parseFloat(x.innerText.replace("$", "").replace(",", ""));
-                            y = parseFloat(y.innerText.replace("$", "").replace(",", ""));
-                        }
-
-                        if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
-                            shouldSwitch = true;
-                            break;
-                        }
-                    }
-
-                    if (shouldSwitch) {
-                        rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
-                        switching = true;
-                    }
-                }
-            }
         });
+
+        function closeModal(transactionId) {
+            $('#deleteModal-' + transactionId).modal('hide');
+        }
     </script>
 }
-<p>Budget ID: @ViewBag.BudgetId</p>

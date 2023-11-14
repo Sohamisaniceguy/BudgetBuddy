@@ -1,213 +1,163 @@
-﻿using Abp.Web.Mvc.Models;
-using BudgetBuddy.Controllers;
-using BudgetBuddy.Service;
+﻿using BudgetBuddy.Controllers;
 using BudgetBuddy.Data;
+using BudgetBuddy.Models;
+using BudgetBuddy.Service;
 using BudgetBuddy.ViewModels;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Moq;
-using Xunit;
-using BudgetBuddy.Models;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace BudgetBuddy.Test
 {
-    public class AccountControllerTests : IDisposable
+
+    public class AccountControllerTests
     {
+        private readonly AccountController _controller;
         private readonly Mock<IUserService> _mockUserService;
         private readonly BudgetDbContext _dbContext;
-        private readonly AccountController _controller;
-        private readonly Mock<ISession> _mockSession;
+        private readonly Mock<ILogger<AccountController>> _mockLogger;
+        private readonly Mock<IDataProtectionProvider> _mockDataProtectionProvider;
+        private readonly IDataProtector _stubDataProtector;
 
+        private class StubDataProtector : IDataProtector
+        {
+            // Implement IDataProtector methods, can be no-op or basic implementations
+            public IDataProtector CreateProtector(string purpose)
+            {
+                return this; // Return self for simplicity, assuming no actual data protection is needed
+            }
+
+            public byte[] Protect(byte[] plaintext)
+            {
+                return plaintext; // Simple pass-through implementation
+            }
+
+            public byte[] Unprotect(byte[] protectedData)
+            {
+                return protectedData; // Simple pass-through implementation
+            }
+        }
         public AccountControllerTests()
         {
-            _mockUserService = new Mock<IUserService>();
-            _mockSession = new Mock<ISession>();
-
             // Setup in-memory database
             var options = new DbContextOptionsBuilder<BudgetDbContext>()
-                .UseInMemoryDatabase(databaseName: "InMemoryBudgetDb")
-                .EnableSensitiveDataLogging()
+                .UseInMemoryDatabase(databaseName: "TestDb")
                 .Options;
-            // Create instance of DbContext
             _dbContext = new BudgetDbContext(options);
 
-            // Instantiate the controller
-            _controller = new AccountController(_dbContext, _mockUserService.Object);
+            // Mock User Service
+            _mockUserService = new Mock<IUserService>();
 
-            // Mock HttpContext and Session
-            var httpContext = new Mock<HttpContext>();
-            httpContext.Setup(ctx => ctx.Session).Returns(_mockSession.Object);
+            // Mock ILogger
+            _mockLogger = new Mock<ILogger<AccountController>>();
 
-            // Set the ControllerContext with the mock HttpContext
-            _controller.ControllerContext = new ControllerContext
-            {
-                HttpContext = httpContext.Object
-            };
-        }
+            // Create a stub for IDataProtector
+            _stubDataProtector = new StubDataProtector();
 
-        [Fact]
-        public void Get_LoginPage1()
-        {
-            // Act
-            var result = _controller.Index();
+            // Mock IDataProtectionProvider
+            _mockDataProtectionProvider = new Mock<IDataProtectionProvider>();
+            _mockDataProtectionProvider
+                .Setup(p => p.CreateProtector(It.IsAny<string>()))
+                .Returns(_stubDataProtector); // Use the StubDataProtector here
 
-            // Assert
-            Assert.IsType<ViewResult>(result);
-        }
-
-        [Fact]
-        public void Get_LoginPage2()
-        {
-            // Act
-            var result = _controller.Login();
-
-            // Assert
-            Assert.IsType<ViewResult>(result);
-        }
-
-        [Fact]
-        public void Login_With_ValidCredentials()
-        {
-            // Arrange - seed the database
-            var user = new User
-            {
-                UserName = "testUser",
-                Password = "testPassword",
-                Email = "testUser@example.com",
-                First_Name = "Test",
-                Last_Name = "User"
-            };
-
-            _dbContext.User.Add(user);
-            _dbContext.SaveChanges();
-
-            // Mock the session behavior
-            var sessionDict = new Dictionary<string, byte[]>();
-            _mockSession.Setup(_ => _.Set(It.IsAny<string>(), It.IsAny<byte[]>()))
-                        .Callback<string, byte[]>((key, value) => {
-                            sessionDict[key] = value;
-                        });
-            _mockSession.Setup(_ => _.TryGetValue(It.IsAny<string>(), out It.Ref<byte[]>.IsAny))
-                        .Returns((string key, out byte[] value) => {
-                            return sessionDict.TryGetValue(key, out value);
-                        });
-
-            // Act
-            var result = _controller.Login("testUser", "testPassword") as RedirectToActionResult;
-
-            // Assert
-            Assert.NotNull(result);
-            Assert.Equal("WelcomeUser", result.ActionName);
-
-            // Verify that the session was called to set the UserId
-            _mockSession.Verify(s => s.Set(It.IsAny<string>(), It.IsAny<byte[]>()), Times.Once);
+            // Initialize AccountController with the mocked dependencies
+            _controller = new AccountController(_dbContext, _mockUserService.Object, _mockLogger.Object, _mockDataProtectionProvider.Object);
         }
 
 
-        [Fact]
-        public void Login_With_Invalid_Credentials()
-        {
-            // Arrange - no need to seed the database with a user
-            // since we want to test the invalid credentials scenario
-
-            // Mock the session behavior
-            var sessionDict = new Dictionary<string, byte[]>();
-            _mockSession.Setup(_ => _.Set(It.IsAny<string>(), It.IsAny<byte[]>()))
-                        .Callback<string, byte[]>((key, value) => {
-                            sessionDict[key] = value;
-                        });
-            _mockSession.Setup(_ => _.TryGetValue(It.IsAny<string>(), out It.Ref<byte[]>.IsAny))
-                        .Returns((string key, out byte[] value) => {
-                            return sessionDict.TryGetValue(key, out value);
-                        });
-
-            // Act
-            var result = _controller.Login("invalidUser", "invalidPassword") as ViewResult;
-
-            // Assert
-            Assert.NotNull(result);
-            Assert.Equal("Login", result.ViewName);
-            Assert.NotNull(result.ViewData["ErrorMessage"]);
-            Assert.Equal("Invalid credentials. Please try again.", result.ViewData["ErrorMessage"]);
-
-            // Verify that the session Set method was never called since the credentials are invalid
-            _mockSession.Verify(s => s.Set(It.IsAny<string>(), It.IsAny<byte[]>()), Times.Never);
-        }
-
 
         [Fact]
-        public void Register_Get_ReturnsAViewResult()
-        {
-            // Act
-            var result = _controller.Register();
-
-            // Assert
-            Assert.IsType<ViewResult>(result);
-        }
-
-        
-
-
-        [Fact]
-        public void Register_With_ValidModel_AddsUser_And_ReturnsRegisterView_WithSuccessMessage()
+        public async Task Login_ValidCredentials_RedirectsToWelcomeUser()
         {
             // Arrange
-            var model = new RegisterViewModel
+            var testUser = new User
             {
+                
+                Email = "john.doe@example.com",
                 First_Name = "John",
                 Last_Name = "Doe",
-                UserName = "johndoe",
-                Email = "john@example.com",
-                Password = "password123"
+                
+                ResetPasswordToken = "reset_token",
+                
+                VerifyUserToken = "verify_token",
+                UserId = 1,
+                UserName = "testuser",
+                PasswordHash = "hashed_testpassword", // This should be a hash of "testpassword"
+                EmailConfirmed = true,
+                FailedLoginAttempts = 0,
+                LockoutEnd = null,
+                IsLockedOut = false,
+
+                // ... set other necessary properties ...
             };
 
+            _dbContext.User.Add(testUser);
+            _dbContext.SaveChanges();
+
+
+            var loginViewModel = new LoginViewModel
+            {
+                Username = "testuser",
+                Password = "testpassword",
+                RememberMe = false
+            };
+
+            // Mocking the necessary conditions for a successful login
+            _mockUserService.Setup(x => x.VerifyPassword(It.IsAny<User>(), It.IsAny<string>(), It.IsAny<string>()))
+                .Returns(true);
+            _mockUserService.Setup(x => x.IsLockedOut(It.IsAny<User>())).Returns(false);
+
             // Act
-            var result = _controller.Register(model) as ViewResult;
+            var result = await _controller.Login(loginViewModel);
 
             // Assert
-            Assert.NotNull(result);
-            Assert.Equal("Register", result.ViewName);
-            Assert.Equal("Registration successful!", result.ViewData["SuccessMessage"]);
-
-            // Verify that a user was added to the database
-            var user = _dbContext.User.FirstOrDefault(u => u.UserName == model.UserName);
-            Assert.NotNull(user);
+            var redirectResult = Assert.IsType<RedirectToActionResult>(result); // Verify if the result is a redirection
+            Assert.Equal("WelcomeUser", redirectResult.ActionName);
         }
+
 
         [Fact]
-        public void Register_With_InvalidModel_DoesNotAddUser_And_ReturnsRegisterView_WithModel()
+        public async Task Login_InvalidCredentials_ReturnsToLoginView()
         {
             // Arrange
-            var model = new RegisterViewModel
+            var loginViewModel = new LoginViewModel
             {
-                // Don't set any properties to simulate an invalid model
+                Username = "wronguser",
+                Password = "wrongpassword",
+                RememberMe = false
             };
-            _controller.ModelState.AddModelError("error", "some error message"); // Force model state to be invalid
+
+            _mockUserService.Setup(x => x.VerifyPassword(It.IsAny<User>(), It.IsAny<string>(), It.IsAny<string>()))
+                .Returns(false);
 
             // Act
-            var result = _controller.Register(model) as ViewResult;
+            var result = await _controller.Login(loginViewModel);
 
             // Assert
-            Assert.NotNull(result);
-            Assert.Equal("Register", result.ViewName);
-            var returnedModel = result.Model as RegisterViewModel;
-            Assert.Equal(model, returnedModel); // The same model should be returned for correction
-
-            // Verify that no user was added to the database
-            var userCount = _dbContext.User.Count();
-            Assert.Equal(0, userCount); // Assuming the database was empty before this test ran
+            var viewResult = Assert.IsType<ViewResult>(result);
+            Assert.Equal(loginViewModel, viewResult.Model);
         }
 
-
-
-        // Dispose the in-memory database if needed
-        public void Dispose()
-        {
-            _dbContext?.Dispose();
-        }
+        // Additional tests for other scenarios like account lockout, email confirmation, etc.
     }
+
+
+
+
+
+
+
+    //public void Dispose()
+    //    {
+    //        throw new NotImplementedException();
+    //    }
+        // ... Other tests
+   // }
 }

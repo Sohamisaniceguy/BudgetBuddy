@@ -20,37 +20,42 @@ public class Startup
         Configuration = configuration;
 
 
-        // Initialize Serilog configuration
-        Log.Logger = new LoggerConfiguration()
-            .ReadFrom.Configuration(Configuration) // This reads the Serilog settings from appsettings.json (if you have them)
-            .WriteTo.Console() // Optional: if you want to log to the console as well
-            .WriteTo.File("logs/log.txt", rollingInterval: RollingInterval.Day) // Logs will be stored in a "logs" folder with daily rolling
-            .CreateLogger();
+        
     }
 
     public IConfiguration Configuration { get; }
 
     public void ConfigureServices(IServiceCollection services)
     {
+        
 
         
+
+        services.AddMvc();
+
         // Add framework services
         services.AddControllersWithViews();
+
+        //services.AddSingleton<ITicketStore, InMemoryTicketStore>();
 
         // Configure cookie authentication
         services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options =>
                 {
+                    //options.SessionStore = new InMemoryTicketStore();
                     options.LoginPath = "/Account/Login";
-                    options.LogoutPath = "/Account/Logout";
+                    options.LogoutPath = "/Home/Index";
                     options.AccessDeniedPath = "/Account/AccessDenied";
                     options.Cookie.HttpOnly = true;
                     options.Cookie.SecurePolicy = Microsoft.AspNetCore.Http.CookieSecurePolicy.SameAsRequest;
                     options.ExpireTimeSpan = System.TimeSpan.FromMinutes(30);
                     options.SlidingExpiration = true;
+
+
+                    
                 });
 
-        services.AddLogging();
+        //services.AddLogging();
 
 
         // Configure DbContext
@@ -69,6 +74,7 @@ public class Startup
             options.IdleTimeout = System.TimeSpan.FromMinutes(30);
             options.Cookie.HttpOnly = true;
             options.Cookie.IsEssential = true;
+            options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
         });
 
 
@@ -77,9 +83,10 @@ public class Startup
 
 
         // Register application services.
-        services.AddScoped<IUserService, UserService>(); // Ensure this matches your actual implementation
+        services.AddScoped<IUserService, UserService>(); 
         services.AddHttpContextAccessor();
         services.AddScoped<IPasswordHasher<IdentityUser>, Argon2Hasher<IdentityUser>>();
+        
 
 
 
@@ -106,8 +113,9 @@ public class Startup
             app.UseHsts();
         }
 
-        app.UseSerilogRequestLogging(); // Log requests
-          
+        //app.UseSerilogRequestLogging(); // Log requests
+        app.UseStaticFiles();
+
         app.UseHttpsRedirection();
         app.UseStaticFiles();
 

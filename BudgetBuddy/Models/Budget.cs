@@ -1,4 +1,5 @@
-﻿using BudgetBuddy.ViewModels;
+﻿using BudgetBuddy.Utils;
+using BudgetBuddy.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -29,6 +30,8 @@ namespace BudgetBuddy.Models
 
         
         public decimal BudgetLimit { get; set; }
+
+        [DateRange(ErrorMessage = "Start date must be earlier than the end date.")]
         public DateTime StartDate { get; set; } = DateTime.Now;
         public DateTime EndDate { get; set; } = DateTime.Now;
 

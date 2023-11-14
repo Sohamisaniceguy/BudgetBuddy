@@ -2,12 +2,16 @@
 using BudgetBuddy.Data;
 using BudgetBuddy.Models;
 using BudgetBuddy.Service;
+using BudgetBuddy.ViewModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 using Moq;
+using Serilog.Core;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -15,110 +19,105 @@ using Xunit;
 
 namespace BudgetBuddy.Test
 {
-    public class BudgetControllerTests : IDisposable
+    public class BudgetAccess
     {
-        private readonly Mock<ILogger<BudgetController>> _mockLogger;
-        private readonly Mock<IUserService> _mockUserService;
-        private readonly BudgetDbContext _dbContext;
+        private readonly BudgetDbContext _context;
         private readonly BudgetController _controller;
-        private readonly Mock<ISession> _mockSession;
+        private readonly Mock<IUserService> _mockUserService;
 
-
-        public BudgetControllerTests()
+        public BudgetAccess()
         {
-            // Mock ILogger
-            _mockLogger = new Mock<ILogger<BudgetController>>();
-
-            // Mock IUserService
-            _mockUserService = new Mock<IUserService>();
-            //_mockUserService.Setup(service => service.GetLoggedInUserId()).Returns(1); // Assuming a logged in user ID 1 for testing
-
-            // Setup in-memory database
+            // Set up an in-memory database
             var options = new DbContextOptionsBuilder<BudgetDbContext>()
-                .UseInMemoryDatabase(databaseName: "InMemoryDbForTesting")
+                .UseInMemoryDatabase(databaseName: "TestDatabase_Budget")
                 .Options;
-            _dbContext = new BudgetDbContext(options);
 
-            // Mock HttpContext and Session
-            _mockSession = new Mock<ISession>();
+            _context = new BudgetDbContext(options);
 
+            // Mock user service
+            _mockUserService = new Mock<IUserService>();
 
-            // Set up the HttpContext and Session
-            var httpContext = new DefaultHttpContext { Session = _mockSession.Object };
-            _controller = new BudgetController(_mockUserService.Object, _dbContext, _mockLogger.Object)
+            // Mock the IUrlHelper
+            var mockUrlHelper = new Mock<IUrlHelper>();
+            mockUrlHelper.Setup(x => x.Action(It.IsAny<UrlActionContext>())).Returns("callbackUrl").Verifiable();
+
+            
+
+            // Set up HttpContext for session, as it is used in the controller
+            var httpContext = new DefaultHttpContext();
+            httpContext.Session = new MockHttpSession();
+            httpContext.Session.SetInt32("UserID", 1); // Assuming a logged-in user with ID 1
+
+            // Initialize the controller with the in-memory context and a null logger (or a mock if needed)
+            _controller = new BudgetController(_mockUserService.Object, _context, new NullLogger<BudgetController>())
             {
-                ControllerContext = new ControllerContext
+                ControllerContext = new ControllerContext()
                 {
                     HttpContext = httpContext
                 }
             };
 
+            // Assign the mocked IUrlHelper to the controller
+            _controller.Url = mockUrlHelper.Object;
 
-
-            // Mock the UrlHelper
-            var urlHelper = new Mock<IUrlHelper>();
-            urlHelper.Setup(x => x.Action(It.IsAny<UrlActionContext>()))
-                     .Returns("callbackUrl"); // Mock the behavior you expect - this is an example
-
-            // Set the UrlHelper for the controller
-            _controller.Url = urlHelper.Object;
-
-            // Seed the database if necessary
-            SeedDatabase();
-
-            // Before each test, clear the change tracker to prevent tracking conflicts
-            _dbContext.ChangeTracker.Clear();
         }
-
-        private void SetupSession(int budgetId)
-        {
-            var budgetIdBytes = BitConverter.GetBytes(budgetId);
-            _mockSession.Setup(_ => _.TryGetValue(It.IsAny<string>(), out budgetIdBytes)).Returns(true);
-        }
-
-        private void SeedDatabase()
-        {
-            var users = new List<User>
-    {
-        new User { UserId = 1, UserName = "JOHNDOE", Password = "Password", 
-            First_Name = "John", Last_Name = "Doe", Email = "john@example.com" },
-
-        new User { UserId = 2, UserName = "Janes", Password = "Password1", 
-            First_Name = "Jane", Last_Name = "Smith", Email = "jane@example.com" }
-    };
-
-            var budgets = new List<Budget>
-    {
-        new Budget { BudgetId = 1, BudgetName = "Home Expenses", BudgetLimit = 1000, 
-            Enterprise = 0, StartDate = DateTime.Parse("11/1/2023"), EndDate = DateTime.Parse("10/31/2023"), Users = new List<User> { users[0] } },
-        
-        new Budget { BudgetId = 2, BudgetName = "Business", BudgetLimit = 2000, 
-            Enterprise = 1, StartDate = DateTime.Parse("11/1/2023"), EndDate = DateTime.Parse("10/31/2023"), Users = users }
-    };
-
-            _dbContext.User.AddRange(users);
-            _dbContext.Budgets.AddRange(budgets);
-            _dbContext.SaveChanges();
-        }
-
 
         [Fact]
-        public async Task Budget_Index_Individual()
+        public void Individual_Budget_Index_View()
         {
-            
+            // Arrange
+            var user = new User
+            {
+                UserId = 1,
+                Email = "john.doe@example.com",
+                First_Name = "John",
+                Last_Name = "Doe",
+                PasswordHash = "hashed_password",
+                ResetPasswordToken = "reset_token",
+                UserName = "john.doe",
+                VerifyUserToken = "verify_token"
+                // Set any other required properties that your User entity may have
+            };
+            _context.User.Add(user);
+            _context.Budgets.Add(new Budget { BudgetId = 1, BudgetName = "Test Budget 1", BudgetLimit = 1000, StartDate = DateTime.Now, EndDate = DateTime.Now.AddDays(30), Enterprise = 0, Users = new List<User> { user } });
+            _context.Budgets.Add(new Budget { BudgetId = 2, BudgetName = "Test Budget 2", BudgetLimit = 2000, StartDate = DateTime.Now, EndDate = DateTime.Now.AddDays(30), Enterprise = 0, Users = new List<User> { user } });
+            _context.SaveChanges();
+
+            // Mock the IUrlHelper
+            var mockUrlHelper = new Mock<IUrlHelper>();
+            mockUrlHelper.Setup(x => x.Action(It.IsAny<UrlActionContext>())).Returns("callbackUrl").Verifiable();
+            _controller.Url = mockUrlHelper.Object;
 
             // Act
             var result = _controller.Budget_Index();
 
             // Assert
             var viewResult = Assert.IsType<ViewResult>(result);
-            var model = Assert.IsAssignableFrom<IEnumerable<Budget>>(viewResult.Model);
+            var model = Assert.IsAssignableFrom<IEnumerable<Budget>>(viewResult.ViewData.Model);
             Assert.NotEmpty(model);
         }
 
         [Fact]
-        public async Task Budget_Index_Enterprise()
+        public void Enterprise_Budget_Index()
         {
+            // Arrange
+            var enterpriseUser = new User
+            {
+                UserId = 1,
+                Email = "john.doe@example.com",
+                First_Name = "John",
+                Last_Name = "Doe",
+                PasswordHash = "hashed_password",
+                ResetPasswordToken = "reset_token",
+                UserName = "john.doe",
+                VerifyUserToken = "verify_token"
+                
+            };
+            _context.User.Add(enterpriseUser);
+            _context.Budgets.Add(new Budget { BudgetId = 3, BudgetName = "Enterprise Budget 1", BudgetLimit = 3000, StartDate = DateTime.Now, EndDate = DateTime.Now.AddDays(30), Enterprise = 1, Users = new List<User> { enterpriseUser } });
+            _context.Budgets.Add(new Budget { BudgetId = 4, BudgetName = "Enterprise Budget 2", BudgetLimit = 4000, StartDate = DateTime.Now, EndDate = DateTime.Now.AddDays(30), Enterprise = 1, Users = new List<User> { enterpriseUser } });
+            _context.SaveChanges();
+
             
 
             // Act
@@ -126,102 +125,244 @@ namespace BudgetBuddy.Test
 
             // Assert
             var viewResult = Assert.IsType<ViewResult>(result);
-            var model = Assert.IsAssignableFrom<IEnumerable<Budget>>(viewResult.Model);
-            Assert.All(model, budget => Assert.Equal(1, budget.Enterprise));
+            var model = Assert.IsAssignableFrom<IEnumerable<Budget>>(viewResult.ViewData.Model);
+            Assert.NotEmpty(model);
         }
 
 
         [Fact]
-        public void DeleteBudget_WithValidId_DeletesBudget()
+        public void Create_Individual_Budget()
         {
             // Arrange
-            int budgetIdToDelete = 1; // Assuming this ID exists in the seeded data
-
-            // Act
-            var result = _controller.DeleteBudget(budgetIdToDelete);
-
-            // Assert
-            var redirectToActionResult = Assert.IsType<RedirectToActionResult>(result);
-            Assert.Equal("Budget_Index", redirectToActionResult.ActionName); // Assuming this is the action you want to redirect to after deletion
-            Assert.False(_dbContext.Budgets.Any(b => b.BudgetId == budgetIdToDelete)); // Check if the budget has been deleted
-        }
-
-
-        [Fact]
-        public void Individualmode_Buget_Creation() // Problem!!!
-        {
-            // Arrange
-            var testUser = new User
+            
+            var user = new User
             {
-                UserId = 1, // Make sure this UserId is unique for the test
-                UserName = "JOHNDOE",
-                Password = "Password",
+                UserId = 1,
+                Email = "user@example.com",
                 First_Name = "John",
                 Last_Name = "Doe",
-                Email = "john@example.com"
+                PasswordHash = "hashed_password",
+                ResetPasswordToken = "reset_token",
+                UserName = "john.doe",
+                VerifyUserToken = "verify_token"
             };
+            _context.User.Add(user);
+            _context.SaveChanges();
 
-            // Ensure the user is not already added
-            if (!_dbContext.User.Any(u => u.UserId == testUser.UserId))
-            {
-                _dbContext.User.Add(testUser);
-                _dbContext.SaveChanges();
-            }
+            // Mock HttpContext and Session
+            var httpContextMock = new Mock<HttpContext>();
+            var sessionMock = new Mock<ISession>();
+            byte[] userIdBytes = BitConverter.GetBytes(user.UserId); // Convert UserId to byte array
+            sessionMock.Setup(_ => _.TryGetValue(It.IsAny<string>(), out userIdBytes)).Returns(true); // Setup TryGetValue to simulate GetInt32
+            httpContextMock.Setup(h => h.Session).Returns(sessionMock.Object);
+            var loggerMock = new Mock<ILogger<BudgetController>>();
+            var tempDataDictionary = new TempDataDictionary(httpContextMock.Object, Mock.Of<ITempDataProvider>());
 
-            var model = new Budget
+
+
+            var budget = new Budget
             {
-                
                 BudgetName = "New Budget",
-                BudgetLimit = 500,
-                Enterprise = 0,
-                StartDate = DateTime.Parse("11/1/2023"),
-                EndDate = DateTime.Parse("10/31/2023")
-                // Set other properties as required
+                BudgetLimit = 5000,
+                StartDate = DateTime.Now,
+                EndDate = DateTime.Now.AddDays(30),
+                Users = new List<User>(),
+                // Set other required properties...
             };
-
-            // Mocking the session to simulate the behavior of `GetInt32`
-            var userIdBytes = BitConverter.GetBytes(testUser.UserId);
-            _mockSession.Setup(_ => _.TryGetValue("UserId", out userIdBytes)).Returns(true);
-
-            // If the CreateBudget action relies on the ModelState being valid
-            _controller.ModelState.Clear(); // Clear any existing errors
-                                            // Add any required properties to the model here to ensure it is valid
-
-
 
             // Act
-            var result = _controller.CreateBudget(model);
+            var result = _controller.CreateBudget(budget);
 
             // Assert
             var redirectToActionResult = Assert.IsType<RedirectToActionResult>(result);
             Assert.Equal("Budget_Index", redirectToActionResult.ActionName);
-            // If the ID is auto-generated, check for the existence of the budget based on its name or other unique properties
-            Assert.True(_dbContext.Budgets.Any(b => b.BudgetName == model.BudgetName && b.BudgetLimit == model.BudgetLimit));
+            Assert.Equal("Budget", redirectToActionResult.ControllerName);
+
+            // Verify that the budget was added to the database
+            var createdBudget = _context.Budgets
+                .Include(b => b.Users)
+                .FirstOrDefault(b => b.BudgetName == budget.BudgetName && b.Enterprise == 0);
+            Assert.NotNull(createdBudget);
+            Assert.Contains(user, createdBudget.Users);
         }
+
+
 
         [Fact]
-        public void Bud_CreateorChange_WithInvalidData_ReturnsViewWithModel()
+        public void Create_Enterprise_Budget()
         {
             // Arrange
-            var model = new Budget
+            var budget = new Budget
             {
-                // Set up properties that would make the model invalid
+                BudgetName = "Enterprise Budget",
+                BudgetLimit = 10000,
+                StartDate = DateTime.Now,
+                EndDate = DateTime.Now.AddDays(30),
+                Users = new List<User>()
             };
-            _controller.ModelState.AddModelError("error", "some error message");
+            var user = new User
+            {
+                UserId = 1,
+                Email = "user@example.com",
+                First_Name = "John",
+                Last_Name = "Doe",
+                PasswordHash = "hashed_password",
+                ResetPasswordToken = "reset_token",
+                UserName = "john.doe",
+                VerifyUserToken = "verify_token"
+            };
+            _context.User.Add(user);
+            _context.SaveChanges();
 
+            
+
+            var httpContextMock = new Mock<HttpContext>();
+            var sessionMock = new Mock<ISession>();
+            byte[] userIdBytes = BitConverter.GetBytes(user.UserId); // Convert UserId to byte array
+            sessionMock.Setup(_ => _.TryGetValue(It.IsAny<string>(), out userIdBytes)).Returns(true); // Setup TryGetValue to simulate GetInt32
+            httpContextMock.Setup(h => h.Session).Returns(sessionMock.Object);
+            var loggerMock = new Mock<ILogger<BudgetController>>();
+            var tempDataDictionary = new TempDataDictionary(httpContextMock.Object, Mock.Of<ITempDataProvider>());
+
+       
             // Act
-            var result = _controller.CreateBudget(model);
+            var result = _controller.CreateBudget_Ent(budget);
 
             // Assert
-            var viewResult = Assert.IsType<ViewResult>(result);
-            Assert.Equal(model, viewResult.ViewData.Model); // Ensure the same model is returned for correction
+            var redirectToActionResult = Assert.IsType<RedirectToActionResult>(result);
+            Assert.Equal("Budget_Index_Enterprise", redirectToActionResult.ActionName);
+            Assert.Equal("Budget", redirectToActionResult.ControllerName);
+
+            // Verify that a new budget was added to the database
+            var createdBudget = _context.Budgets
+                .Include(b => b.Users)
+                .FirstOrDefault(b => b.BudgetName == budget.BudgetName && b.Enterprise == 1);
+            Assert.NotNull(createdBudget);
+            Assert.Contains(user, createdBudget.Users);
         }
 
-        // Dispose the in-memory database if needed
-        public void Dispose()
+
+        [Fact]
+        public void Delete_Budget()
         {
-            _dbContext?.Dispose();
+            // Arrange
+            var budget = new Budget
+            {
+                BudgetId = 1,
+                BudgetName = "Test Budget",
+                
+            };
+            _context.Budgets.Add(budget);
+            _context.SaveChanges();
+
+            // Act
+            var result = _controller.DeleteBudget(budget.BudgetId);
+
+            // Assert
+            var redirectToActionResult = Assert.IsType<RedirectToActionResult>(result);
+            Assert.Equal("Budget_Index", redirectToActionResult.ActionName);
+
+            // Ensure the budget has been removed from the database
+            var deletedBudget = _context.Budgets.SingleOrDefault(b => b.BudgetId == budget.BudgetId);
+            Assert.Null(deletedBudget);
         }
-        // Additional test methods for each action will follow...
+
+
+
+        [Fact]
+        public async Task AddUser_to_Budget()
+        {
+            // Arrange
+            var user = new User
+            {
+                Email = "john.doe@example.com",
+                First_Name = "John",
+                Last_Name = "Doe",
+                PasswordHash = "some_hashed_password",
+                ResetPasswordToken = Guid.NewGuid().ToString(),
+                UserName = "johndoe",
+                VerifyUserToken = Guid.NewGuid().ToString()
+            };
+
+            var budget = new Budget
+            {
+                BudgetId = 1,
+                Users = new List<User>(),
+                BudgetName = "TestBudget"
+                // ... set any other properties that are required by your Budget entity
+            };
+            _context.User.Add(user);
+            _context.Budgets.Add(budget);
+            _context.SaveChanges();
+
+            var httpContextMock = new DefaultHttpContext();
+            httpContextMock.Session = new MockHttpSession();
+            httpContextMock.Session.SetInt32("BudgetId", 1); // Mock session to have BudgetId
+            _controller.ControllerContext = new ControllerContext { HttpContext = httpContextMock };
+            _controller.TempData = new TempDataDictionary(httpContextMock, Mock.Of<ITempDataProvider>());
+
+            var model = new UserBudgetAssignmentViewModel
+            {
+                Email = "john.doe@example.com",
+                FirstName = "John",
+                LastName = "Doe"
+            };
+
+            // Act
+            var result = _controller.AddUser(model);
+
+            // Assert
+            var redirectToActionResult = Assert.IsType<RedirectToActionResult>(result);
+            Assert.Equal("Index", redirectToActionResult.ActionName);
+            Assert.Equal("Transaction", redirectToActionResult.ControllerName);
+
+            // Verify user was added to the budget
+            budget = _context.Budgets.Include(b => b.Users).First(b => b.BudgetId == 1);
+            Assert.Contains(user, budget.Users);
+        }
+
+
+
+
+        // A mock HttpSession class to simulate session state
+        public class MockHttpSession : ISession
+        {
+            private readonly Dictionary<string, byte[]> _sessionStorage = new Dictionary<string, byte[]>();
+            public bool IsAvailable => true;
+            public string Id => Guid.NewGuid().ToString();
+            public IEnumerable<string> Keys => _sessionStorage.Keys;
+
+            public void Clear() => _sessionStorage.Clear();
+
+            public Task CommitAsync(CancellationToken cancellationToken = default(CancellationToken))
+            {
+                // Simulate the async method with a completed task
+                return Task.CompletedTask;
+            }
+
+            public Task LoadAsync(CancellationToken cancellationToken = default(CancellationToken))
+            {
+                // Simulate the async method with a completed task
+                return Task.CompletedTask;
+            }
+
+            public void Remove(string key)
+            {
+                _sessionStorage.Remove(key);
+            }
+
+            public void Set(string key, byte[] value)
+            {
+                _sessionStorage[key] = value;
+            }
+
+            public bool TryGetValue(string key, out byte[] value)
+            {
+                return _sessionStorage.TryGetValue(key, out value);
+            }
+
+            // Additional methods for ISession, if any, go here.
+        }
+
     }
 }

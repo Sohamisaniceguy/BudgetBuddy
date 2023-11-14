@@ -19,6 +19,7 @@ namespace BudgetBuddy.Models
         public string Title {  get; set; }
 
         [Column(TypeName = "nvarchar(10)")]
+        [Required(ErrorMessage = "Type of Category is required")]
         public string Type {  get; set; } // Expense or Income
 
 

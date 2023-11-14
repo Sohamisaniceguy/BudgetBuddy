@@ -10,6 +10,25 @@
 <div class="row">
     <div class="col-md-6">
         <div class="widget p-5" style="background-color:#e9ecef">
+
+            @if (TempData.ContainsKey("ErrorMessage"))
+            {
+                <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+            }
+
+            @if (TempData.ContainsKey("ModelStateErrors"))
+            {
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach (var error in TempData["ModelStateErrors"] as List<string>)
+                        {
+                            <li>@error</li>
+                        }
+                    </ul>
+                </div>
+            }
+
+
             <form asp-action="CreateBudget">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <input asp-for="BudgetId" type="hidden" />

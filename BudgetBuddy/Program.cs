@@ -4,8 +4,20 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Hosting;
 using BudgetBuddy.Service;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Configure Serilog
+Log.Logger = new LoggerConfiguration()
+    .MinimumLevel.Information()
+    .WriteTo.Console() // Logs to the console
+    .WriteTo.File("logs/log.txt", rollingInterval: RollingInterval.Day) // Logs to a file with daily rolling
+    .CreateLogger();
+
+builder.Host.UseSerilog(); // Tell the host to use Serilog for logging
+
+
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();

@@ -27,7 +27,8 @@ namespace BudgetBuddy.Controllers
         private readonly ILogger<AccountController> _logger;
         private readonly IDataProtectionProvider _dataProtectionProvider;
         private readonly IDataProtector _protector;
-        
+        //private readonly ITicketStore _ticketStore;
+
 
         public AccountController(BudgetDbContext dbcontext, IUserService userService, ILogger<AccountController> logger, IDataProtectionProvider dataProtectionProvider)      //Constructor 
         {
@@ -36,7 +37,8 @@ namespace BudgetBuddy.Controllers
             _logger = logger;
             _dataProtectionProvider = dataProtectionProvider;
             _protector = _dataProtectionProvider.CreateProtector("Microsoft.AspNetCore.Authentication.Cookies.CookieAuthenticationMiddleware", CookieAuthenticationDefaults.AuthenticationScheme, "v2");
-            
+            //_ticketStore = ticketStore;
+
         }
 
 
@@ -57,6 +59,7 @@ namespace BudgetBuddy.Controllers
         [ValidateAntiForgeryToken] // Protect against CSRF
         public async Task<IActionResult> Login(LoginViewModel model)
         {
+            _logger.LogInformation("Attempting to log in user: {Username}", model.Username.Trim().ToLower());
             // Check if the form data is valid
             if (!ModelState.IsValid)
             {
@@ -64,13 +67,14 @@ namespace BudgetBuddy.Controllers
             }
 
             // Attempt to find the user by the username provided in the model
-            var user = _dbcontext.User.SingleOrDefault(u => u.UserName == model.Username);
+            var user = _dbcontext.User.SingleOrDefault(u => u.UserName == model.Username.Trim().ToLower());
 
             // Define the maximum number of attempts allowed
             int maxLoginAttempts = 5;
 
             if (user != null && user.EmailConfirmed != true)
             {
+                _logger.LogWarning("Email not confirmed for user: {Username}", model.Username);
                 ViewBag.EmailConfirmationError = "Verify your email first.";
                 return View(model);
             }
@@ -85,12 +89,14 @@ namespace BudgetBuddy.Controllers
                     int attemptsLeft = _userService.IncrementFailedLoginAttempt(user);
                     if (_userService.IsLockedOut(user))
                     {
+                        _logger.LogWarning("Account locked out for user: {Username}", model.Username);
                         ModelState.AddModelError("", "Account locked. Please try again later.");
                         // Pass the lockout status to the view
                         TempData["Lockout"] = true;
                     }
                     else
                     {
+                        _logger.LogWarning("Invalid login attempt for user: {Username}. Attempts left: {AttemptsLeft}", model.Username, attemptsLeft);
                         // Pass the number of attempts left to the view
                         TempData["AttemptsLeft"] = attemptsLeft;
                         ModelState.AddModelError("", $"Invalid login attempt. You have {attemptsLeft} more attempt(s) before your account is locked.");
@@ -98,6 +104,7 @@ namespace BudgetBuddy.Controllers
                 }
                 else
                 {
+                    _logger.LogWarning("Login attempt with invalid username: {Username}", model.Username);
                     ModelState.AddModelError("", "Invalid login attempt.");
                 }
 
@@ -108,6 +115,7 @@ namespace BudgetBuddy.Controllers
             // If the user is locked out, handle the lockout
             if (_userService.IsLockedOut(user))
             {
+                _logger.LogWarning("Account locked out for user: {Username}", model.Username);
                 ModelState.AddModelError("", "Account locked. Please try again later.");
                 return View(model);
             }
@@ -148,25 +156,46 @@ namespace BudgetBuddy.Controllers
             // Also set the user's ID in the session for session management
             HttpContext.Session.SetInt32("UserID", user.UserId);
 
+            //Layout Use
+            int? userId = HttpContext.Session.GetInt32("UserID");
+            ViewBag.UserId = userId;
+            
+
+            _logger.LogInformation("User logged in successfully: {Username}", model.Username);
             return RedirectToAction("WelcomeUser", "Account");
         }
+        
+
+
 
         [HttpPost]
+        [ValidateAntiForgeryToken] // Protect against CSRF
         public async Task<IActionResult> Logout()
         {
-            // Sign out the current user
-            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            HttpContext.Session.Clear(); // Clear the session upon logout
-            return RedirectToAction("Login", "Account");
+
+            try
+            {
+                _logger.LogInformation("Logout initiated.");
+
+                // Manually remove the cookie
+                Response.Cookies.Delete(".AspNetCore.Cookies");
+                Response.Cookies.Delete("YourAppSessionCookie", new CookieOptions { Path = "/" });
+
+                HttpContext.Session.Clear(); // Clear the session upon logout
+                _logger.LogInformation("User logged out successfully.");
+
+                return RedirectToAction("Index", "Home");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error occurred during logout.");
+                throw;
+            }
         }
 
 
 
-
-
-
-
-
+        [HttpGet]
         public IActionResult WelcomeUser()
         {
             var userId = HttpContext.Session.GetInt32("UserID");
@@ -192,24 +221,20 @@ namespace BudgetBuddy.Controllers
 
 
 
-
-
-
-
-
-
-
-
         // GET: Register
+        [HttpGet]
         public IActionResult Register()
         {
+            _logger.LogInformation("User trying to Register on the register screen");
             return View();
         }
 
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
+            _logger.LogInformation("Starting user registration process.");
             if (ModelState.IsValid)
             {
 
@@ -221,23 +246,28 @@ namespace BudgetBuddy.Controllers
                 var normalizedEmail = model.Email.Trim().ToLower();
 
                 // Check for unique username and email
+                _logger.LogInformation("Validating user uniqueness.");
                 var uniquenessResult = await _userService.ValidateUserUniqueness(normalizedUsername, normalizedEmail);
                 if (!uniquenessResult.Item1)
                 {
                     errorMessages += uniquenessResult.Item2;
+                    _logger.LogWarning($"User uniqueness validation failed: {uniquenessResult.Item2}");
                 }
 
                 // Validate the password
+                _logger.LogInformation("Validating password.");
                 var validationResult = PasswordValidator.Validate(model.UserName, model.Password); // Assuming model.Email is the user identifier
                 if (!validationResult.Item1)
                 {
                     errorMessages += validationResult.Item2;
+                    _logger.LogWarning($"Password validation failed: {validationResult.Item2}");
                 }
 
                 // If there are any error messages, add them to TempData and return the view
                 if (!string.IsNullOrEmpty(errorMessages))
                 {
                     TempData["CustomError"] = errorMessages;
+                    _logger.LogWarning("Registration process encountered errors, returning to view with errors.");
                     return View(model);
                 }
 
@@ -257,10 +287,12 @@ namespace BudgetBuddy.Controllers
                 user.PasswordHash = _userService.HashPassword(user, model.Password);
 
                 // Add the user to the DbContext
+                _logger.LogInformation("Adding new user to the database.");
                 _dbcontext.User.Add(user);
                 await _dbcontext.SaveChangesAsync();
 
                 // Generate email confirmation token
+                _logger.LogInformation("Sending confirmation email.");
                 var emailConfirmationToken = await _userService.GenerateEmailConfirmationTokenAsync(user);
 
                 // Create a confirmation link
@@ -274,17 +306,20 @@ namespace BudgetBuddy.Controllers
 
                 if (emailSentSuccessfully)
                 {
+                    _logger.LogInformation("Registration successful, email sent.");
                     ViewBag.SuccessMessage = "Registration successful! Please check your email to confirm your account.";
                     return View("VerifyEmail"); // Or redirect to a confirmation page
                 }
                 else
                 {
                     // Handle the case when the email couldn't be sent
+                    _logger.LogError("Failed to send confirmation email.");
                     ModelState.AddModelError(string.Empty, "An error occurred while sending confirmation email.");
                 }
             }
 
             // If the model is not valid, return to the create view with validation errors
+            _logger.LogWarning("Registration process terminated due to invalid model state.");
             return View("Register", model);
         }
 
@@ -293,8 +328,11 @@ namespace BudgetBuddy.Controllers
         [HttpGet]
         public async Task<IActionResult> ConfirmEmail(int userId, string token)
         {
+            _logger.LogInformation("ConfirmEmail started for user ID {UserId}", userId);
+
             if (userId == 0 || string.IsNullOrEmpty(token))
             {
+                _logger.LogWarning("Invalid email confirmation token for user ID {UserId}", userId);
                 ViewBag.ErrorMessage = "Invalid email confirmation token.";
                 return View("Error"); // Make sure to create an Error view to handle this.
             }
@@ -302,15 +340,18 @@ namespace BudgetBuddy.Controllers
             var user = await _dbcontext.User.FindAsync(userId);
             if (user != null && await _userService.ConfirmEmailAsync(user, token))
             {
+                _logger.LogInformation("Email confirmed for user ID {UserId}", userId);
                 ViewBag.SuccessMessage = "Your email has been confirmed. You can now login.";
 
                 var emailBody = $" Your email has been successfully verified. You can now log in to your Budget Buddy account using your new password.";
 
                 // Send the email using the EmailSender's static method
                 bool emailSentSuccessfully = EmailSender.Send(user.Email, "Email Confirmation", emailBody);
+                _logger.LogInformation("Email sent successfully: {EmailSentSuccessfully} for user ID {UserId}", emailSentSuccessfully, userId);
                 return View("VerifyEmailConfirmation"); // Or redirect to a confirmation success page.
             }
 
+            _logger.LogError("Error while confirming email for user ID {UserId}", userId);
             ViewBag.ErrorMessage = "Error while confirming your email.";
             return View("Error"); // Make sure to create an Error view to handle this.
         }
@@ -323,6 +364,7 @@ namespace BudgetBuddy.Controllers
 
 
         // GET: Account/ForgotPassword
+        [HttpGet]
         public IActionResult ForgotPassword()
         {
             return View();
@@ -386,6 +428,7 @@ namespace BudgetBuddy.Controllers
 
 
         // GET: Account/ResetPassword
+        [HttpGet]
         public IActionResult ResetPassword(string token, string email)
         {
             if (token == null || email == null)
