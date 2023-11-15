@@ -29,11 +29,10 @@ namespace BudgetBuddy.Controllers
             var userId = HttpContext.Session.GetInt32("UserID"); //Using User Service to retrive logged in user information.
 
 
-
             List<Budget> budgets = _dbContext.Budgets
                 .Where(b => b.Users.Any(u => u.UserId == userId) && b.Enterprise == 0)  //Only Displaying for Loggedin user and Enterprise mode off
                 .ToList();
-            // Add any logic needed for Budget_Index action
+
 
             // Set the ViewData for Individual mode button
             ViewData["PageActionUrl"] = Url.Action("YourActionForIndividual", "Budget");

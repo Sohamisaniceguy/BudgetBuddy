@@ -1,27 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using BudgetBuddy.Models;
 using BudgetBuddy.Data;
-using BudgetBuddy.Service;
-using BudgetBuddy.Controllers;
+
 
 namespace Expense_Tracker.Controllers
 {
     public class TransactionController : Controller
     {
         private readonly BudgetDbContext _context;
-        private readonly IUserService _userService;
         private readonly ILogger<TransactionController> _logger; // Injected loggerd
 
-        public TransactionController(IUserService userService,BudgetDbContext context, ILogger<TransactionController> logger)
+        public TransactionController(BudgetDbContext context, ILogger<TransactionController> logger)
         {
             _context = context;
-            _userService = userService;
             _logger = logger; // Initializing logger
         }
 
@@ -117,6 +109,7 @@ namespace Expense_Tracker.Controllers
 
 
         // GET: Transaction/Trans_CreateorChange
+        [HttpGet]
         public IActionResult Trans_CreateorChange()
         {
             int? budgetId = HttpContext.Session.GetInt32("BudgetId");

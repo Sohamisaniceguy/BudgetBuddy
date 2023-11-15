@@ -66,22 +66,23 @@ namespace BudgetBuddy.Test
         public void Individual_Budget_Index_View()
         {
             // Arrange
-            var user = new User
-            {
-                UserId = 1,
-                Email = "john.doe@example.com",
-                First_Name = "John",
-                Last_Name = "Doe",
-                PasswordHash = "hashed_password",
-                ResetPasswordToken = "reset_token",
-                UserName = "john.doe",
-                VerifyUserToken = "verify_token"
-                // Set any other required properties that your User entity may have
-            };
-            _context.User.Add(user);
-            _context.Budgets.Add(new Budget { BudgetId = 1, BudgetName = "Test Budget 1", BudgetLimit = 1000, StartDate = DateTime.Now, EndDate = DateTime.Now.AddDays(30), Enterprise = 0, Users = new List<User> { user } });
-            _context.Budgets.Add(new Budget { BudgetId = 2, BudgetName = "Test Budget 2", BudgetLimit = 2000, StartDate = DateTime.Now, EndDate = DateTime.Now.AddDays(30), Enterprise = 0, Users = new List<User> { user } });
-            _context.SaveChanges();
+                var user = new User
+                {
+                    UserId = 1,
+                    Email = "john.doe@example.com",
+                    First_Name = "John",
+                    Last_Name = "Doe",
+                    PasswordHash = "hashed_password",
+                    ResetPasswordToken = "reset_token",
+                    UserName = "john.doe",
+                    VerifyUserToken = "verify_token"
+                    // Set any other required properties that your User entity may have
+                };
+                _context.User.Add(user);
+                _context.Budgets.Add(new Budget { BudgetId = 1, BudgetName = "Test Budget 1", BudgetLimit = 1000, StartDate = DateTime.Now, EndDate = DateTime.Now.AddDays(30), Enterprise = 0, Users = new List<User> { user } });
+                _context.Budgets.Add(new Budget { BudgetId = 2, BudgetName = "Test Budget 2", BudgetLimit = 2000, StartDate = DateTime.Now, EndDate = DateTime.Now.AddDays(30), Enterprise = 0, Users = new List<User> { user } });
+                _context.SaveChanges();
+            
 
             // Mock the IUrlHelper
             var mockUrlHelper = new Mock<IUrlHelper>();
@@ -96,6 +97,7 @@ namespace BudgetBuddy.Test
             var model = Assert.IsAssignableFrom<IEnumerable<Budget>>(viewResult.ViewData.Model);
             Assert.NotEmpty(model);
         }
+
 
         [Fact]
         public void Enterprise_Budget_Index()

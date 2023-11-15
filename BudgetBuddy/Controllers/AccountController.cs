@@ -27,7 +27,7 @@ namespace BudgetBuddy.Controllers
         private readonly ILogger<AccountController> _logger;
         private readonly IDataProtectionProvider _dataProtectionProvider;
         private readonly IDataProtector _protector;
-        //private readonly ITicketStore _ticketStore;
+        
 
 
         public AccountController(BudgetDbContext dbcontext, IUserService userService, ILogger<AccountController> logger, IDataProtectionProvider dataProtectionProvider)      //Constructor 
@@ -37,8 +37,7 @@ namespace BudgetBuddy.Controllers
             _logger = logger;
             _dataProtectionProvider = dataProtectionProvider;
             _protector = _dataProtectionProvider.CreateProtector("Microsoft.AspNetCore.Authentication.Cookies.CookieAuthenticationMiddleware", CookieAuthenticationDefaults.AuthenticationScheme, "v2");
-            //_ticketStore = ticketStore;
-
+            
         }
 
 
@@ -358,17 +357,14 @@ namespace BudgetBuddy.Controllers
 
 
 
-
-
-
-
-
         // GET: Account/ForgotPassword
         [HttpGet]
         public IActionResult ForgotPassword()
         {
             return View();
         }
+
+
 
         // POST: Account/ForgotPassword
         [HttpPost]
@@ -494,9 +490,6 @@ namespace BudgetBuddy.Controllers
             _logger.LogWarning("Redisplaying ResetPassword form due to failure to reset password for email: {Email}", model.Email);
             return View(model);
         }
-
-
-
 
 
     }

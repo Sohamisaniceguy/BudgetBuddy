@@ -1,8 +1,10 @@
 ﻿using BudgetBuddy.Controllers;
 using BudgetBuddy.Data;
 using BudgetBuddy.Models;
+using Expense_Tracker.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Moq;
 using System;
 using System.Collections.Generic;
@@ -16,6 +18,7 @@ namespace BudgetBuddy.Test
     {
         private readonly BudgetDbContext _context;
         private readonly CategoryController _controller;
+        private readonly Mock<ILogger<CategoryController>> _mockLogger;
 
         public CategoryAccess()
         {
@@ -26,9 +29,11 @@ namespace BudgetBuddy.Test
 
             _context = new BudgetDbContext(options);
 
-            
+            _mockLogger = new Mock<ILogger<CategoryController>>();
+
+
             // Initialize the controller with the in-memory context
-            _controller = new CategoryController(_context);
+            _controller = new CategoryController(_context, _mockLogger.Object);
         }
 
         public void Dispose()
@@ -58,7 +63,7 @@ namespace BudgetBuddy.Test
             // Use a separate instance of the context to verify correct data was saved to the database
             using (var context = new BudgetDbContext(options))
             {
-                var controller = new CategoryController(context);
+                var controller = new CategoryController(context, _mockLogger.Object);
 
                 // Act
                 var result = await controller.Index();
@@ -84,7 +89,7 @@ namespace BudgetBuddy.Test
         {
             // Arrange
             using var context = new BudgetDbContext(new DbContextOptions<BudgetDbContext>());
-            var controller = new CategoryController(context);
+            var controller = new CategoryController(context, _mockLogger.Object);
 
             // Act
             var result = controller.Cat_CreateorChange();
@@ -104,7 +109,7 @@ namespace BudgetBuddy.Test
                 .Options;
 
             using var context = new BudgetDbContext(options);
-            var controller = new CategoryController(context);
+            var controller = new CategoryController(context, _mockLogger.Object);
             var newCategory = new Categories { Title = "Test", Icon = "Icon", Type = "Expense" };
 
             // Act
@@ -122,7 +127,7 @@ namespace BudgetBuddy.Test
         {
             // Arrange
             using var context = new BudgetDbContext(new DbContextOptions<BudgetDbContext>());
-            var controller = new CategoryController(context);
+            var controller = new CategoryController(context, _mockLogger.Object);
             controller.ModelState.AddModelError("Title", "Required");
             var newCategory = new Categories { Icon = "Icon", Type = "Expense" };
 
@@ -152,7 +157,7 @@ namespace BudgetBuddy.Test
 
             using (var context = new BudgetDbContext(options))
             {
-                var controller = new CategoryController(context);
+                var controller = new CategoryController(context, _mockLogger.Object);
 
                 // Act
                 var result = await controller.DeleteConfirmed(categoryId);

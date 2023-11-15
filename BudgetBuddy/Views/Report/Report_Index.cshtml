@@ -1,6 +1,5 @@
 ﻿@model IEnumerable<BudgetBuddy.ViewModels.ReportViewModel>
 
-
 @{
     ViewData["Title"] = "Reports";
 }
@@ -14,31 +13,40 @@
 }
 else
 {
-    <div>
-        <canvas id="myChart"></canvas>
+
+    <div class="chart-container">
+        <ul class="chart">
+            @foreach (var dataPoint in Model.Select((value, index) => new { Index = index + 1, Value = value.TotalAmount }))
+            {
+                var heightPercentage = (dataPoint.Value / Model.Max(m => Math.Abs(m.TotalAmount))) * 100;
+                <li>
+                    <div class="bar" style="height: @Math.Abs(heightPercentage)%;">
+                        <span>@dataPoint.Value</span>
+                    </div>
+                    <div class="label">@dataPoint.Index</div>
+                </li>
+            }
+        </ul>
+        <div class="zero-line"></div>
     </div>
 
-    <script src="@Url.Content("~/js/Chart.js")"></script>
+    <div>
+        <canvas id="myChart" width="400" height="300"></canvas>
+    </div>
 
+    <script src="~/js/Chart.min.js" asp-append-version="true"></script>
 
-    
-}
-
-@section Scripts {
-    <script src="~/js/Chart.min.js"></script>
     <script>
-        <script>
-                const ctx = document.getElementById('myChart');
-
-        new Chart(ctx, {
+        var ctx = document.getElementById('myChart').getContext('2d');
+        var myChart = new Chart(ctx, {
             type: 'bar',
             data: {
-                labels: @Html.Raw(Json.Serialize(Model.Select(x => x.Date))),
+                labels: Model.Select((value, index) => (index + 1).ToString()).ToArray(),
                 datasets: [{
                     label: 'Total Amount',
-                    data: @Html.Raw(Json.Serialize(Model.Select(x => x.TotalAmount))),
-                    backgroundColor: 'rgba(0, 123, 255, 0.5)',
-                    borderColor: 'rgba(0, 123, 255, 1)',
+                    data: Model.Select(m => m.TotalAmount).ToArray(),
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
                     borderWidth: 1
                 }]
             },
@@ -51,9 +59,62 @@ else
             }
         });
     </script>
-        console.log('Transaction Dates:', @Html.Raw(Json.Serialize(Model.Select(x => x.Date))));
-        console.log('Transaction Amounts:', @Html.Raw(Json.Serialize(Model.Select(x => x.TotalAmount))));
-    </script>
+}
 
+
+<style>
+    .chart-container {
+        position: relative;
+        height: 300px;
+        width: 400px;
+        border: 1px solid #e1e1e1;
+        padding: 10px;
     }
 
+    .chart {
+        position: absolute;
+        bottom: 50%; /* Adjust based on where you want the zero line */
+        left: 0;
+        width: 100%;
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+        .chart li {
+            display: inline-block;
+            width: 40px;
+            margin-right: 2px;
+            vertical-align: bottom;
+        }
+
+        .chart .bar {
+            display: block;
+            width: 100%;
+            background: #3498db;
+            color: white;
+            text-align: center;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+        }
+
+            .chart .bar span {
+                position: relative;
+                top: -20px;
+                left: 0;
+                right: 0;
+            }
+
+        .chart .label {
+            text-align: center;
+            margin-top: 5px;
+        }
+
+    .zero-line {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 50%; /* This places the line at the middle of the container */
+        border-top: 2px solid black;
+        z-index: 1;
+    }
+</style>

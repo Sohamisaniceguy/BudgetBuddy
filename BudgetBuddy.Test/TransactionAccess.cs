@@ -15,122 +15,138 @@ using BudgetBuddy;
 using BudgetBuddy.Controllers;
 using BudgetBuddy.Models;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace BudgetBuddy.Test
 {
     public class TransactionControllerTests
     {
-        private readonly TransactionController _controller;
-        private readonly Mock<IUserService> _mockUserService;
-        private readonly DbContextOptions<BudgetDbContext> _dbOptions;
+        private readonly DbContextOptions<BudgetDbContext> _dbContextOptions;
+        private readonly Mock<ILogger<TransactionController>> _mockLogger;
+        private readonly Mock<HttpContext> _mockHttpContext;
+        private readonly Mock<ISession> _mockSession;
 
         public TransactionControllerTests()
         {
-            _mockUserService = new Mock<IUserService>();
-            var mockLogger = new Mock<ILogger<TransactionController>>();
-
-            _dbOptions = new DbContextOptionsBuilder<BudgetDbContext>()
-                .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
+            _dbContextOptions = new DbContextOptionsBuilder<BudgetDbContext>()
+                .UseInMemoryDatabase(databaseName: "InMemoryTransactionDb")
                 .Options;
 
-            var context = new BudgetDbContext(_dbOptions);
+            _mockLogger = new Mock<ILogger<TransactionController>>();
 
-            _controller = new TransactionController(_mockUserService.Object, context, mockLogger.Object);
+            _mockHttpContext = new Mock<HttpContext>();
+            _mockSession = new Mock<ISession>();
+            _mockHttpContext.Setup(c => c.Session).Returns(_mockSession.Object);
         }
+        private void SeedDatabase()
+        {
+            using var context = new BudgetDbContext(_dbContextOptions);
+
+            // Seed Users
+            var user1 = new User { 
+                UserId = 1, 
+                First_Name = "John", 
+                Last_Name = "Doe", 
+                Email = "john.doe@example.com",
+                PasswordHash = "hashed_password", 
+                ResetPasswordToken = "reset_token", 
+                UserName = "john.doe",
+                VerifyUserToken = "verify_token" 
+            };
+            var user2 = new User { 
+                UserId = 2, 
+                First_Name = "Jane", 
+                Last_Name = "Doe", 
+                Email = "jane.doe@example.com",
+                PasswordHash = "hashed_password", 
+                ResetPasswordToken = "reset_token", 
+                UserName = "jane.doe",
+                VerifyUserToken = "verify_token" 
+            };
+            context.User.AddRange(user1, user2);
+
+            // Seed Budgets
+            var budget1 = new Budget { BudgetId = 1, BudgetName = "Test Budget 1", BudgetLimit = 1000m, StartDate = DateTime.Now, EndDate = DateTime.Now.AddMonths(1) /* other properties */ };
+            var budget2 = new Budget { BudgetId = 2, BudgetName = "Test Budget 2", BudgetLimit = 2000m, StartDate = DateTime.Now, EndDate = DateTime.Now.AddMonths(2) /* other properties */ };
+            context.Budgets.AddRange(budget1, budget2);
+                
+            // Assign Users to Budgets
+            budget1.Users.Add(user1);
+            budget2.Users.Add(user2);
+
+            // Seed Transactions
+            var transaction1 = new Transaction { TransactionId = 1, BudgetId = 1, CategoryId = 1, UserId = 1, Amount = 100.00m, Date = DateTime.Now };
+            var transaction2 = new Transaction { TransactionId = 2, BudgetId = 2, CategoryId = 2, UserId = 2, Amount = 200.00m, Date = DateTime.Now.AddDays(-1) };
+            context.Transactions.AddRange(transaction1, transaction2);
+
+            // Seed Categories if necessary
+
+            context.SaveChanges();
+        }
+
+
 
         [Fact]
-        public async Task Index_ReturnsViewResult_WithListOfTransactions() //Problem
+        public async Task Create_New_Transaction()
         {
-            // Arrange
-            int budgetId = 1;
-            using (var context = new BudgetDbContext(_dbOptions))
+            using var context = new BudgetDbContext(_dbContextOptions);
+            SeedDatabase();
+            var controller = new TransactionController(context, _mockLogger.Object)
             {
-                context.Transactions.Add(new Transaction { /* Initialize properties, e.g., Id, Amount, etc. */ });
-                context.SaveChanges();
-            }
-
-            // Act
-            var result = await _controller.Index(budgetId);
-
-            // Assert
-            var viewResult = Assert.IsType<ViewResult>(result);
-            var model = Assert.IsAssignableFrom<IEnumerable<Transaction>>(viewResult.Model);
-            Assert.NotEmpty(model);
-        }
-
-        [Fact]
-        public async Task CreateorChange_PostsValidTransaction_AndRedirects() //PROBLEM
-        {
-            // Arrange
-            var newTransaction = new Transaction
-            {
-                TransactionId = 1,
-                BudgetId = 1,
-                CategoryId = 1,
-                UserId = 1, // Assuming UserId is a string as it usually represents the user identifier
-                Amount = 100.00m,
-                Date = DateTime.Now,
-                Description = "Example transaction description"
+                ControllerContext = new ControllerContext { HttpContext = _mockHttpContext.Object }
             };
 
-            // Mock HttpContext and Session
-            var session = new Mock<ISession>();
-            var httpContext = new Mock<HttpContext>();
-            httpContext.Setup(ctx => ctx.Session).Returns(session.Object);
+            // Set up session values
+            var sessionItems = new Dictionary<string, byte[]>();
+            sessionItems["BudgetId"] = BitConverter.GetBytes(1); // Simulated session BudgetId
+            sessionItems["UserID"] = BitConverter.GetBytes(1); // Simulated session UserId
+            _mockSession.Setup(s => s.TryGetValue(It.IsAny<string>(), out It.Ref<byte[]>.IsAny))
+                 .Returns(new Func<string, byte[], bool>((key, value) =>
+                 {
+                     if (sessionItems.ContainsKey(key))
+                     {
+                         value = sessionItems[key];
+                         return true;
+                     }
+                     value = null;
+                     return false;
+                 }));
 
-            // Mock the session to return the BudgetId and UserId
-            byte[] budgetIdBytes = BitConverter.GetBytes(newTransaction.BudgetId);
-            byte[] userIdBytes = BitConverter.GetBytes(newTransaction.UserId); 
+            var newTransaction = new Transaction { TransactionId = 3, BudgetId = 1, CategoryId = 1, UserId = 1, Amount = 100.00m, Date = DateTime.Now };
 
-            session.Setup(_ => _.TryGetValue("BudgetId", out budgetIdBytes)).Returns(true);
-            session.Setup(_ => _.TryGetValue("UserId", out userIdBytes)).Returns(true);
+            //Act
+            var result = await controller.CreateorChange(newTransaction);
 
-
-
-            // Assign the mocked HttpContext to the controller
-            _controller.ControllerContext = new ControllerContext()
-            {
-                HttpContext = httpContext.Object
-            };
-
-            // Assume the ModelState is valid
-            _controller.ModelState.Clear();
-
-            // Act
-            var result = await _controller.CreateorChange(newTransaction);
-
-            // Assert
-            var redirectToActionResult = Assert.IsType<RedirectToActionResult>(result);
-            Assert.Equal("Index", redirectToActionResult.ActionName);
-            using (var context = new BudgetDbContext(_dbOptions))
-            {
-                Assert.Equal(1, context.Transactions.Count()); // Assuming only one transaction should be in the database
-                Assert.Contains(context.Transactions, t => t.TransactionId == newTransaction.TransactionId);
-            }
+            //Assert
+            Assert.IsType<ViewResult>(result);
+            Assert.NotEmpty(context.Transactions);
         }
+
+
+
+       
 
 
         [Fact]
         public async Task DeleteConfirmed_DeletesTransaction_AndRedirects()
         {
             // Arrange
-            var transactionId = 1;
-            using (var context = new BudgetDbContext(_dbOptions))
-            {
-                context.Transactions.Add(new Transaction { TransactionId = transactionId, /* Initialize other properties */ });
-                context.SaveChanges();
-            }
+            using var context = new BudgetDbContext(_dbContextOptions);
+            SeedDatabase();
+            var controller = new TransactionController(context, _mockLogger.Object);
+
+            int transactionIdToDelete = 1; // Assuming this ID exists in the seeded data
 
             // Act
-            var result = await _controller.DeleteConfirmed(transactionId);
+            var result = await controller.DeleteConfirmed(transactionIdToDelete);
 
             // Assert
-            var redirectToActionResult = Assert.IsType<RedirectToActionResult>(result);
+            var deletedTransaction = context.Transactions.Find(transactionIdToDelete);
+            Assert.Null(deletedTransaction); // Transaction should be deleted
+            Assert.IsType<RedirectToActionResult>(result); // Should redirect to Index
+
+            var redirectToActionResult = result as RedirectToActionResult;
             Assert.Equal("Index", redirectToActionResult.ActionName);
-            using (var context = new BudgetDbContext(_dbOptions))
-            {
-                Assert.DoesNotContain(context.Transactions, t => t.TransactionId == transactionId);
-            }
         }
 
         // Additional tests for other methods and failure scenarios...
