@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using Serilog;
 using WebGoatCore.Utils;
@@ -113,13 +114,12 @@ public class Startup
             app.UseHsts();
         }
 
-        //app.UseSerilogRequestLogging(); // Log requests
-        app.UseStaticFiles();
+        
 
         app.UseHttpsRedirection();
         app.UseStaticFiles();
 
-       
+
         app.UseRouting();
         app.UseSession();
         app.UseAuthentication();

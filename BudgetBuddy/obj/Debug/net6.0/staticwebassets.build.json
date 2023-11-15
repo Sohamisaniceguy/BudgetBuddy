@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "MfbV8W2QjY6zFN6L+7go8++04AdiJCbxjPAAisl3wK4=",
+  "Hash": "tNr+FTx+apLFaLjWoBHi1vjUez92jpAFesge3f5egZM=",
   "Source": "BudgetBuddy",
   "BasePath": "_content/BudgetBuddy",
   "Mode": "Default",
@@ -83,6 +83,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\favicon.ico"
+    },
+    {
+      "Identity": "D:\\PADHAI\\UMCP\\PADHAI - FALL2023\\2. Secure Coding\\Project\\BudgetBuddy\\BudgetBuddy\\wwwroot\\image.png",
+      "SourceId": "BudgetBuddy",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\PADHAI\\UMCP\\PADHAI - FALL2023\\2. Secure Coding\\Project\\BudgetBuddy\\BudgetBuddy\\wwwroot\\",
+      "BasePath": "_content/BudgetBuddy",
+      "RelativePath": "image.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\image.png"
     },
     {
       "Identity": "D:\\PADHAI\\UMCP\\PADHAI - FALL2023\\2. Secure Coding\\Project\\BudgetBuddy\\BudgetBuddy\\wwwroot\\js\\Chart.min.js\\.browserslistrc",
