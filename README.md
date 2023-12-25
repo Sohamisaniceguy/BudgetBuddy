@@ -1,5 +1,7 @@
 # Budget Buddy - Budget Tracking Application
 
+![image](https://github.com/Sohamisaniceguy/BudgetBuddy/assets/89856870/7d1201c6-a5dc-4bbb-a5c6-7568310bb94e)
+
 Budget Buddy is a web-based application that helps users track their budgets, expenses, and incomes. It provides a simple and efficient way to manage financial data.
 
 ## Features
