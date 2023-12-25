@@ -1,0 +1,395 @@
+2023-12-09 17:04:37.408 -05:00 [INF] User profile is available. Using 'C:\Users\SOHAM\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2023-12-09 17:04:37.533 -05:00 [INF] Creating key {c4be4b80-ebef-4bc6-9725-62cbd42b3c76} with creation date 2023-12-09 22:04:37Z, activation date 2023-12-11 02:53:22Z, and expiration date 2024-03-08 22:04:37Z.
+2023-12-09 17:04:37.545 -05:00 [INF] Writing data to file 'C:\Users\SOHAM\AppData\Local\ASP.NET\DataProtection-Keys\key-c4be4b80-ebef-4bc6-9725-62cbd42b3c76.xml'.
+2023-12-09 17:04:37.622 -05:00 [INF] Application started. Press Ctrl+C to shut down.
+2023-12-09 17:04:37.622 -05:00 [INF] Hosting environment: Development
+2023-12-09 17:04:37.623 -05:00 [INF] Content root path: D:\PADHAI\UMCP\PADHAI - FALL2023\2. Secure Coding\Project\BudgetBuddy\BudgetBuddy\
+2023-12-09 17:04:37.661 -05:00 [INF] Request starting HTTP/2 GET https://localhost:44381/ - -
+2023-12-09 17:04:37.661 -05:00 [INF] Request starting HTTP/2 GET https://localhost:44381/Category/ - -
+2023-12-09 17:04:38.429 -05:00 [INF] Executing endpoint 'BudgetBuddy.Controllers.HomeController.Index (BudgetBuddy)'
+2023-12-09 17:04:38.429 -05:00 [INF] Executing endpoint 'BudgetBuddy.Controllers.CategoryController.Index (BudgetBuddy)'
+2023-12-09 17:04:38.465 -05:00 [INF] Route matched with {action = "Index", controller = "Home"}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult Index() on controller BudgetBuddy.Controllers.HomeController (BudgetBuddy).
+2023-12-09 17:04:38.465 -05:00 [INF] Route matched with {action = "Index", controller = "Category"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Index() on controller BudgetBuddy.Controllers.CategoryController (BudgetBuddy).
+2023-12-09 17:04:38.489 -05:00 [INF] Executing ViewResult, running view Index.
+2023-12-09 17:04:38.971 -05:00 [INF] Executed ViewResult - view Index executed in 494.9299ms.
+2023-12-09 17:04:38.977 -05:00 [INF] Executed action BudgetBuddy.Controllers.HomeController.Index (BudgetBuddy) in 511.8108ms
+2023-12-09 17:04:38.978 -05:00 [INF] Executed endpoint 'BudgetBuddy.Controllers.HomeController.Index (BudgetBuddy)'
+2023-12-09 17:04:38.990 -05:00 [INF] Request finished HTTP/2 GET https://localhost:44381/ - - - 200 - text/html;+charset=utf-8 1333.3075ms
+2023-12-09 17:04:39.053 -05:00 [INF] Request starting HTTP/2 GET https://localhost:44381/_vs/browserLink - -
+2023-12-09 17:04:39.059 -05:00 [INF] Request starting HTTP/2 GET https://localhost:44381/image.png - -
+2023-12-09 17:04:39.062 -05:00 [INF] Request starting HTTP/2 GET https://localhost:44381/lib/bootstrap/dist/css/bootstrap.min.css - -
+2023-12-09 17:04:39.087 -05:00 [INF] Request starting HTTP/2 GET https://localhost:44381/css/site.css?v=JE9EXIx9ukMxwmOkZsb6cPIWgO5vIm5asEQjMcpAyIE - -
+2023-12-09 17:04:39.097 -05:00 [INF] Request starting HTTP/2 GET https://localhost:44381/lib/jquery/dist/jquery.min.js - -
+2023-12-09 17:04:39.108 -05:00 [INF] Request starting HTTP/2 GET https://localhost:44381/BudgetBuddy.styles.css?v=H4ZIGp_ViMe2RAQYdUokIjF3CnEoB__Z_yqw6SnlLEM - -
+2023-12-09 17:04:39.110 -05:00 [INF] Request starting HTTP/2 GET https://localhost:44381/lib/bootstrap/dist/js/bootstrap.bundle.min.js - -
+2023-12-09 17:04:39.118 -05:00 [INF] Request starting HTTP/2 GET https://localhost:44381/js/site.js?v=4q1jwFhaPaZgr8WAUSrux6hAuh0XDg9kPS3xIVq36I0 - -
+2023-12-09 17:04:39.122 -05:00 [INF] Request starting HTTP/2 GET https://localhost:44381/_framework/aspnetcore-browser-refresh.js - -
+2023-12-09 17:04:39.134 -05:00 [INF] Request finished HTTP/2 GET https://localhost:44381/_framework/aspnetcore-browser-refresh.js - - - 200 12354 application/javascript;+charset=utf-8 9.1578ms
+2023-12-09 17:04:39.149 -05:00 [INF] Sending file. Request path: '/css/site.css'. Physical path: 'D:\PADHAI\UMCP\PADHAI - FALL2023\2. Secure Coding\Project\BudgetBuddy\BudgetBuddy\wwwroot\css\site.css'
+2023-12-09 17:04:39.149 -05:00 [INF] Sending file. Request path: '/js/site.js'. Physical path: 'D:\PADHAI\UMCP\PADHAI - FALL2023\2. Secure Coding\Project\BudgetBuddy\BudgetBuddy\wwwroot\js\site.js'
+2023-12-09 17:04:39.149 -05:00 [INF] Sending file. Request path: '/BudgetBuddy.styles.css'. Physical path: 'D:\PADHAI\UMCP\PADHAI - FALL2023\2. Secure Coding\Project\BudgetBuddy\BudgetBuddy\obj\Debug\net6.0\scopedcss\bundle\BudgetBuddy.styles.css'
+2023-12-09 17:04:39.150 -05:00 [INF] Request finished HTTP/2 GET https://localhost:44381/css/site.css?v=JE9EXIx9ukMxwmOkZsb6cPIWgO5vIm5asEQjMcpAyIE - - - 200 327 text/css 62.7303ms
+2023-12-09 17:04:39.150 -05:00 [INF] Request finished HTTP/2 GET https://localhost:44381/js/site.js?v=4q1jwFhaPaZgr8WAUSrux6hAuh0XDg9kPS3xIVq36I0 - - - 200 230 application/javascript 32.2128ms
+2023-12-09 17:04:39.150 -05:00 [INF] Request finished HTTP/2 GET https://localhost:44381/BudgetBuddy.styles.css?v=H4ZIGp_ViMe2RAQYdUokIjF3CnEoB__Z_yqw6SnlLEM - - - 200 1128 text/css 41.9490ms
+2023-12-09 17:04:39.197 -05:00 [INF] Sending file. Request path: '/lib/bootstrap/dist/js/bootstrap.bundle.min.js'. Physical path: 'D:\PADHAI\UMCP\PADHAI - FALL2023\2. Secure Coding\Project\BudgetBuddy\BudgetBuddy\wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.min.js'
+2023-12-09 17:04:39.199 -05:00 [INF] Request finished HTTP/2 GET https://localhost:44381/lib/bootstrap/dist/js/bootstrap.bundle.min.js - - - 200 78468 application/javascript 89.3483ms
+2023-12-09 17:04:39.230 -05:00 [INF] Sending file. Request path: '/lib/jquery/dist/jquery.min.js'. Physical path: 'D:\PADHAI\UMCP\PADHAI - FALL2023\2. Secure Coding\Project\BudgetBuddy\BudgetBuddy\wwwroot\lib\jquery\dist\jquery.min.js'
+2023-12-09 17:04:39.231 -05:00 [INF] Request finished HTTP/2 GET https://localhost:44381/lib/jquery/dist/jquery.min.js - - - 200 89476 application/javascript 136.2537ms
+2023-12-09 17:04:39.251 -05:00 [INF] Sending file. Request path: '/lib/bootstrap/dist/css/bootstrap.min.css'. Physical path: 'D:\PADHAI\UMCP\PADHAI - FALL2023\2. Secure Coding\Project\BudgetBuddy\BudgetBuddy\wwwroot\lib\bootstrap\dist\css\bootstrap.min.css'
+2023-12-09 17:04:39.253 -05:00 [INF] Request finished HTTP/2 GET https://localhost:44381/lib/bootstrap/dist/css/bootstrap.min.css - - - 200 162720 text/css 190.4288ms
+2023-12-09 17:04:39.377 -05:00 [INF] Sending file. Request path: '/image.png'. Physical path: 'D:\PADHAI\UMCP\PADHAI - FALL2023\2. Secure Coding\Project\BudgetBuddy\BudgetBuddy\wwwroot\image.png'
+2023-12-09 17:04:39.385 -05:00 [INF] Request finished HTTP/2 GET https://localhost:44381/image.png - - - 200 684779 image/png 326.5276ms
+2023-12-09 17:04:39.497 -05:00 [INF] Request starting HTTP/2 GET https://localhost:44381/favicon.ico - -
+2023-12-09 17:04:39.515 -05:00 [INF] Sending file. Request path: '/favicon.ico'. Physical path: 'D:\PADHAI\UMCP\PADHAI - FALL2023\2. Secure Coding\Project\BudgetBuddy\BudgetBuddy\wwwroot\favicon.ico'
+2023-12-09 17:04:39.515 -05:00 [INF] Request finished HTTP/2 GET https://localhost:44381/favicon.ico - - - 200 5430 image/x-icon 17.6084ms
+2023-12-09 17:04:39.640 -05:00 [INF] Request finished HTTP/2 GET https://localhost:44381/_vs/browserLink - - - 200 - text/javascript;+charset=UTF-8 587.1553ms
+2023-12-09 17:04:41.542 -05:00 [INF] Executed DbCommand (30ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "c"."CategoryId", "c"."Icon", "c"."Title", "c"."Type"
+FROM "Categories" AS "c"
+2023-12-09 17:04:41.691 -05:00 [INF] Executing ViewResult, running view Index.
+2023-12-09 17:04:41.725 -05:00 [INF] Executed ViewResult - view Index executed in 34.9178ms.
+2023-12-09 17:04:41.725 -05:00 [INF] Executed action BudgetBuddy.Controllers.CategoryController.Index (BudgetBuddy) in 3259.9955ms
+2023-12-09 17:04:41.725 -05:00 [INF] Executed endpoint 'BudgetBuddy.Controllers.CategoryController.Index (BudgetBuddy)'
+2023-12-09 17:04:41.747 -05:00 [INF] Request finished HTTP/2 GET https://localhost:44381/Category/ - - - 200 - text/html;+charset=utf-8 4090.5416ms
+2023-12-09 17:04:41.748 -05:00 [INF] Request starting HTTP/2 GET https://localhost:44381/lib/bootstrap/dist/css/bootstrap.min.css - -
+2023-12-09 17:04:41.749 -05:00 [INF] Request starting HTTP/2 GET https://localhost:44381/css/site.css?v=JE9EXIx9ukMxwmOkZsb6cPIWgO5vIm5asEQjMcpAyIE - -
+2023-12-09 17:04:41.751 -05:00 [INF] Request starting HTTP/2 GET https://localhost:44381/BudgetBuddy.styles.css?v=H4ZIGp_ViMe2RAQYdUokIjF3CnEoB__Z_yqw6SnlLEM - -
+2023-12-09 17:04:41.752 -05:00 [INF] Sending file. Request path: '/css/site.css'. Physical path: 'D:\PADHAI\UMCP\PADHAI - FALL2023\2. Secure Coding\Project\BudgetBuddy\BudgetBuddy\wwwroot\css\site.css'
+2023-12-09 17:04:41.752 -05:00 [INF] Request finished HTTP/2 GET https://localhost:44381/css/site.css?v=JE9EXIx9ukMxwmOkZsb6cPIWgO5vIm5asEQjMcpAyIE - - - 200 327 text/css 3.6442ms
+2023-12-09 17:04:41.753 -05:00 [INF] Sending file. Request path: '/lib/bootstrap/dist/css/bootstrap.min.css'. Physical path: 'D:\PADHAI\UMCP\PADHAI - FALL2023\2. Secure Coding\Project\BudgetBuddy\BudgetBuddy\wwwroot\lib\bootstrap\dist\css\bootstrap.min.css'
+2023-12-09 17:04:41.754 -05:00 [INF] Sending file. Request path: '/BudgetBuddy.styles.css'. Physical path: 'D:\PADHAI\UMCP\PADHAI - FALL2023\2. Secure Coding\Project\BudgetBuddy\BudgetBuddy\obj\Debug\net6.0\scopedcss\bundle\BudgetBuddy.styles.css'
+2023-12-09 17:04:41.754 -05:00 [INF] Request finished HTTP/2 GET https://localhost:44381/BudgetBuddy.styles.css?v=H4ZIGp_ViMe2RAQYdUokIjF3CnEoB__Z_yqw6SnlLEM - - - 200 1128 text/css 3.2873ms
+2023-12-09 17:04:41.756 -05:00 [INF] Request starting HTTP/2 GET https://localhost:44381/lib/jquery/dist/jquery.min.js - -
+2023-12-09 17:04:41.756 -05:00 [INF] Request starting HTTP/2 GET https://localhost:44381/lib/bootstrap/dist/js/bootstrap.bundle.min.js - -
+2023-12-09 17:04:41.757 -05:00 [INF] Request finished HTTP/2 GET https://localhost:44381/lib/bootstrap/dist/css/bootstrap.min.css - - - 200 162720 text/css 9.0393ms
+2023-12-09 17:04:41.759 -05:00 [INF] Request starting HTTP/2 GET https://localhost:44381/js/site.js?v=4q1jwFhaPaZgr8WAUSrux6hAuh0XDg9kPS3xIVq36I0 - -
+2023-12-09 17:04:41.760 -05:00 [INF] Sending file. Request path: '/lib/bootstrap/dist/js/bootstrap.bundle.min.js'. Physical path: 'D:\PADHAI\UMCP\PADHAI - FALL2023\2. Secure Coding\Project\BudgetBuddy\BudgetBuddy\wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.min.js'
+2023-12-09 17:04:41.760 -05:00 [INF] Sending file. Request path: '/lib/jquery/dist/jquery.min.js'. Physical path: 'D:\PADHAI\UMCP\PADHAI - FALL2023\2. Secure Coding\Project\BudgetBuddy\BudgetBuddy\wwwroot\lib\jquery\dist\jquery.min.js'
+2023-12-09 17:04:41.761 -05:00 [INF] Request starting HTTP/2 GET https://localhost:44381/_vs/browserLink - -
+2023-12-09 17:04:41.762 -05:00 [INF] Request starting HTTP/2 GET https://localhost:44381/_framework/aspnetcore-browser-refresh.js - -
+2023-12-09 17:04:41.762 -05:00 [INF] Sending file. Request path: '/js/site.js'. Physical path: 'D:\PADHAI\UMCP\PADHAI - FALL2023\2. Secure Coding\Project\BudgetBuddy\BudgetBuddy\wwwroot\js\site.js'
+2023-12-09 17:04:41.763 -05:00 [INF] Request finished HTTP/2 GET https://localhost:44381/js/site.js?v=4q1jwFhaPaZgr8WAUSrux6hAuh0XDg9kPS3xIVq36I0 - - - 200 230 application/javascript 3.0681ms
+2023-12-09 17:04:41.764 -05:00 [INF] Request finished HTTP/2 GET https://localhost:44381/lib/bootstrap/dist/js/bootstrap.bundle.min.js - - - 200 78468 application/javascript 7.6080ms
+2023-12-09 17:04:41.764 -05:00 [INF] Request finished HTTP/2 GET https://localhost:44381/_framework/aspnetcore-browser-refresh.js - - - 200 12354 application/javascript;+charset=utf-8 1.5502ms
+2023-12-09 17:04:41.771 -05:00 [INF] Request finished HTTP/2 GET https://localhost:44381/lib/jquery/dist/jquery.min.js - - - 200 89476 application/javascript 14.9795ms
+2023-12-09 17:04:41.778 -05:00 [INF] Request finished HTTP/2 GET https://localhost:44381/_vs/browserLink - - - 200 - text/javascript;+charset=UTF-8 17.5090ms
+2023-12-09 17:04:45.392 -05:00 [INF] Request starting HTTP/2 GET https://localhost:44381/Account/Login - -
+2023-12-09 17:04:45.400 -05:00 [INF] Executing endpoint 'BudgetBuddy.Controllers.AccountController.Login (BudgetBuddy)'
+2023-12-09 17:04:45.403 -05:00 [INF] Route matched with {action = "Login", controller = "Account"}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult Login() on controller BudgetBuddy.Controllers.AccountController (BudgetBuddy).
+2023-12-09 17:04:45.406 -05:00 [INF] Executing ViewResult, running view Login.
+2023-12-09 17:04:45.677 -05:00 [INF] Executed ViewResult - view Login executed in 272.5655ms.
+2023-12-09 17:04:45.677 -05:00 [INF] Executed action BudgetBuddy.Controllers.AccountController.Login (BudgetBuddy) in 274.5251ms
+2023-12-09 17:04:45.677 -05:00 [INF] Executed endpoint 'BudgetBuddy.Controllers.AccountController.Login (BudgetBuddy)'
+2023-12-09 17:04:45.678 -05:00 [INF] Request finished HTTP/2 GET https://localhost:44381/Account/Login - - - 200 - text/html;+charset=utf-8 285.5641ms
+2023-12-09 17:04:45.705 -05:00 [INF] Request starting HTTP/2 GET https://localhost:44381/_vs/browserLink - -
+2023-12-09 17:04:45.706 -05:00 [INF] Request starting HTTP/2 GET https://localhost:44381/_framework/aspnetcore-browser-refresh.js - -
+2023-12-09 17:04:45.707 -05:00 [INF] Request finished HTTP/2 GET https://localhost:44381/_framework/aspnetcore-browser-refresh.js - - - 200 12354 application/javascript;+charset=utf-8 1.2720ms
+2023-12-09 17:04:45.721 -05:00 [INF] Request finished HTTP/2 GET https://localhost:44381/_vs/browserLink - - - 200 - text/javascript;+charset=UTF-8 15.7697ms
+2023-12-09 17:04:55.987 -05:00 [INF] Request starting HTTP/2 POST https://localhost:44381/Account/Login application/x-www-form-urlencoded 245
+2023-12-09 17:04:55.993 -05:00 [INF] Executing endpoint 'BudgetBuddy.Controllers.AccountController.Login (BudgetBuddy)'
+2023-12-09 17:04:56.016 -05:00 [INF] Route matched with {action = "Login", controller = "Account"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Login(BudgetBuddy.ViewModels.LoginViewModel) on controller BudgetBuddy.Controllers.AccountController (BudgetBuddy).
+2023-12-09 17:04:56.089 -05:00 [INF] Attempting to log in user: ramsham
+2023-12-09 17:04:56.411 -05:00 [INF] Executed DbCommand (8ms) [Parameters=[@__ToLower_0='?' (Size = 7)], CommandType='"Text"', CommandTimeout='30']
+SELECT "u"."UserId", "u"."Email", "u"."EmailConfirmed", "u"."FailedLoginAttempts", "u"."First_Name", "u"."IsLockedOut", "u"."Last_Name", "u"."LockoutEnd", "u"."PasswordHash", "u"."ResetPasswordToken", "u"."ResetPasswordTokenExpiration", "u"."ResetPasswordTokenUsed", "u"."UserName", "u"."VerifyTokenExpiration", "u"."VerifyTokenUsed", "u"."VerifyUserToken"
+FROM "User" AS "u"
+WHERE "u"."UserName" = @__ToLower_0
+LIMIT 2
+2023-12-09 17:04:56.778 -05:00 [INF] User logged in successfully: Ramsham
+2023-12-09 17:04:56.779 -05:00 [INF] Executing RedirectResult, redirecting to /Account/WelcomeUser.
+2023-12-09 17:04:56.779 -05:00 [INF] Executed action BudgetBuddy.Controllers.AccountController.Login (BudgetBuddy) in 763.2495ms
+2023-12-09 17:04:56.779 -05:00 [INF] Executed endpoint 'BudgetBuddy.Controllers.AccountController.Login (BudgetBuddy)'
+2023-12-09 17:04:56.780 -05:00 [INF] Session started; Key:36ab7664-42ff-c9b1-e719-6e7d98b36886, Id:fd4ac647-a02d-b74a-2c93-cee3f175ad72
+2023-12-09 17:04:56.783 -05:00 [INF] Request finished HTTP/2 POST https://localhost:44381/Account/Login application/x-www-form-urlencoded 245 - 302 - - 796.1409ms
+2023-12-09 17:04:56.786 -05:00 [INF] Request starting HTTP/2 GET https://localhost:44381/Account/WelcomeUser - -
+2023-12-09 17:04:56.787 -05:00 [INF] Executing endpoint 'BudgetBuddy.Controllers.AccountController.WelcomeUser (BudgetBuddy)'
+2023-12-09 17:04:56.788 -05:00 [INF] Route matched with {action = "WelcomeUser", controller = "Account"}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult WelcomeUser() on controller BudgetBuddy.Controllers.AccountController (BudgetBuddy).
+2023-12-09 17:04:56.848 -05:00 [INF] Executed DbCommand (0ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT "u"."UserId", "u"."Email", "u"."EmailConfirmed", "u"."FailedLoginAttempts", "u"."First_Name", "u"."IsLockedOut", "u"."Last_Name", "u"."LockoutEnd", "u"."PasswordHash", "u"."ResetPasswordToken", "u"."ResetPasswordTokenExpiration", "u"."ResetPasswordTokenUsed", "u"."UserName", "u"."VerifyTokenExpiration", "u"."VerifyTokenUsed", "u"."VerifyUserToken"
+FROM "User" AS "u"
+WHERE "u"."UserId" = @__p_0
+LIMIT 1
+2023-12-09 17:04:56.849 -05:00 [INF] Executing ViewResult, running view WelcomeUser.
+2023-12-09 17:04:56.854 -05:00 [INF] Executed ViewResult - view WelcomeUser executed in 5.348ms.
+2023-12-09 17:04:56.854 -05:00 [INF] Executed action BudgetBuddy.Controllers.AccountController.WelcomeUser (BudgetBuddy) in 66.6446ms
+2023-12-09 17:04:56.854 -05:00 [INF] Executed endpoint 'BudgetBuddy.Controllers.AccountController.WelcomeUser (BudgetBuddy)'
+2023-12-09 17:04:56.855 -05:00 [INF] Request finished HTTP/2 GET https://localhost:44381/Account/WelcomeUser - - - 200 - text/html;+charset=utf-8 69.0210ms
+2023-12-09 17:04:56.879 -05:00 [INF] Request starting HTTP/2 GET https://localhost:44381/_vs/browserLink - -
+2023-12-09 17:04:56.882 -05:00 [INF] Request starting HTTP/2 GET https://localhost:44381/_framework/aspnetcore-browser-refresh.js - -
+2023-12-09 17:04:56.885 -05:00 [INF] Request finished HTTP/2 GET https://localhost:44381/_framework/aspnetcore-browser-refresh.js - - - 200 12354 application/javascript;+charset=utf-8 3.6053ms
+2023-12-09 17:04:56.901 -05:00 [INF] Request finished HTTP/2 GET https://localhost:44381/_vs/browserLink - - - 200 - text/javascript;+charset=UTF-8 21.2755ms
+2023-12-09 17:05:11.377 -05:00 [INF] Request starting HTTP/2 GET https://localhost:44381/Budget/Budget_Index_Enterprise - -
+2023-12-09 17:05:11.387 -05:00 [INF] Executing endpoint 'BudgetBuddy.Controllers.BudgetController.Budget_Index_Enterprise (BudgetBuddy)'
+2023-12-09 17:05:11.388 -05:00 [INF] Route matched with {action = "Budget_Index_Enterprise", controller = "Budget"}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult Budget_Index_Enterprise() on controller BudgetBuddy.Controllers.BudgetController (BudgetBuddy).
+2023-12-09 17:05:11.652 -05:00 [INF] Executed DbCommand (5ms) [Parameters=[@__userId_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT "b"."BudgetId", "b"."BudgetLimit", "b"."BudgetName", "b"."EndDate", "b"."Enterprise", "b"."Icon", "b"."StartDate"
+FROM "Budgets" AS "b"
+WHERE EXISTS (
+    SELECT 1
+    FROM "UserBudgets" AS "u"
+    INNER JOIN "User" AS "u0" ON "u"."UsersUserId" = "u0"."UserId"
+    WHERE "b"."BudgetId" = "u"."BudgetsBudgetId" AND "u0"."UserId" = @__userId_0) AND "b"."Enterprise" = 1
+2023-12-09 17:05:11.723 -05:00 [INF] Executing ViewResult, running view Budget_Index.
+2023-12-09 17:05:11.753 -05:00 [INF] Executed ViewResult - view Budget_Index executed in 30.3996ms.
+2023-12-09 17:05:11.753 -05:00 [INF] Executed action BudgetBuddy.Controllers.BudgetController.Budget_Index_Enterprise (BudgetBuddy) in 364.4553ms
+2023-12-09 17:05:11.753 -05:00 [INF] Executed endpoint 'BudgetBuddy.Controllers.BudgetController.Budget_Index_Enterprise (BudgetBuddy)'
+2023-12-09 17:05:11.754 -05:00 [INF] Request finished HTTP/2 GET https://localhost:44381/Budget/Budget_Index_Enterprise - - - 200 - text/html;+charset=utf-8 377.5659ms
+2023-12-09 17:05:11.861 -05:00 [INF] Request starting HTTP/2 GET https://localhost:44381/_framework/aspnetcore-browser-refresh.js - -
+2023-12-09 17:05:11.862 -05:00 [INF] Request starting HTTP/2 GET https://localhost:44381/_vs/browserLink - -
+2023-12-09 17:05:11.863 -05:00 [INF] Request finished HTTP/2 GET https://localhost:44381/_framework/aspnetcore-browser-refresh.js - - - 200 12354 application/javascript;+charset=utf-8 3.0295ms
+2023-12-09 17:05:12.383 -05:00 [INF] Request finished HTTP/2 GET https://localhost:44381/_vs/browserLink - - - 200 - text/javascript;+charset=UTF-8 520.5998ms
+2023-12-09 17:05:21.816 -05:00 [INF] Request starting HTTP/2 GET https://localhost:44381/Transaction/Index?budgetId=19 - -
+2023-12-09 17:05:21.819 -05:00 [INF] Executing endpoint 'Expense_Tracker.Controllers.TransactionController.Index (BudgetBuddy)'
+2023-12-09 17:05:21.821 -05:00 [INF] Route matched with {action = "Index", controller = "Transaction"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Index(System.Nullable`1[System.Int32]) on controller Expense_Tracker.Controllers.TransactionController (BudgetBuddy).
+2023-12-09 17:05:21.916 -05:00 [INF] Executed DbCommand (3ms) [Parameters=[@__budgetId_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT "t"."BudgetId", "t"."BudgetLimit", "t"."BudgetName", "t"."EndDate", "t"."Enterprise", "t"."Icon", "t"."StartDate", "t0"."BudgetsBudgetId", "t0"."UsersUserId", "t0"."UserId", "t0"."Email", "t0"."EmailConfirmed", "t0"."FailedLoginAttempts", "t0"."First_Name", "t0"."IsLockedOut", "t0"."Last_Name", "t0"."LockoutEnd", "t0"."PasswordHash", "t0"."ResetPasswordToken", "t0"."ResetPasswordTokenExpiration", "t0"."ResetPasswordTokenUsed", "t0"."UserName", "t0"."VerifyTokenExpiration", "t0"."VerifyTokenUsed", "t0"."VerifyUserToken"
+FROM (
+    SELECT "b"."BudgetId", "b"."BudgetLimit", "b"."BudgetName", "b"."EndDate", "b"."Enterprise", "b"."Icon", "b"."StartDate"
+    FROM "Budgets" AS "b"
+    WHERE "b"."BudgetId" = @__budgetId_0
+    LIMIT 1
+) AS "t"
+LEFT JOIN (
+    SELECT "u"."BudgetsBudgetId", "u"."UsersUserId", "u0"."UserId", "u0"."Email", "u0"."EmailConfirmed", "u0"."FailedLoginAttempts", "u0"."First_Name", "u0"."IsLockedOut", "u0"."Last_Name", "u0"."LockoutEnd", "u0"."PasswordHash", "u0"."ResetPasswordToken", "u0"."ResetPasswordTokenExpiration", "u0"."ResetPasswordTokenUsed", "u0"."UserName", "u0"."VerifyTokenExpiration", "u0"."VerifyTokenUsed", "u0"."VerifyUserToken"
+    FROM "UserBudgets" AS "u"
+    INNER JOIN "User" AS "u0" ON "u"."UsersUserId" = "u0"."UserId"
+) AS "t0" ON "t"."BudgetId" = "t0"."BudgetsBudgetId"
+ORDER BY "t"."BudgetId", "t0"."BudgetsBudgetId", "t0"."UsersUserId"
+2023-12-09 17:05:21.958 -05:00 [INF] Executed DbCommand (0ms) [Parameters=[@__budgetId_0='?' (DbType = Int32), @__userId_1='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT "t"."TransactionId", "t"."Amount", "t"."BudgetId", "t"."CategoryId", "t"."Date", "t"."Description", "t"."UserId", "c"."CategoryId", "c"."Icon", "c"."Title", "c"."Type", "u1"."UserId", "u1"."Email", "u1"."EmailConfirmed", "u1"."FailedLoginAttempts", "u1"."First_Name", "u1"."IsLockedOut", "u1"."Last_Name", "u1"."LockoutEnd", "u1"."PasswordHash", "u1"."ResetPasswordToken", "u1"."ResetPasswordTokenExpiration", "u1"."ResetPasswordTokenUsed", "u1"."UserName", "u1"."VerifyTokenExpiration", "u1"."VerifyTokenUsed", "u1"."VerifyUserToken"
+FROM "Transactions" AS "t"
+INNER JOIN "Budgets" AS "b" ON "t"."BudgetId" = "b"."BudgetId"
+INNER JOIN "Categories" AS "c" ON "t"."CategoryId" = "c"."CategoryId"
+INNER JOIN "User" AS "u1" ON "t"."UserId" = "u1"."UserId"
+WHERE "t"."BudgetId" = @__budgetId_0 AND EXISTS (
+    SELECT 1
+    FROM "UserBudgets" AS "u"
+    INNER JOIN "User" AS "u0" ON "u"."UsersUserId" = "u0"."UserId"
+    WHERE "b"."BudgetId" = "u"."BudgetsBudgetId" AND "u0"."UserId" = @__userId_1)
+2023-12-09 17:05:21.972 -05:00 [INF] Executed DbCommand (1ms) [Parameters=[@__budgetId_Value_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT "t"."UserId", "t"."Email", "t"."EmailConfirmed", "t"."FailedLoginAttempts", "t"."First_Name", "t"."IsLockedOut", "t"."Last_Name", "t"."LockoutEnd", "t"."PasswordHash", "t"."ResetPasswordToken", "t"."ResetPasswordTokenExpiration", "t"."ResetPasswordTokenUsed", "t"."UserName", "t"."VerifyTokenExpiration", "t"."VerifyTokenUsed", "t"."VerifyUserToken"
+FROM "Budgets" AS "b"
+INNER JOIN (
+    SELECT "u0"."UserId", "u0"."Email", "u0"."EmailConfirmed", "u0"."FailedLoginAttempts", "u0"."First_Name", "u0"."IsLockedOut", "u0"."Last_Name", "u0"."LockoutEnd", "u0"."PasswordHash", "u0"."ResetPasswordToken", "u0"."ResetPasswordTokenExpiration", "u0"."ResetPasswordTokenUsed", "u0"."UserName", "u0"."VerifyTokenExpiration", "u0"."VerifyTokenUsed", "u0"."VerifyUserToken", "u"."BudgetsBudgetId"
+    FROM "UserBudgets" AS "u"
+    INNER JOIN "User" AS "u0" ON "u"."UsersUserId" = "u0"."UserId"
+) AS "t" ON "b"."BudgetId" = "t"."BudgetsBudgetId"
+WHERE "b"."BudgetId" = @__budgetId_Value_0
+2023-12-09 17:05:21.987 -05:00 [INF] Executed DbCommand (0ms) [Parameters=[@__budgetId_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT "b"."Enterprise"
+FROM "Budgets" AS "b"
+WHERE "b"."BudgetId" = @__budgetId_0
+LIMIT 1
+2023-12-09 17:05:21.989 -05:00 [INF] Executing ViewResult, running view Index.
+2023-12-09 17:05:22.017 -05:00 [INF] Executed ViewResult - view Index executed in 28.4007ms.
+2023-12-09 17:05:22.017 -05:00 [INF] Executed action Expense_Tracker.Controllers.TransactionController.Index (BudgetBuddy) in 195.9506ms
+2023-12-09 17:05:22.017 -05:00 [INF] Executed endpoint 'Expense_Tracker.Controllers.TransactionController.Index (BudgetBuddy)'
+2023-12-09 17:05:22.018 -05:00 [INF] Request finished HTTP/2 GET https://localhost:44381/Transaction/Index?budgetId=19 - - - 200 - text/html;+charset=utf-8 201.1990ms
+2023-12-09 17:05:22.043 -05:00 [INF] Request starting HTTP/2 GET https://localhost:44381/_vs/browserLink - -
+2023-12-09 17:05:22.043 -05:00 [INF] Request starting HTTP/2 GET https://localhost:44381/_framework/aspnetcore-browser-refresh.js - -
+2023-12-09 17:05:22.043 -05:00 [INF] Request finished HTTP/2 GET https://localhost:44381/_framework/aspnetcore-browser-refresh.js - - - 200 12354 application/javascript;+charset=utf-8 0.6251ms
+2023-12-09 17:05:22.050 -05:00 [INF] Request finished HTTP/2 GET https://localhost:44381/_vs/browserLink - - - 200 - text/javascript;+charset=UTF-8 6.8373ms
+2023-12-09 17:05:25.346 -05:00 [INF] Request starting HTTP/2 GET https://localhost:44381/Account/WelcomeUser - -
+2023-12-09 17:05:25.348 -05:00 [INF] Executing endpoint 'BudgetBuddy.Controllers.AccountController.WelcomeUser (BudgetBuddy)'
+2023-12-09 17:05:25.349 -05:00 [INF] Route matched with {action = "WelcomeUser", controller = "Account"}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult WelcomeUser() on controller BudgetBuddy.Controllers.AccountController (BudgetBuddy).
+2023-12-09 17:05:25.355 -05:00 [INF] Executed DbCommand (1ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT "u"."UserId", "u"."Email", "u"."EmailConfirmed", "u"."FailedLoginAttempts", "u"."First_Name", "u"."IsLockedOut", "u"."Last_Name", "u"."LockoutEnd", "u"."PasswordHash", "u"."ResetPasswordToken", "u"."ResetPasswordTokenExpiration", "u"."ResetPasswordTokenUsed", "u"."UserName", "u"."VerifyTokenExpiration", "u"."VerifyTokenUsed", "u"."VerifyUserToken"
+FROM "User" AS "u"
+WHERE "u"."UserId" = @__p_0
+LIMIT 1
+2023-12-09 17:05:25.356 -05:00 [INF] Executing ViewResult, running view WelcomeUser.
+2023-12-09 17:05:25.359 -05:00 [INF] Executed ViewResult - view WelcomeUser executed in 2.6963ms.
+2023-12-09 17:05:25.359 -05:00 [INF] Executed action BudgetBuddy.Controllers.AccountController.WelcomeUser (BudgetBuddy) in 10.3653ms
+2023-12-09 17:05:25.359 -05:00 [INF] Executed endpoint 'BudgetBuddy.Controllers.AccountController.WelcomeUser (BudgetBuddy)'
+2023-12-09 17:05:25.360 -05:00 [INF] Request finished HTTP/2 GET https://localhost:44381/Account/WelcomeUser - - - 200 - text/html;+charset=utf-8 13.5935ms
+2023-12-09 17:05:25.436 -05:00 [INF] Request starting HTTP/2 GET https://localhost:44381/_vs/browserLink - -
+2023-12-09 17:05:25.441 -05:00 [INF] Request starting HTTP/2 GET https://localhost:44381/_framework/aspnetcore-browser-refresh.js - -
+2023-12-09 17:05:25.443 -05:00 [INF] Request finished HTTP/2 GET https://localhost:44381/_framework/aspnetcore-browser-refresh.js - - - 200 12354 application/javascript;+charset=utf-8 1.2675ms
+2023-12-09 17:05:25.456 -05:00 [INF] Request finished HTTP/2 GET https://localhost:44381/_vs/browserLink - - - 200 - text/javascript;+charset=UTF-8 19.8865ms
+2023-12-09 17:05:26.760 -05:00 [INF] Request starting HTTP/2 POST https://localhost:44381/Account/Logout application/x-www-form-urlencoded 182
+2023-12-09 17:05:26.762 -05:00 [INF] Executing endpoint 'BudgetBuddy.Controllers.AccountController.Logout (BudgetBuddy)'
+2023-12-09 17:05:26.765 -05:00 [INF] Route matched with {action = "Logout", controller = "Account"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Logout() on controller BudgetBuddy.Controllers.AccountController (BudgetBuddy).
+2023-12-09 17:05:26.766 -05:00 [INF] Logout initiated.
+2023-12-09 17:05:26.766 -05:00 [INF] User logged out successfully.
+2023-12-09 17:05:26.766 -05:00 [INF] Executing RedirectResult, redirecting to /.
+2023-12-09 17:05:26.766 -05:00 [INF] Executed action BudgetBuddy.Controllers.AccountController.Logout (BudgetBuddy) in 1.4712ms
+2023-12-09 17:05:26.766 -05:00 [INF] Executed endpoint 'BudgetBuddy.Controllers.AccountController.Logout (BudgetBuddy)'
+2023-12-09 17:05:26.767 -05:00 [INF] Request finished HTTP/2 POST https://localhost:44381/Account/Logout application/x-www-form-urlencoded 182 - 302 - - 6.2468ms
+2023-12-09 17:05:26.770 -05:00 [INF] Request starting HTTP/2 GET https://localhost:44381/ - -
+2023-12-09 17:05:26.771 -05:00 [INF] Executing endpoint 'BudgetBuddy.Controllers.HomeController.Index (BudgetBuddy)'
+2023-12-09 17:05:26.772 -05:00 [INF] Route matched with {action = "Index", controller = "Home"}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult Index() on controller BudgetBuddy.Controllers.HomeController (BudgetBuddy).
+2023-12-09 17:05:26.772 -05:00 [INF] Executing ViewResult, running view Index.
+2023-12-09 17:05:26.772 -05:00 [INF] Executed ViewResult - view Index executed in 0.5579ms.
+2023-12-09 17:05:26.772 -05:00 [INF] Executed action BudgetBuddy.Controllers.HomeController.Index (BudgetBuddy) in 0.6709ms
+2023-12-09 17:05:26.772 -05:00 [INF] Executed endpoint 'BudgetBuddy.Controllers.HomeController.Index (BudgetBuddy)'
+2023-12-09 17:05:26.772 -05:00 [INF] Request finished HTTP/2 GET https://localhost:44381/ - - - 200 - text/html;+charset=utf-8 2.3823ms
+2023-12-09 17:05:26.801 -05:00 [INF] Request starting HTTP/2 GET https://localhost:44381/_vs/browserLink - -
+2023-12-09 17:05:26.801 -05:00 [INF] Request starting HTTP/2 GET https://localhost:44381/_framework/aspnetcore-browser-refresh.js - -
+2023-12-09 17:05:26.803 -05:00 [INF] Request finished HTTP/2 GET https://localhost:44381/_framework/aspnetcore-browser-refresh.js - - - 200 12354 application/javascript;+charset=utf-8 1.6764ms
+2023-12-09 17:05:26.812 -05:00 [INF] Request finished HTTP/2 GET https://localhost:44381/_vs/browserLink - - - 200 - text/javascript;+charset=UTF-8 10.5825ms
+2023-12-09 17:05:27.862 -05:00 [INF] Request starting HTTP/2 GET https://localhost:44381/Account/Login - -
+2023-12-09 17:05:27.863 -05:00 [INF] Executing endpoint 'BudgetBuddy.Controllers.AccountController.Login (BudgetBuddy)'
+2023-12-09 17:05:27.863 -05:00 [INF] Route matched with {action = "Login", controller = "Account"}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult Login() on controller BudgetBuddy.Controllers.AccountController (BudgetBuddy).
+2023-12-09 17:05:27.863 -05:00 [INF] Executing ViewResult, running view Login.
+2023-12-09 17:05:27.865 -05:00 [INF] Executed ViewResult - view Login executed in 1.8119ms.
+2023-12-09 17:05:27.865 -05:00 [INF] Executed action BudgetBuddy.Controllers.AccountController.Login (BudgetBuddy) in 2.0983ms
+2023-12-09 17:05:27.865 -05:00 [INF] Executed endpoint 'BudgetBuddy.Controllers.AccountController.Login (BudgetBuddy)'
+2023-12-09 17:05:27.866 -05:00 [INF] Request finished HTTP/2 GET https://localhost:44381/Account/Login - - - 200 - text/html;+charset=utf-8 4.0104ms
+2023-12-09 17:05:27.908 -05:00 [INF] Request starting HTTP/2 GET https://localhost:44381/_vs/browserLink - -
+2023-12-09 17:05:27.909 -05:00 [INF] Request starting HTTP/2 GET https://localhost:44381/_framework/aspnetcore-browser-refresh.js - -
+2023-12-09 17:05:27.911 -05:00 [INF] Request finished HTTP/2 GET https://localhost:44381/_framework/aspnetcore-browser-refresh.js - - - 200 12354 application/javascript;+charset=utf-8 1.6753ms
+2023-12-09 17:05:27.920 -05:00 [INF] Request finished HTTP/2 GET https://localhost:44381/_vs/browserLink - - - 200 - text/javascript;+charset=UTF-8 11.6036ms
+2023-12-09 17:05:30.418 -05:00 [INF] Request starting HTTP/2 POST https://localhost:44381/Account/Login application/x-www-form-urlencoded 243
+2023-12-09 17:05:30.419 -05:00 [INF] Executing endpoint 'BudgetBuddy.Controllers.AccountController.Login (BudgetBuddy)'
+2023-12-09 17:05:30.420 -05:00 [INF] Route matched with {action = "Login", controller = "Account"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Login(BudgetBuddy.ViewModels.LoginViewModel) on controller BudgetBuddy.Controllers.AccountController (BudgetBuddy).
+2023-12-09 17:05:30.421 -05:00 [INF] Attempting to log in user: nitin
+2023-12-09 17:05:30.423 -05:00 [INF] Executed DbCommand (0ms) [Parameters=[@__ToLower_0='?' (Size = 5)], CommandType='"Text"', CommandTimeout='30']
+SELECT "u"."UserId", "u"."Email", "u"."EmailConfirmed", "u"."FailedLoginAttempts", "u"."First_Name", "u"."IsLockedOut", "u"."Last_Name", "u"."LockoutEnd", "u"."PasswordHash", "u"."ResetPasswordToken", "u"."ResetPasswordTokenExpiration", "u"."ResetPasswordTokenUsed", "u"."UserName", "u"."VerifyTokenExpiration", "u"."VerifyTokenUsed", "u"."VerifyUserToken"
+FROM "User" AS "u"
+WHERE "u"."UserName" = @__ToLower_0
+LIMIT 2
+2023-12-09 17:05:30.602 -05:00 [INF] User logged in successfully: nitin
+2023-12-09 17:05:30.603 -05:00 [INF] Executing RedirectResult, redirecting to /Account/WelcomeUser.
+2023-12-09 17:05:30.603 -05:00 [INF] Executed action BudgetBuddy.Controllers.AccountController.Login (BudgetBuddy) in 182.9042ms
+2023-12-09 17:05:30.603 -05:00 [INF] Executed endpoint 'BudgetBuddy.Controllers.AccountController.Login (BudgetBuddy)'
+2023-12-09 17:05:30.603 -05:00 [INF] Session started; Key:5ed3fbdf-0c94-230f-ec65-666da2eca777, Id:c41a28a5-3d7a-3860-8d21-a536ff2d9f5e
+2023-12-09 17:05:30.603 -05:00 [INF] Request finished HTTP/2 POST https://localhost:44381/Account/Login application/x-www-form-urlencoded 243 - 302 - - 185.7205ms
+2023-12-09 17:05:30.606 -05:00 [INF] Request starting HTTP/2 GET https://localhost:44381/Account/WelcomeUser - -
+2023-12-09 17:05:30.608 -05:00 [INF] Executing endpoint 'BudgetBuddy.Controllers.AccountController.WelcomeUser (BudgetBuddy)'
+2023-12-09 17:05:30.608 -05:00 [INF] Route matched with {action = "WelcomeUser", controller = "Account"}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult WelcomeUser() on controller BudgetBuddy.Controllers.AccountController (BudgetBuddy).
+2023-12-09 17:05:30.610 -05:00 [INF] Executed DbCommand (0ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT "u"."UserId", "u"."Email", "u"."EmailConfirmed", "u"."FailedLoginAttempts", "u"."First_Name", "u"."IsLockedOut", "u"."Last_Name", "u"."LockoutEnd", "u"."PasswordHash", "u"."ResetPasswordToken", "u"."ResetPasswordTokenExpiration", "u"."ResetPasswordTokenUsed", "u"."UserName", "u"."VerifyTokenExpiration", "u"."VerifyTokenUsed", "u"."VerifyUserToken"
+FROM "User" AS "u"
+WHERE "u"."UserId" = @__p_0
+LIMIT 1
+2023-12-09 17:05:30.610 -05:00 [INF] Executing ViewResult, running view WelcomeUser.
+2023-12-09 17:05:30.614 -05:00 [INF] Executed ViewResult - view WelcomeUser executed in 3.5213ms.
+2023-12-09 17:05:30.614 -05:00 [INF] Executed action BudgetBuddy.Controllers.AccountController.WelcomeUser (BudgetBuddy) in 5.4979ms
+2023-12-09 17:05:30.614 -05:00 [INF] Executed endpoint 'BudgetBuddy.Controllers.AccountController.WelcomeUser (BudgetBuddy)'
+2023-12-09 17:05:30.615 -05:00 [INF] Request finished HTTP/2 GET https://localhost:44381/Account/WelcomeUser - - - 200 - text/html;+charset=utf-8 8.0586ms
+2023-12-09 17:05:30.660 -05:00 [INF] Request starting HTTP/2 GET https://localhost:44381/_vs/browserLink - -
+2023-12-09 17:05:30.661 -05:00 [INF] Request starting HTTP/2 GET https://localhost:44381/_framework/aspnetcore-browser-refresh.js - -
+2023-12-09 17:05:30.662 -05:00 [INF] Request finished HTTP/2 GET https://localhost:44381/_framework/aspnetcore-browser-refresh.js - - - 200 12354 application/javascript;+charset=utf-8 1.1304ms
+2023-12-09 17:05:30.668 -05:00 [INF] Request finished HTTP/2 GET https://localhost:44381/_vs/browserLink - - - 200 - text/javascript;+charset=UTF-8 7.3603ms
+2023-12-09 17:05:32.077 -05:00 [INF] Request starting HTTP/2 GET https://localhost:44381/Budget/Budget_Index - -
+2023-12-09 17:05:32.080 -05:00 [INF] Executing endpoint 'BudgetBuddy.Controllers.BudgetController.Budget_Index (BudgetBuddy)'
+2023-12-09 17:05:32.081 -05:00 [INF] Route matched with {action = "Budget_Index", controller = "Budget"}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult Budget_Index() on controller BudgetBuddy.Controllers.BudgetController (BudgetBuddy).
+2023-12-09 17:05:32.085 -05:00 [INF] Executed DbCommand (0ms) [Parameters=[@__userId_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT "b"."BudgetId", "b"."BudgetLimit", "b"."BudgetName", "b"."EndDate", "b"."Enterprise", "b"."Icon", "b"."StartDate"
+FROM "Budgets" AS "b"
+WHERE EXISTS (
+    SELECT 1
+    FROM "UserBudgets" AS "u"
+    INNER JOIN "User" AS "u0" ON "u"."UsersUserId" = "u0"."UserId"
+    WHERE "b"."BudgetId" = "u"."BudgetsBudgetId" AND "u0"."UserId" = @__userId_0) AND "b"."Enterprise" = 0
+2023-12-09 17:05:32.085 -05:00 [INF] Executing ViewResult, running view Budget_Index.
+2023-12-09 17:05:32.086 -05:00 [INF] Executed ViewResult - view Budget_Index executed in 1.2697ms.
+2023-12-09 17:05:32.086 -05:00 [INF] Executed action BudgetBuddy.Controllers.BudgetController.Budget_Index (BudgetBuddy) in 4.9609ms
+2023-12-09 17:05:32.086 -05:00 [INF] Executed endpoint 'BudgetBuddy.Controllers.BudgetController.Budget_Index (BudgetBuddy)'
+2023-12-09 17:05:32.087 -05:00 [INF] Request finished HTTP/2 GET https://localhost:44381/Budget/Budget_Index - - - 200 - text/html;+charset=utf-8 9.6672ms
+2023-12-09 17:05:32.107 -05:00 [INF] Request starting HTTP/2 GET https://localhost:44381/_vs/browserLink - -
+2023-12-09 17:05:32.107 -05:00 [INF] Request starting HTTP/2 GET https://localhost:44381/_framework/aspnetcore-browser-refresh.js - -
+2023-12-09 17:05:32.108 -05:00 [INF] Request finished HTTP/2 GET https://localhost:44381/_framework/aspnetcore-browser-refresh.js - - - 200 12354 application/javascript;+charset=utf-8 0.8689ms
+2023-12-09 17:05:32.118 -05:00 [INF] Request finished HTTP/2 GET https://localhost:44381/_vs/browserLink - - - 200 - text/javascript;+charset=UTF-8 10.6111ms
+2023-12-09 17:05:56.761 -05:00 [INF] Request starting HTTP/2 GET https://localhost:44381/Transaction/Index?budgetId=3 - -
+2023-12-09 17:05:56.765 -05:00 [INF] Executing endpoint 'Expense_Tracker.Controllers.TransactionController.Index (BudgetBuddy)'
+2023-12-09 17:05:56.765 -05:00 [INF] Route matched with {action = "Index", controller = "Transaction"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Index(System.Nullable`1[System.Int32]) on controller Expense_Tracker.Controllers.TransactionController (BudgetBuddy).
+2023-12-09 17:05:56.769 -05:00 [INF] Executed DbCommand (0ms) [Parameters=[@__budgetId_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT "t"."BudgetId", "t"."BudgetLimit", "t"."BudgetName", "t"."EndDate", "t"."Enterprise", "t"."Icon", "t"."StartDate", "t0"."BudgetsBudgetId", "t0"."UsersUserId", "t0"."UserId", "t0"."Email", "t0"."EmailConfirmed", "t0"."FailedLoginAttempts", "t0"."First_Name", "t0"."IsLockedOut", "t0"."Last_Name", "t0"."LockoutEnd", "t0"."PasswordHash", "t0"."ResetPasswordToken", "t0"."ResetPasswordTokenExpiration", "t0"."ResetPasswordTokenUsed", "t0"."UserName", "t0"."VerifyTokenExpiration", "t0"."VerifyTokenUsed", "t0"."VerifyUserToken"
+FROM (
+    SELECT "b"."BudgetId", "b"."BudgetLimit", "b"."BudgetName", "b"."EndDate", "b"."Enterprise", "b"."Icon", "b"."StartDate"
+    FROM "Budgets" AS "b"
+    WHERE "b"."BudgetId" = @__budgetId_0
+    LIMIT 1
+) AS "t"
+LEFT JOIN (
+    SELECT "u"."BudgetsBudgetId", "u"."UsersUserId", "u0"."UserId", "u0"."Email", "u0"."EmailConfirmed", "u0"."FailedLoginAttempts", "u0"."First_Name", "u0"."IsLockedOut", "u0"."Last_Name", "u0"."LockoutEnd", "u0"."PasswordHash", "u0"."ResetPasswordToken", "u0"."ResetPasswordTokenExpiration", "u0"."ResetPasswordTokenUsed", "u0"."UserName", "u0"."VerifyTokenExpiration", "u0"."VerifyTokenUsed", "u0"."VerifyUserToken"
+    FROM "UserBudgets" AS "u"
+    INNER JOIN "User" AS "u0" ON "u"."UsersUserId" = "u0"."UserId"
+) AS "t0" ON "t"."BudgetId" = "t0"."BudgetsBudgetId"
+ORDER BY "t"."BudgetId", "t0"."BudgetsBudgetId", "t0"."UsersUserId"
+2023-12-09 17:05:56.771 -05:00 [INF] Executed DbCommand (0ms) [Parameters=[@__budgetId_0='?' (DbType = Int32), @__userId_1='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT "t"."TransactionId", "t"."Amount", "t"."BudgetId", "t"."CategoryId", "t"."Date", "t"."Description", "t"."UserId", "c"."CategoryId", "c"."Icon", "c"."Title", "c"."Type", "u1"."UserId", "u1"."Email", "u1"."EmailConfirmed", "u1"."FailedLoginAttempts", "u1"."First_Name", "u1"."IsLockedOut", "u1"."Last_Name", "u1"."LockoutEnd", "u1"."PasswordHash", "u1"."ResetPasswordToken", "u1"."ResetPasswordTokenExpiration", "u1"."ResetPasswordTokenUsed", "u1"."UserName", "u1"."VerifyTokenExpiration", "u1"."VerifyTokenUsed", "u1"."VerifyUserToken"
+FROM "Transactions" AS "t"
+INNER JOIN "Budgets" AS "b" ON "t"."BudgetId" = "b"."BudgetId"
+INNER JOIN "Categories" AS "c" ON "t"."CategoryId" = "c"."CategoryId"
+INNER JOIN "User" AS "u1" ON "t"."UserId" = "u1"."UserId"
+WHERE "t"."BudgetId" = @__budgetId_0 AND EXISTS (
+    SELECT 1
+    FROM "UserBudgets" AS "u"
+    INNER JOIN "User" AS "u0" ON "u"."UsersUserId" = "u0"."UserId"
+    WHERE "b"."BudgetId" = "u"."BudgetsBudgetId" AND "u0"."UserId" = @__userId_1)
+2023-12-09 17:05:56.798 -05:00 [INF] Executed DbCommand (0ms) [Parameters=[@__budgetId_Value_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT "t"."UserId", "t"."Email", "t"."EmailConfirmed", "t"."FailedLoginAttempts", "t"."First_Name", "t"."IsLockedOut", "t"."Last_Name", "t"."LockoutEnd", "t"."PasswordHash", "t"."ResetPasswordToken", "t"."ResetPasswordTokenExpiration", "t"."ResetPasswordTokenUsed", "t"."UserName", "t"."VerifyTokenExpiration", "t"."VerifyTokenUsed", "t"."VerifyUserToken"
+FROM "Budgets" AS "b"
+INNER JOIN (
+    SELECT "u0"."UserId", "u0"."Email", "u0"."EmailConfirmed", "u0"."FailedLoginAttempts", "u0"."First_Name", "u0"."IsLockedOut", "u0"."Last_Name", "u0"."LockoutEnd", "u0"."PasswordHash", "u0"."ResetPasswordToken", "u0"."ResetPasswordTokenExpiration", "u0"."ResetPasswordTokenUsed", "u0"."UserName", "u0"."VerifyTokenExpiration", "u0"."VerifyTokenUsed", "u0"."VerifyUserToken", "u"."BudgetsBudgetId"
+    FROM "UserBudgets" AS "u"
+    INNER JOIN "User" AS "u0" ON "u"."UsersUserId" = "u0"."UserId"
+) AS "t" ON "b"."BudgetId" = "t"."BudgetsBudgetId"
+WHERE "b"."BudgetId" = @__budgetId_Value_0
+2023-12-09 17:05:56.801 -05:00 [INF] Executed DbCommand (0ms) [Parameters=[@__budgetId_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT "b"."Enterprise"
+FROM "Budgets" AS "b"
+WHERE "b"."BudgetId" = @__budgetId_0
+LIMIT 1
+2023-12-09 17:05:56.802 -05:00 [INF] Executing ViewResult, running view Index.
+2023-12-09 17:05:56.809 -05:00 [INF] Executed ViewResult - view Index executed in 6.5488ms.
+2023-12-09 17:05:56.809 -05:00 [INF] Executed action Expense_Tracker.Controllers.TransactionController.Index (BudgetBuddy) in 43.5745ms
+2023-12-09 17:05:56.809 -05:00 [INF] Executed endpoint 'Expense_Tracker.Controllers.TransactionController.Index (BudgetBuddy)'
+2023-12-09 17:05:56.810 -05:00 [INF] Request finished HTTP/2 GET https://localhost:44381/Transaction/Index?budgetId=3 - - - 200 - text/html;+charset=utf-8 48.3730ms
+2023-12-09 17:05:56.872 -05:00 [INF] Request starting HTTP/2 GET https://localhost:44381/_vs/browserLink - -
+2023-12-09 17:05:56.873 -05:00 [INF] Request starting HTTP/2 GET https://localhost:44381/_framework/aspnetcore-browser-refresh.js - -
+2023-12-09 17:05:56.876 -05:00 [INF] Request finished HTTP/2 GET https://localhost:44381/_framework/aspnetcore-browser-refresh.js - - - 200 12354 application/javascript;+charset=utf-8 2.7346ms
+2023-12-09 17:05:56.925 -05:00 [INF] Request finished HTTP/2 GET https://localhost:44381/_vs/browserLink - - - 200 - text/javascript;+charset=UTF-8 52.8407ms
+2023-12-09 17:06:18.703 -05:00 [INF] Request starting HTTP/2 GET https://localhost:44381/Transaction/Trans_CreateorChange - -
+2023-12-09 17:06:18.706 -05:00 [INF] Executing endpoint 'Expense_Tracker.Controllers.TransactionController.Trans_CreateorChange (BudgetBuddy)'
+2023-12-09 17:06:18.708 -05:00 [INF] Route matched with {action = "Trans_CreateorChange", controller = "Transaction"}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult Trans_CreateorChange() on controller Expense_Tracker.Controllers.TransactionController (BudgetBuddy).
+2023-12-09 17:06:18.715 -05:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "c"."CategoryId", "c"."Icon", "c"."Title", "c"."Type"
+FROM "Categories" AS "c"
+2023-12-09 17:06:18.718 -05:00 [INF] Executing ViewResult, running view Trans_CreateorChange.
+2023-12-09 17:06:18.774 -05:00 [INF] Executed ViewResult - view Trans_CreateorChange executed in 56.6229ms.
+2023-12-09 17:06:18.774 -05:00 [INF] Executed action Expense_Tracker.Controllers.TransactionController.Trans_CreateorChange (BudgetBuddy) in 65.904ms
+2023-12-09 17:06:18.774 -05:00 [INF] Executed endpoint 'Expense_Tracker.Controllers.TransactionController.Trans_CreateorChange (BudgetBuddy)'
+2023-12-09 17:06:18.775 -05:00 [INF] Request finished HTTP/2 GET https://localhost:44381/Transaction/Trans_CreateorChange - - - 200 - text/html;+charset=utf-8 71.8008ms
+2023-12-09 17:06:18.799 -05:00 [INF] Request starting HTTP/2 GET https://localhost:44381/_vs/browserLink - -
+2023-12-09 17:06:18.800 -05:00 [INF] Request starting HTTP/2 GET https://localhost:44381/_framework/aspnetcore-browser-refresh.js - -
+2023-12-09 17:06:18.807 -05:00 [INF] Request finished HTTP/2 GET https://localhost:44381/_framework/aspnetcore-browser-refresh.js - - - 200 12354 application/javascript;+charset=utf-8 7.3185ms
+2023-12-09 17:06:18.832 -05:00 [INF] Request finished HTTP/2 GET https://localhost:44381/_vs/browserLink - - - 200 - text/javascript;+charset=UTF-8 32.5819ms
+2023-12-09 17:06:24.289 -05:00 [INF] Request starting HTTP/2 GET https://localhost:44381/Account/WelcomeUser - -
+2023-12-09 17:06:24.292 -05:00 [INF] Executing endpoint 'BudgetBuddy.Controllers.AccountController.WelcomeUser (BudgetBuddy)'
+2023-12-09 17:06:24.292 -05:00 [INF] Route matched with {action = "WelcomeUser", controller = "Account"}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult WelcomeUser() on controller BudgetBuddy.Controllers.AccountController (BudgetBuddy).
+2023-12-09 17:06:24.296 -05:00 [INF] Executed DbCommand (0ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT "u"."UserId", "u"."Email", "u"."EmailConfirmed", "u"."FailedLoginAttempts", "u"."First_Name", "u"."IsLockedOut", "u"."Last_Name", "u"."LockoutEnd", "u"."PasswordHash", "u"."ResetPasswordToken", "u"."ResetPasswordTokenExpiration", "u"."ResetPasswordTokenUsed", "u"."UserName", "u"."VerifyTokenExpiration", "u"."VerifyTokenUsed", "u"."VerifyUserToken"
+FROM "User" AS "u"
+WHERE "u"."UserId" = @__p_0
+LIMIT 1
+2023-12-09 17:06:24.296 -05:00 [INF] Executing ViewResult, running view WelcomeUser.
+2023-12-09 17:06:24.297 -05:00 [INF] Executed ViewResult - view WelcomeUser executed in 1.2606ms.
+2023-12-09 17:06:24.297 -05:00 [INF] Executed action BudgetBuddy.Controllers.AccountController.WelcomeUser (BudgetBuddy) in 4.7979ms
+2023-12-09 17:06:24.297 -05:00 [INF] Executed endpoint 'BudgetBuddy.Controllers.AccountController.WelcomeUser (BudgetBuddy)'
+2023-12-09 17:06:24.298 -05:00 [INF] Request finished HTTP/2 GET https://localhost:44381/Account/WelcomeUser - - - 200 - text/html;+charset=utf-8 8.6694ms
+2023-12-09 17:06:24.319 -05:00 [INF] Request starting HTTP/2 GET https://localhost:44381/_vs/browserLink - -
+2023-12-09 17:06:24.319 -05:00 [INF] Request starting HTTP/2 GET https://localhost:44381/_framework/aspnetcore-browser-refresh.js - -
+2023-12-09 17:06:24.321 -05:00 [INF] Request finished HTTP/2 GET https://localhost:44381/_framework/aspnetcore-browser-refresh.js - - - 200 12354 application/javascript;+charset=utf-8 1.2537ms
+2023-12-09 17:06:24.334 -05:00 [INF] Request finished HTTP/2 GET https://localhost:44381/_vs/browserLink - - - 200 - text/javascript;+charset=UTF-8 14.8274ms
+2023-12-09 17:07:31.231 -05:00 [INF] Request starting HTTP/2 GET https://localhost:44381/Budget/Budget_Index - -
+2023-12-09 17:07:31.244 -05:00 [INF] Executing endpoint 'BudgetBuddy.Controllers.BudgetController.Budget_Index (BudgetBuddy)'
+2023-12-09 17:07:31.244 -05:00 [INF] Route matched with {action = "Budget_Index", controller = "Budget"}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult Budget_Index() on controller BudgetBuddy.Controllers.BudgetController (BudgetBuddy).
+2023-12-09 17:07:31.246 -05:00 [INF] Executed DbCommand (0ms) [Parameters=[@__userId_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT "b"."BudgetId", "b"."BudgetLimit", "b"."BudgetName", "b"."EndDate", "b"."Enterprise", "b"."Icon", "b"."StartDate"
+FROM "Budgets" AS "b"
+WHERE EXISTS (
+    SELECT 1
+    FROM "UserBudgets" AS "u"
+    INNER JOIN "User" AS "u0" ON "u"."UsersUserId" = "u0"."UserId"
+    WHERE "b"."BudgetId" = "u"."BudgetsBudgetId" AND "u0"."UserId" = @__userId_0) AND "b"."Enterprise" = 0
+2023-12-09 17:07:31.247 -05:00 [INF] Executing ViewResult, running view Budget_Index.
+2023-12-09 17:07:31.250 -05:00 [INF] Executed ViewResult - view Budget_Index executed in 2.327ms.
+2023-12-09 17:07:31.250 -05:00 [INF] Executed action BudgetBuddy.Controllers.BudgetController.Budget_Index (BudgetBuddy) in 5.4909ms
+2023-12-09 17:07:31.250 -05:00 [INF] Executed endpoint 'BudgetBuddy.Controllers.BudgetController.Budget_Index (BudgetBuddy)'
+2023-12-09 17:07:31.250 -05:00 [INF] Request finished HTTP/2 GET https://localhost:44381/Budget/Budget_Index - - - 200 - text/html;+charset=utf-8 19.1522ms
+2023-12-09 17:07:31.310 -05:00 [INF] Request starting HTTP/2 GET https://localhost:44381/_framework/aspnetcore-browser-refresh.js - -
+2023-12-09 17:07:31.313 -05:00 [INF] Request finished HTTP/2 GET https://localhost:44381/_framework/aspnetcore-browser-refresh.js - - - 200 12354 application/javascript;+charset=utf-8 3.7754ms
+2023-12-09 17:07:31.314 -05:00 [INF] Request starting HTTP/2 GET https://localhost:44381/_vs/browserLink - -
+2023-12-09 17:07:31.345 -05:00 [INF] Request finished HTTP/2 GET https://localhost:44381/_vs/browserLink - - - 200 - text/javascript;+charset=UTF-8 30.8214ms

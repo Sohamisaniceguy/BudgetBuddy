@@ -1,0 +1,40 @@
+2023-11-20 12:02:16.771 -05:00 [INF] User profile is available. Using 'C:\Users\SOHAM\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2023-11-20 12:02:17.037 -05:00 [INF] Application started. Press Ctrl+C to shut down.
+2023-11-20 12:02:17.038 -05:00 [INF] Hosting environment: Development
+2023-11-20 12:02:17.038 -05:00 [INF] Content root path: D:\PADHAI\UMCP\PADHAI - FALL2023\2. Secure Coding\Project\BudgetBuddy\BudgetBuddy\
+2023-11-20 12:02:17.079 -05:00 [INF] Request starting HTTP/2 GET https://localhost:44381/ - -
+2023-11-20 12:02:17.298 -05:00 [INF] Executing endpoint 'BudgetBuddy.Controllers.HomeController.Index (BudgetBuddy)'
+2023-11-20 12:02:17.366 -05:00 [INF] Route matched with {action = "Index", controller = "Home"}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult Index() on controller BudgetBuddy.Controllers.HomeController (BudgetBuddy).
+2023-11-20 12:02:17.391 -05:00 [INF] Executing ViewResult, running view Index.
+2023-11-20 12:02:17.963 -05:00 [INF] Executed ViewResult - view Index executed in 581.9362ms.
+2023-11-20 12:02:17.977 -05:00 [INF] Executed action BudgetBuddy.Controllers.HomeController.Index (BudgetBuddy) in 609.9265ms
+2023-11-20 12:02:17.978 -05:00 [INF] Executed endpoint 'BudgetBuddy.Controllers.HomeController.Index (BudgetBuddy)'
+2023-11-20 12:02:18.064 -05:00 [INF] Request finished HTTP/2 GET https://localhost:44381/ - - - 200 - text/html;+charset=utf-8 988.8505ms
+2023-11-20 12:02:18.244 -05:00 [INF] Request starting HTTP/2 GET https://localhost:44381/lib/jquery/dist/jquery.min.js - -
+2023-11-20 12:02:18.250 -05:00 [INF] Request starting HTTP/2 GET https://localhost:44381/lib/bootstrap/dist/css/bootstrap.min.css - -
+2023-11-20 12:02:18.270 -05:00 [INF] Request starting HTTP/2 GET https://localhost:44381/css/site.css?v=JE9EXIx9ukMxwmOkZsb6cPIWgO5vIm5asEQjMcpAyIE - -
+2023-11-20 12:02:18.298 -05:00 [INF] Request starting HTTP/2 GET https://localhost:44381/BudgetBuddy.styles.css?v=H4ZIGp_ViMe2RAQYdUokIjF3CnEoB__Z_yqw6SnlLEM - -
+2023-11-20 12:02:18.347 -05:00 [INF] Request starting HTTP/2 GET https://localhost:44381/_framework/aspnetcore-browser-refresh.js - -
+2023-11-20 12:02:18.353 -05:00 [INF] Request starting HTTP/2 GET https://localhost:44381/_vs/browserLink - -
+2023-11-20 12:02:18.353 -05:00 [INF] Request starting HTTP/2 GET https://localhost:44381/image.png - -
+2023-11-20 12:02:18.362 -05:00 [INF] Request starting HTTP/2 GET https://localhost:44381/js/site.js?v=4q1jwFhaPaZgr8WAUSrux6hAuh0XDg9kPS3xIVq36I0 - -
+2023-11-20 12:02:18.382 -05:00 [INF] Request starting HTTP/2 GET https://localhost:44381/lib/bootstrap/dist/js/bootstrap.bundle.min.js - -
+2023-11-20 12:02:18.402 -05:00 [INF] Request finished HTTP/2 GET https://localhost:44381/_framework/aspnetcore-browser-refresh.js - - - 200 12354 application/javascript;+charset=utf-8 46.2406ms
+2023-11-20 12:02:18.421 -05:00 [INF] Sending file. Request path: '/js/site.js'. Physical path: 'D:\PADHAI\UMCP\PADHAI - FALL2023\2. Secure Coding\Project\BudgetBuddy\BudgetBuddy\wwwroot\js\site.js'
+2023-11-20 12:02:18.421 -05:00 [INF] Sending file. Request path: '/css/site.css'. Physical path: 'D:\PADHAI\UMCP\PADHAI - FALL2023\2. Secure Coding\Project\BudgetBuddy\BudgetBuddy\wwwroot\css\site.css'
+2023-11-20 12:02:18.421 -05:00 [INF] Sending file. Request path: '/BudgetBuddy.styles.css'. Physical path: 'D:\PADHAI\UMCP\PADHAI - FALL2023\2. Secure Coding\Project\BudgetBuddy\BudgetBuddy\obj\Debug\net6.0\scopedcss\bundle\BudgetBuddy.styles.css'
+2023-11-20 12:02:18.421 -05:00 [INF] Request finished HTTP/2 GET https://localhost:44381/BudgetBuddy.styles.css?v=H4ZIGp_ViMe2RAQYdUokIjF3CnEoB__Z_yqw6SnlLEM - - - 200 1128 text/css 122.9044ms
+2023-11-20 12:02:18.421 -05:00 [INF] Request finished HTTP/2 GET https://localhost:44381/css/site.css?v=JE9EXIx9ukMxwmOkZsb6cPIWgO5vIm5asEQjMcpAyIE - - - 200 327 text/css 154.6990ms
+2023-11-20 12:02:18.421 -05:00 [INF] Request finished HTTP/2 GET https://localhost:44381/js/site.js?v=4q1jwFhaPaZgr8WAUSrux6hAuh0XDg9kPS3xIVq36I0 - - - 200 230 application/javascript 58.9698ms
+2023-11-20 12:02:18.518 -05:00 [INF] Request finished HTTP/2 GET https://localhost:44381/_vs/browserLink - - - 200 - text/javascript;+charset=UTF-8 164.7206ms
+2023-11-20 12:02:19.115 -05:00 [INF] Sending file. Request path: '/lib/jquery/dist/jquery.min.js'. Physical path: 'D:\PADHAI\UMCP\PADHAI - FALL2023\2. Secure Coding\Project\BudgetBuddy\BudgetBuddy\wwwroot\lib\jquery\dist\jquery.min.js'
+2023-11-20 12:02:19.115 -05:00 [INF] Sending file. Request path: '/lib/bootstrap/dist/js/bootstrap.bundle.min.js'. Physical path: 'D:\PADHAI\UMCP\PADHAI - FALL2023\2. Secure Coding\Project\BudgetBuddy\BudgetBuddy\wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.min.js'
+2023-11-20 12:02:19.117 -05:00 [INF] Request finished HTTP/2 GET https://localhost:44381/lib/bootstrap/dist/js/bootstrap.bundle.min.js - - - 200 78468 application/javascript 736.4033ms
+2023-11-20 12:02:19.118 -05:00 [INF] Request finished HTTP/2 GET https://localhost:44381/lib/jquery/dist/jquery.min.js - - - 200 89476 application/javascript 873.6870ms
+2023-11-20 12:02:19.151 -05:00 [INF] Sending file. Request path: '/lib/bootstrap/dist/css/bootstrap.min.css'. Physical path: 'D:\PADHAI\UMCP\PADHAI - FALL2023\2. Secure Coding\Project\BudgetBuddy\BudgetBuddy\wwwroot\lib\bootstrap\dist\css\bootstrap.min.css'
+2023-11-20 12:02:19.153 -05:00 [INF] Request finished HTTP/2 GET https://localhost:44381/lib/bootstrap/dist/css/bootstrap.min.css - - - 200 162720 text/css 902.4556ms
+2023-11-20 12:02:19.176 -05:00 [INF] Sending file. Request path: '/image.png'. Physical path: 'D:\PADHAI\UMCP\PADHAI - FALL2023\2. Secure Coding\Project\BudgetBuddy\BudgetBuddy\wwwroot\image.png'
+2023-11-20 12:02:19.191 -05:00 [INF] Request finished HTTP/2 GET https://localhost:44381/image.png - - - 200 684779 image/png 837.7565ms
+2023-11-20 12:02:19.234 -05:00 [INF] Request starting HTTP/2 GET https://localhost:44381/favicon.ico - -
+2023-11-20 12:02:19.258 -05:00 [INF] Sending file. Request path: '/favicon.ico'. Physical path: 'D:\PADHAI\UMCP\PADHAI - FALL2023\2. Secure Coding\Project\BudgetBuddy\BudgetBuddy\wwwroot\favicon.ico'
+2023-11-20 12:02:19.259 -05:00 [INF] Request finished HTTP/2 GET https://localhost:44381/favicon.ico - - - 200 5430 image/x-icon 24.3647ms
