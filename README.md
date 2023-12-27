@@ -34,7 +34,7 @@ To get started with Budget Buddy, follow these steps:
 To install and run Budget Buddy on your local machine, follow these steps:
 
 1. Make sure you have [Visual Studio](https://visualstudio.microsoft.com/) and [SQL Server](https://www.microsoft.com/en-us/sql-server/sql-server-downloads) installed.
-2. Clone the repository: `git clone https://code.umd.edu/sohamp/ENPM809WFall2023Project-sohamp.git`
+2. Clone the repository: `git clone https://github.com/Sohamisaniceguy/BudgetBuddy.git`
 3. Open the project in Visual Studio.
 4. Build the project to restore the packages and dependencies.
 5. Configure the database settings in the `appsettings.json` file.
